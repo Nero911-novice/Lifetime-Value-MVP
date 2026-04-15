@@ -1246,32 +1246,90 @@ def get_selected_segment_charts_data(segment_user_base: pd.DataFrame, selected_s
     selected = segment_user_base.loc[segment_user_base["compound_segment"] == selected_segment].copy()
     if selected.empty:
         empty = pd.DataFrame(columns=["metric", "selected", "baseline"])
-        return {"key_metrics": empty, "recency_rides": empty, "promo_margin": empty, "cancel_value": empty}
+        unavailable = pd.DataFrame(columns=["metric", "reason"])
+        return {
+            "key_metrics": empty,
+            "monetary_metrics": empty,
+            "ratio_metrics": empty,
+            "unavailable_metrics": unavailable,
+            "recency_rides": empty,
+            "promo_margin": empty,
+            "cancel_value": empty,
+        }
 
     baseline = segment_user_base.loc[segment_user_base["compound_segment"] != selected_segment].copy()
     if baseline.empty:
         empty = pd.DataFrame(columns=["metric", "selected", "baseline"])
-        return {"key_metrics": empty, "recency_rides": empty, "promo_margin": empty, "cancel_value": empty}
-
-    key_metrics = pd.DataFrame(
-        {
-            "metric": ["LTV 180d", "Margin / completed order", "Cancellation rate", "Promo share", "Response rate"],
-            "selected": [
-                selected["ltv_180d"].mean(),
-                selected["avg_margin_per_completed_order"].mean(),
-                selected["cancelled_orders_count"].sum() / selected["created_orders_count"].sum() if selected["created_orders_count"].sum() > 0 else np.nan,
-                selected["promo_trip_share"].mean(),
-                selected["responded_7d_rate"].mean(),
-            ],
-            "baseline": [
-                baseline["ltv_180d"].mean(),
-                baseline["avg_margin_per_completed_order"].mean(),
-                baseline["cancelled_orders_count"].sum() / baseline["created_orders_count"].sum() if baseline["created_orders_count"].sum() > 0 else np.nan,
-                baseline["promo_trip_share"].mean(),
-                baseline["responded_7d_rate"].mean(),
-            ],
+        unavailable = pd.DataFrame(columns=["metric", "reason"])
+        return {
+            "key_metrics": empty,
+            "monetary_metrics": empty,
+            "ratio_metrics": empty,
+            "unavailable_metrics": unavailable,
+            "recency_rides": empty,
+            "promo_margin": empty,
+            "cancel_value": empty,
         }
-    )
+
+    selected_created_sum = float(selected["created_orders_count"].sum())
+    baseline_created_sum = float(baseline["created_orders_count"].sum())
+    selected_completed_sum = float(selected["completed_orders_count"].sum())
+    baseline_completed_sum = float(baseline["completed_orders_count"].sum())
+
+    metric_specs = [
+        {
+            "metric": "LTV 180d",
+            "group": "monetary",
+            "selected": float(selected["ltv_180d"].mean()),
+            "baseline": float(baseline["ltv_180d"].mean()),
+            "reason": None,
+        },
+        {
+            "metric": "Avg margin per completed order",
+            "group": "monetary",
+            "selected": float(selected["avg_margin_per_completed_order"].mean()) if selected_completed_sum > 0 else np.nan,
+            "baseline": float(baseline["avg_margin_per_completed_order"].mean()) if baseline_completed_sum > 0 else np.nan,
+            "reason": "Нет созданных заказов" if (selected_completed_sum <= 0 or baseline_completed_sum <= 0) else None,
+        },
+        {
+            "metric": "Cancellation rate",
+            "group": "ratio",
+            "selected": float(selected["cancelled_orders_count"].sum() / selected_created_sum) if selected_created_sum > 0 else np.nan,
+            "baseline": float(baseline["cancelled_orders_count"].sum() / baseline_created_sum) if baseline_created_sum > 0 else np.nan,
+            "reason": "Нет созданных заказов" if (selected_created_sum <= 0 or baseline_created_sum <= 0) else None,
+        },
+        {
+            "metric": "Promo trip share",
+            "group": "ratio",
+            "selected": float(selected["promo_trip_share"].mean()) if selected_completed_sum > 0 else np.nan,
+            "baseline": float(baseline["promo_trip_share"].mean()) if baseline_completed_sum > 0 else np.nan,
+            "reason": "Нет созданных заказов" if (selected_completed_sum <= 0 or baseline_completed_sum <= 0) else None,
+        },
+        {
+            "metric": "Response rate",
+            "group": "ratio",
+            "selected": float(selected["responded_7d_rate"].mean()),
+            "baseline": float(baseline["responded_7d_rate"].mean()),
+            "reason": "Нет маркетинговых касаний",
+        },
+    ]
+
+    metric_rows: list[dict[str, Any]] = []
+    unavailable_rows: list[dict[str, str]] = []
+    for spec in metric_specs:
+        row = {"metric": spec["metric"], "selected": spec["selected"], "baseline": spec["baseline"], "group": spec["group"]}
+        if pd.notna(row["selected"]) and pd.notna(row["baseline"]):
+            metric_rows.append(row)
+        else:
+            reason = spec["reason"] or "Недостаточно данных"
+            unavailable_rows.append({"metric": spec["metric"], "reason": reason})
+
+    key_metrics = pd.DataFrame(metric_rows, columns=["metric", "selected", "baseline", "group"])
+    monetary_metrics = key_metrics.loc[key_metrics["group"] == "monetary", ["metric", "selected", "baseline"]].reset_index(drop=True)
+    ratio_metrics = key_metrics.loc[key_metrics["group"] == "ratio", ["metric", "selected", "baseline"]].reset_index(drop=True)
+    if not ratio_metrics.empty:
+        ratio_metrics[["selected", "baseline"]] = ratio_metrics[["selected", "baseline"]] * 100.0
+    unavailable_metrics = pd.DataFrame(unavailable_rows, columns=["metric", "reason"])
 
     recency_rides = pd.DataFrame(
         {
@@ -1302,6 +1360,9 @@ def get_selected_segment_charts_data(segment_user_base: pd.DataFrame, selected_s
 
     return {
         "key_metrics": key_metrics,
+        "monetary_metrics": monetary_metrics,
+        "ratio_metrics": ratio_metrics,
+        "unavailable_metrics": unavailable_metrics,
         "recency_rides": recency_rides,
         "promo_margin": promo_margin,
         "cancel_value": cancel_value,
