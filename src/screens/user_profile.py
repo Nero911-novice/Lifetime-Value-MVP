@@ -14,6 +14,10 @@ from ..ui import (
 )
 
 
+def _value(user, key, default=0):
+    return user[key] if key in user.index else default
+
+
 def render(data):
     st.header("Карточка пользователя")
     render_screen_help("user_profile")
@@ -34,16 +38,16 @@ def render(data):
     user = snapshot["user"]
 
     top1, top2, top3, top4 = st.columns(4)
-    top1.metric("Исторический LTV 180д", format_currency(user["margin_180d"], 0))
-    top2.metric("Созданные заказы", format_number(user["total_orders"], 0))
-    top3.metric("Завершенные заказы", format_number(user["completed_orders"], 0))
-    top4.metric("Доля отмен", format_percent(user["cancel_rate"], 1))
+    top1.metric("Исторический LTV 180д", format_currency(_value(user, "margin_180d", 0), 0))
+    top2.metric("Созданные заказы", format_number(_value(user, "total_orders", 0), 0))
+    top3.metric("Завершенные заказы", format_number(_value(user, "completed_orders", 0), 0))
+    top4.metric("Доля отмен", format_percent(_value(user, "cancel_rate", 0), 1))
 
     mid1, mid2, mid3, mid4 = st.columns(4)
-    mid1.metric("Response 7d", format_percent(user["response_rate_7d"], 1))
-    mid2.metric("Активность 90д", "Да" if bool(user["active_90d_flag"]) else "Нет")
-    mid3.metric("Промо-зависимость", str(user["promo_band"]))
-    mid4.metric("Риск", str(user["risk_segment"]))
+    mid1.metric("Response 7d", format_percent(_value(user, "response_rate_7d", 0), 1))
+    mid2.metric("Активность 90д", "Да" if bool(_value(user, "active_90d_flag", False)) else "Нет")
+    mid3.metric("Промо-зависимость", str(_value(user, "promo_band", "Неизвестно")))
+    mid4.metric("Риск", str(_value(user, "risk_segment", "Не классифицирован")))
 
     st.subheader("Профиль пользователя")
     profile_cols = st.columns(3)
@@ -60,24 +64,24 @@ def render(data):
 **Регистрация:** {user['registration_date'].date() if hasattr(user['registration_date'], 'date') and user['registration_date'] == user['registration_date'] else '—'}  
 **Первая поездка:** {user['first_trip_date'].date() if hasattr(user['first_trip_date'], 'date') and user['first_trip_date'] == user['first_trip_date'] else '—'}  
 **Последняя поездка:** {user['last_trip_ts'].date() if hasattr(user['last_trip_ts'], 'date') and user['last_trip_ts'] == user['last_trip_ts'] else '—'}  
-**Статус демо:** {user['lifecycle_status_demo']}
+**Статус демо:** {_value(user, 'lifecycle_status_demo', '—')}
 """
     )
     profile_cols[2].markdown(
         f"""
 **Тариф:** {user['preferred_tariff']}  
 **Подписка:** {user['subscription_plan']}  
-**Ценность:** {user['value_segment']}  
-**Средняя маржа поездки:** {format_currency(user['avg_trip_margin'], 0)}
+**Ценность:** {_value(user, 'value_segment', 'Не классифицирован')}  
+**Средняя маржа поездки:** {format_currency(_value(user, 'avg_trip_margin', 0), 0)}
 """
     )
 
     st.subheader("Событийный след пользователя")
     path1, path2, path3, path4 = st.columns(4)
-    path1.metric("Касания", format_number(user["total_touches"], 0))
-    path2.metric("Открытия", format_percent(user["open_rate"], 1))
-    path3.metric("Клики", format_percent(user["click_rate"], 1))
-    path4.metric("Конверсии 7д", format_percent(user["response_rate_7d"], 1))
+    path1.metric("Касания", format_number(_value(user, "total_touches", 0), 0))
+    path2.metric("Открытия", format_percent(_value(user, "open_rate", 0), 1))
+    path3.metric("Клики", format_percent(_value(user, "click_rate", 0), 1))
+    path4.metric("Конверсии 7д", format_percent(_value(user, "response_rate_7d", 0), 1))
 
     st.subheader("Последние поездки")
     info_caption(
