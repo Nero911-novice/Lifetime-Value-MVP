@@ -6,6 +6,7 @@ from src.metrics import (
     compute_overview_metrics,
     build_cohort_user_base,
     get_cohort_summary,
+    get_cohort_maturity_table,
     build_retention_matrix,
     compare_cohort_to_baseline,
 )

@@ -674,9 +674,8 @@ def get_cohort_maturity_table(cohort_user_base: pd.DataFrame, max_date: pd.Times
         cohort_user_base.groupby("cohort_month")["user_id"].nunique().rename("cohort_size").to_frame()
     )
     periods = pd.PeriodIndex(maturity.index, freq="M")
-    maturity["maturity_months"] = (
-        (max_period.year - periods.year) * 12 + (max_period.month - periods.month)
-    ).clip(lower=0)
+    maturity_months = (max_period.year - periods.year) * 12 + (max_period.month - periods.month)
+    maturity["maturity_months"] = np.maximum(maturity_months, 0).astype(int)
     return maturity.reset_index().sort_values("cohort_month")
 
 
