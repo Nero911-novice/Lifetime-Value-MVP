@@ -76,7 +76,7 @@ def main() -> None:
     elif page == "Когорты":
         cohorts.render(filtered_user_mart, filtered_related["trips"])
     elif page == "Сегменты":
-        segments.render(filtered_user_mart)
+        segments.render(filtered_user_mart, filtered_related["trips"], filtered_related["marketing_touches"])
     elif page == "Карточка пользователя":
         user_profile.render(filtered_related)
     elif page == "Модель данных":

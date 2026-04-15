@@ -9,6 +9,12 @@ from src.metrics import (
     get_cohort_maturity_table,
     build_retention_matrix,
     compare_cohort_to_baseline,
+    build_segment_user_base,
+    get_segment_summary,
+    get_segment_map_table,
+    get_selected_segment_profile,
+    compare_segment_to_baseline,
+    generate_segment_diagnostics,
 )
 
 
@@ -134,3 +140,67 @@ def test_retention_matrix_and_baseline_compare():
     assert "M0" in matrix.columns
     assert "2025-01" in matrix.index
     assert not compare.empty
+
+
+def test_segment_layer_outputs_expected_structures():
+    user_mart = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2", "u3", "u4"],
+            "home_city": ["Москва"] * 4,
+            "acquisition_channel": ["Органика", "Платная", "Платная", "Органика"],
+            "activation_type": ["Органическая первая поездка", "Промо-активация", "Реактивация", "Органическая первая поездка"],
+            "preferred_tariff": ["Эконом", "Комфорт", "Эконом", "Бизнес"],
+            "registration_date": pd.to_datetime(["2025-01-01", "2025-01-03", "2024-12-20", "2025-02-01"]),
+            "first_trip_date": pd.to_datetime(["2025-01-05", "2025-01-10", "2025-01-01", "2025-02-05"]),
+            "total_orders": [12, 5, 1, 0],
+            "completed_orders": [10, 3, 1, 0],
+            "cancelled_orders": [2, 2, 0, 0],
+            "margin_30d": [120.0, 30.0, 5.0, 0.0],
+            "margin_90d": [360.0, 70.0, 8.0, 0.0],
+            "margin_180d": [780.0, 180.0, 12.0, 0.0],
+            "margin_365d": [1200.0, 260.0, 18.0, 0.0],
+            "total_margin": [1500.0, 350.0, 20.0, 0.0],
+            "recent_trips_30d": [6, 1, 0, 0],
+            "recent_trips_90d": [9, 2, 0, 0],
+            "recency_days": [6, 40, 150, None],
+            "promo_trip_share": [0.05, 0.4, 0.9, 0.0],
+            "refund_rate": [0.01, 0.03, 0.2, 0.0],
+            "response_rate_7d": [0.05, 0.15, 0.45, 0.0],
+            "active_90d_flag": [True, True, False, False],
+            "acquisition_cost": [200, 180, 120, 90],
+        }
+    )
+    touches = pd.DataFrame(
+        {
+            "touch_id": ["t1", "t2", "t3", "t4"],
+            "user_id": ["u1", "u2", "u2", "u3"],
+            "converted_within_7d_flag": [0, 1, 0, 1],
+        }
+    )
+    trips = pd.DataFrame({"request_ts": pd.to_datetime(["2025-04-01"])})
+
+    segment_user_base = build_segment_user_base(user_mart, trips, touches)
+    summary = get_segment_summary(segment_user_base)
+    map_table = get_segment_map_table(segment_user_base)
+
+    assert not segment_user_base.empty
+    assert {"value_segment", "risk_segment", "promo_dependency_segment", "compound_segment", "recommended_action"}.issubset(segment_user_base.columns)
+    assert not summary.empty
+    assert not map_table.empty
+
+    selected = summary.iloc[0]["compound_segment"]
+    profile = get_selected_segment_profile(segment_user_base, selected)
+    compare = compare_segment_to_baseline(summary, selected)
+    baseline = {
+        "avg_ltv_180d": float(summary["avg_ltv_180d"].median()),
+        "total_ltv_180d": float(summary["total_ltv_180d"].median()),
+        "cancellation_rate": float(summary["avg_cancellation_rate"].median()),
+        "promo_trip_share": float(summary["avg_promo_trip_share"].median()),
+        "avg_recency_days": float(summary["avg_recency_days"].median()),
+        "avg_rides_last_90d": float(summary["avg_rides_last_90d"].median()),
+    }
+    diagnostics = generate_segment_diagnostics(profile, baseline)
+
+    assert profile["users_count"] >= 1
+    assert not compare.empty
+    assert len(diagnostics) >= 1
