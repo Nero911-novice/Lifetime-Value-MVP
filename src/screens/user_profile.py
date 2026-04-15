@@ -4,7 +4,14 @@ from __future__ import annotations
 import streamlit as st
 
 from ..metrics import get_user_snapshot
-from ..ui import render_screen_help, render_methodology_footer, format_currency, format_number, info_caption
+from ..ui import (
+    render_screen_help,
+    render_methodology_footer,
+    format_currency,
+    format_number,
+    format_percent,
+    info_caption,
+)
 
 
 def render(data):
@@ -28,9 +35,15 @@ def render(data):
 
     top1, top2, top3, top4 = st.columns(4)
     top1.metric("Исторический LTV 180д", format_currency(user["margin_180d"], 0))
-    top2.metric("Поездки 365д", format_number(user["trips_365d"], 0))
-    top3.metric("Response 7d", f'{user["response_rate_7d"]:.1%}')
-    top4.metric("Риск", user["risk_segment"])
+    top2.metric("Созданные заказы", format_number(user["total_orders"], 0))
+    top3.metric("Завершенные заказы", format_number(user["completed_orders"], 0))
+    top4.metric("Доля отмен", format_percent(user["cancel_rate"], 1))
+
+    mid1, mid2, mid3, mid4 = st.columns(4)
+    mid1.metric("Response 7d", format_percent(user["response_rate_7d"], 1))
+    mid2.metric("Активность 90д", "Да" if bool(user["active_90d_flag"]) else "Нет")
+    mid3.metric("Промо-зависимость", str(user["promo_band"]))
+    mid4.metric("Риск", str(user["risk_segment"]))
 
     st.subheader("Профиль пользователя")
     profile_cols = st.columns(3)
@@ -54,13 +67,22 @@ def render(data):
         f"""
 **Тариф:** {user['preferred_tariff']}  
 **Подписка:** {user['subscription_plan']}  
-**Промо-зависимость:** {user['promo_band']}  
-**Ценность:** {user['value_segment']}
+**Ценность:** {user['value_segment']}  
+**Средняя маржа поездки:** {format_currency(user['avg_trip_margin'], 0)}
 """
     )
 
+    st.subheader("Событийный след пользователя")
+    path1, path2, path3, path4 = st.columns(4)
+    path1.metric("Касания", format_number(user["total_touches"], 0))
+    path2.metric("Открытия", format_percent(user["open_rate"], 1))
+    path3.metric("Клики", format_percent(user["click_rate"], 1))
+    path4.metric("Конверсии 7д", format_percent(user["response_rate_7d"], 1))
+
     st.subheader("Последние поездки")
-    info_caption("На уровне поездок видно, из каких денежных элементов складывается contribution margin пользователя.")
+    info_caption(
+        "На уровне заказов и поездок видно, из каких денежных элементов складывается contribution margin и как соотносятся созданные и завершённые заказы."
+    )
     trip_cols = [
         "trip_id",
         "request_ts",
@@ -73,7 +95,7 @@ def render(data):
         "variable_ops_cost",
         "contribution_margin",
     ]
-    st.dataframe(snapshot["trips"][trip_cols].head(15), use_container_width=True)
+    st.dataframe(snapshot["trips"][trip_cols].head(20), use_container_width=True)
 
     st.subheader("Последние маркетинговые касания")
     touch_cols = [
@@ -87,6 +109,6 @@ def render(data):
         "converted_within_7d_flag",
         "touch_cost",
     ]
-    st.dataframe(snapshot["touches"][touch_cols].head(15), use_container_width=True)
+    st.dataframe(snapshot["touches"][touch_cols].head(20), use_container_width=True)
 
     render_methodology_footer()
