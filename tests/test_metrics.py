@@ -16,6 +16,7 @@ from src.metrics import (
     compare_segment_to_baseline,
     generate_segment_diagnostics,
 )
+from src.data_loader import load_demo_data, build_user_mart
 
 
 def test_apply_common_filters_keeps_matching_city():
@@ -204,3 +205,45 @@ def test_segment_layer_outputs_expected_structures():
     assert profile["users_count"] >= 1
     assert not compare.empty
     assert len(diagnostics) >= 1
+
+
+def test_segment_orders_fallback_uses_total_orders_when_count_fields_are_empty():
+    user_mart = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2"],
+            "home_city": ["Москва", "Москва"],
+            "city": ["Москва", "Москва"],
+            "acquisition_channel": ["Органика", "Платная"],
+            "activation_type": ["Органическая первая поездка", "Промо-активация"],
+            "preferred_tariff": ["Эконом", "Эконом"],
+            "total_orders": [10, 3],
+            "completed_orders": [7, 2],
+            "cancelled_orders": [3, 1],
+            "created_orders_count": [0, 0],
+            "completed_orders_count": [0, 0],
+            "cancelled_orders_count": [0, 0],
+            "margin_180d": [500.0, 200.0],
+            "total_margin": [700.0, 260.0],
+            "recent_trips_30d": [2, 1],
+            "recent_trips_90d": [5, 2],
+            "recency_days": [7, 44],
+            "promo_trip_share": [0.15, 0.55],
+            "response_rate_7d": [0.05, 0.25],
+            "active_90d_flag": [True, True],
+        }
+    )
+    base = build_segment_user_base(user_mart)
+    assert base["created_orders_count"].tolist() == [10, 3]
+    assert base["completed_orders_count"].tolist() == [7, 2]
+    assert base["cancelled_orders_count"].tolist() == [3, 1]
+    assert set(base["risk_segment"]) == {"Stable / Active", "Cooling"}
+
+
+def test_demo_segment_distribution_is_not_collapsed():
+    data = load_demo_data("data")
+    user_mart = build_user_mart(data)
+    base = build_segment_user_base(user_mart, data["trips"], data["marketing_touches"])
+    assert base["value_segment"].nunique() >= 3
+    assert base["risk_segment"].nunique() >= 3
+    assert base["promo_dependency_segment"].nunique() >= 3
+    assert base["compound_segment"].nunique() >= 6
