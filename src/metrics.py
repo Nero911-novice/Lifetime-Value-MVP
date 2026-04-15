@@ -6,6 +6,8 @@ from typing import Dict, Any
 import numpy as np
 import pandas as pd
 
+COHORT_MAX_HORIZON = 18
+
 
 def apply_common_filters(
     user_mart: pd.DataFrame,
@@ -448,6 +450,420 @@ def build_selected_cohort_curves(matrices: dict, cohort_month: str) -> pd.DataFr
             "cumulative_ltv": ltv_row.values,
         }
     )
+
+
+def _resolve_user_columns(users_df: pd.DataFrame) -> pd.DataFrame:
+    users = users_df.copy()
+    rename_map = {
+        "home_city": "city",
+        "first_trip_date": "first_completed_trip_date",
+        "acquisition_cost": "cac",
+    }
+    users = users.rename(columns=rename_map)
+    defaults = {
+        "city": "Неизвестно",
+        "activation_type": "Неизвестно",
+        "preferred_tariff": "Неизвестно",
+        "acquisition_channel": "Неизвестно",
+        "cac": 0.0,
+        "first_completed_trip_date": pd.NaT,
+        "registration_date": pd.NaT,
+    }
+    return _with_default_columns(users, defaults)
+
+
+def _resolve_trip_columns(trips_df: pd.DataFrame) -> pd.DataFrame:
+    trips = trips_df.copy()
+    rename_map = {
+        "request_ts": "order_created_at",
+        "order_status": "trip_status",
+        "gmv": "gross_booking",
+        "variable_ops_cost": "variable_cost",
+    }
+    trips = trips.rename(columns=rename_map)
+    trips = _with_default_columns(
+        trips,
+        {
+            "order_created_at": pd.NaT,
+            "trip_status": "unknown",
+            "promo_discount": 0.0,
+            "driver_bonus": 0.0,
+            "refund_amount": 0.0,
+            "variable_cost": 0.0,
+            "platform_revenue": 0.0,
+            "contribution_margin": 0.0,
+            "gross_booking": 0.0,
+        },
+    )
+    if "is_completed" not in trips.columns:
+        trips["is_completed"] = trips["trip_status"].eq("completed")
+    if "is_cancelled" not in trips.columns:
+        trips["is_cancelled"] = ~trips["is_completed"]
+    if "is_promo_trip" not in trips.columns:
+        trips["is_promo_trip"] = trips["promo_discount"] > 0
+    return trips
+
+
+def _lifecycle_month(frame: pd.DataFrame) -> pd.Series:
+    return (
+        (frame["order_created_at"].dt.year - frame["first_completed_trip_date"].dt.year) * 12
+        + (frame["order_created_at"].dt.month - frame["first_completed_trip_date"].dt.month)
+    )
+
+
+def _observation_date_from_trips(trips_df: pd.DataFrame) -> pd.Timestamp:
+    if trips_df.empty:
+        return pd.Timestamp.today().normalize()
+    return pd.Timestamp(trips_df["order_created_at"].max()).normalize()
+
+
+def build_cohort_user_base(users_df: pd.DataFrame, trips_df: pd.DataFrame, touches_df: pd.DataFrame) -> pd.DataFrame:
+    del touches_df  # explicitly kept for interface extensibility
+    users = _resolve_user_columns(users_df)
+    trips = _resolve_trip_columns(trips_df)
+
+    activated_users = users.loc[users["first_completed_trip_date"].notna()].copy()
+    if activated_users.empty:
+        return pd.DataFrame()
+
+    activated_users["cohort_month_period"] = activated_users["first_completed_trip_date"].dt.to_period("M")
+    activated_users["cohort_month"] = activated_users["cohort_month_period"].astype("string")
+    activated_users["cohort_label"] = activated_users["cohort_month"]
+    activated_users["activation_month"] = activated_users["first_completed_trip_date"].dt.to_period("M").astype("string")
+
+    observation_date = _observation_date_from_trips(trips)
+    observation_period = observation_date.to_period("M")
+    activated_users["maturity_months"] = (
+        (observation_period.year - activated_users["cohort_month_period"].dt.year) * 12
+        + (observation_period.month - activated_users["cohort_month_period"].dt.month)
+    ).clip(lower=0)
+    cohort_sizes = activated_users.groupby("cohort_month")["user_id"].nunique().rename("cohort_size")
+    activated_users = activated_users.merge(cohort_sizes, on="cohort_month", how="left")
+
+    user_trips = trips.merge(
+        activated_users[["user_id", "first_completed_trip_date"]],
+        on="user_id",
+        how="inner",
+    )
+    user_trips["months_since_first_trip"] = _lifecycle_month(user_trips)
+    user_trips = user_trips.loc[user_trips["months_since_first_trip"] >= 0].copy()
+    user_trips["days_since_first_trip"] = (
+        user_trips["order_created_at"].dt.normalize() - user_trips["first_completed_trip_date"].dt.normalize()
+    ).dt.days
+
+    agg_orders = user_trips.groupby("user_id").agg(
+        created_orders_count=("trip_id", "count"),
+        completed_orders_count=("is_completed", "sum"),
+        cancelled_orders_count=("is_cancelled", "sum"),
+    )
+    agg_orders["cancellation_rate"] = np.where(
+        agg_orders["created_orders_count"] > 0,
+        agg_orders["cancelled_orders_count"] / agg_orders["created_orders_count"],
+        0.0,
+    )
+
+    completed = user_trips.loc[user_trips["is_completed"]].copy()
+    promo_share = completed.groupby("user_id").agg(
+        promo_trip_share=("is_promo_trip", "mean"),
+        refund_trip_share=("refund_amount", lambda s: float((s > 0).mean())),
+    )
+    rides_last_30 = completed.loc[completed["order_created_at"] >= observation_date - pd.Timedelta(days=30)].groupby("user_id").size().rename("rides_last_30d")
+    rides_last_90 = completed.loc[completed["order_created_at"] >= observation_date - pd.Timedelta(days=90)].groupby("user_id").size().rename("rides_last_90d")
+
+    ltv_parts = {}
+    for horizon in (30, 90, 180, 365):
+        cutoff = completed.loc[completed["days_since_first_trip"].between(0, horizon, inclusive="both")]
+        ltv_parts[f"ltv_{horizon}d"] = cutoff.groupby("user_id")["contribution_margin"].sum()
+    ltv_df = pd.DataFrame(ltv_parts).fillna(0.0)
+
+    month_flags = {}
+    max_horizon = min(COHORT_MAX_HORIZON, int(user_trips["months_since_first_trip"].max()) if not user_trips.empty else 0)
+    for month in range(max_horizon + 1):
+        active = (
+            user_trips.loc[(user_trips["is_completed"]) & (user_trips["months_since_first_trip"] == month)]
+            .groupby("user_id")
+            .size()
+            .rename(f"is_active_month_{month}")
+            .gt(0)
+            .astype(int)
+        )
+        month_flags[f"is_active_month_{month}"] = active
+    flags_df = pd.DataFrame(month_flags).fillna(0).astype(int) if month_flags else pd.DataFrame(index=activated_users["user_id"])
+
+    result = activated_users[
+        [
+            "user_id",
+            "cohort_month",
+            "cohort_label",
+            "cohort_size",
+            "first_completed_trip_date",
+            "activation_month",
+            "city",
+            "acquisition_channel",
+            "activation_type",
+            "preferred_tariff",
+            "maturity_months",
+        ]
+    ].copy()
+    for frame in (agg_orders, promo_share, rides_last_30, rides_last_90, ltv_df, flags_df):
+        result = result.merge(frame, on="user_id", how="left")
+
+    fill_zero_columns = [
+        "created_orders_count",
+        "completed_orders_count",
+        "cancelled_orders_count",
+        "cancellation_rate",
+        "promo_trip_share",
+        "refund_trip_share",
+        "rides_last_30d",
+        "rides_last_90d",
+        "ltv_30d",
+        "ltv_90d",
+        "ltv_180d",
+        "ltv_365d",
+    ] + [col for col in result.columns if col.startswith("is_active_month_")]
+    for col in fill_zero_columns:
+        if col in result.columns:
+            result[col] = result[col].fillna(0)
+
+    result["months_since_first_trip"] = result["maturity_months"]
+    return result
+
+
+def get_cohort_summary(cohort_user_base: pd.DataFrame) -> pd.DataFrame:
+    if cohort_user_base.empty:
+        return pd.DataFrame(columns=["cohort_month", "cohort_size"])
+    summary = (
+        cohort_user_base.groupby("cohort_month", as_index=False)
+        .agg(
+            cohort_size=("user_id", "nunique"),
+            avg_ltv_30d=("ltv_30d", "mean"),
+            avg_ltv_90d=("ltv_90d", "mean"),
+            avg_ltv_180d=("ltv_180d", "mean"),
+            avg_margin_per_completed_order=("ltv_365d", "sum"),
+            activation_rate=("user_id", "size"),
+            avg_cancellation_rate=("cancellation_rate", "mean"),
+            avg_promo_trip_share=("promo_trip_share", "mean"),
+            avg_completed_orders_90d=("rides_last_90d", "mean"),
+            avg_created_orders_90d=("created_orders_count", "mean"),
+            maturity_months=("maturity_months", "max"),
+        )
+        .sort_values("cohort_month")
+    )
+    summary["activation_rate"] = 1.0
+    summary["avg_margin_per_completed_order"] = np.where(
+        summary["avg_completed_orders_90d"] > 0,
+        summary["avg_ltv_180d"] / summary["avg_completed_orders_90d"].clip(lower=1e-9),
+        0.0,
+    )
+    for month in (1, 3, 6):
+        col = f"is_active_month_{month}"
+        summary[f"retention_m{month}"] = (
+            cohort_user_base.groupby("cohort_month")[col].mean().reindex(summary["cohort_month"]).fillna(np.nan).values
+            if col in cohort_user_base.columns
+            else np.nan
+        )
+    return summary
+
+
+def get_cohort_maturity_table(cohort_user_base: pd.DataFrame, max_date: pd.Timestamp) -> pd.DataFrame:
+    if cohort_user_base.empty:
+        return pd.DataFrame(columns=["cohort_month", "cohort_size", "maturity_months"])
+    max_period = pd.Timestamp(max_date).to_period("M")
+    maturity = (
+        cohort_user_base.groupby("cohort_month")["user_id"].nunique().rename("cohort_size").to_frame()
+    )
+    periods = pd.PeriodIndex(maturity.index, freq="M")
+    maturity["maturity_months"] = (
+        (max_period.year - periods.year) * 12 + (max_period.month - periods.month)
+    ).clip(lower=0)
+    return maturity.reset_index().sort_values("cohort_month")
+
+
+def _build_metric_matrix(
+    cohort_user_base: pd.DataFrame,
+    trips_df: pd.DataFrame,
+    metric: str,
+    max_horizon: int = COHORT_MAX_HORIZON,
+) -> pd.DataFrame:
+    if cohort_user_base.empty:
+        return pd.DataFrame()
+    trips = _resolve_trip_columns(trips_df)
+    if "first_completed_trip_date" not in cohort_user_base.columns:
+        return pd.DataFrame()
+    merged = trips.merge(
+        cohort_user_base[["user_id", "cohort_month", "first_completed_trip_date"]],
+        on="user_id",
+        how="inner",
+    )
+    merged["month_index"] = _lifecycle_month(merged)
+    merged = merged.loc[merged["month_index"].between(0, max_horizon)].copy()
+    cohort_size = cohort_user_base.groupby("cohort_month")["user_id"].nunique()
+
+    if metric == "retention":
+        base = (
+            merged.loc[merged["is_completed"]]
+            .groupby(["cohort_month", "month_index"])["user_id"]
+            .nunique()
+            .div(cohort_size, level=0)
+        )
+    elif metric == "cum_ltv":
+        base = (
+            merged.loc[merged["is_completed"]]
+            .groupby(["cohort_month", "month_index"])["contribution_margin"]
+            .sum()
+            .div(cohort_size, level=0)
+        ).groupby(level=0).cumsum()
+    elif metric == "cum_margin":
+        base = (
+            merged.loc[merged["is_completed"]]
+            .groupby(["cohort_month", "month_index"])["contribution_margin"]
+            .sum()
+            .div(cohort_size, level=0)
+        ).groupby(level=0).cumsum()
+    elif metric == "cancellation":
+        created = merged.groupby(["cohort_month", "month_index"])["trip_id"].count()
+        cancelled = merged.groupby(["cohort_month", "month_index"])["is_cancelled"].sum()
+        base = (cancelled / created.replace({0: np.nan}))
+    elif metric == "promo_share":
+        completed = merged.loc[merged["is_completed"]]
+        denom = completed.groupby(["cohort_month", "month_index"])["trip_id"].count()
+        num = completed.groupby(["cohort_month", "month_index"])["is_promo_trip"].sum()
+        base = (num / denom.replace({0: np.nan}))
+    elif metric == "rides_per_user":
+        base = (
+            merged.loc[merged["is_completed"]]
+            .groupby(["cohort_month", "month_index"])["trip_id"]
+            .count()
+            .div(cohort_size, level=0)
+        ).groupby(level=0).cumsum()
+    else:
+        raise ValueError(f"Unknown metric mode: {metric}")
+
+    matrix = base.unstack("month_index").sort_index()
+    maturity = cohort_user_base.groupby("cohort_month")["maturity_months"].max()
+    for month in matrix.columns:
+        matrix.loc[maturity < month, month] = np.nan
+    matrix.columns = [f"M{int(c)}" for c in matrix.columns]
+    return matrix
+
+
+def build_retention_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="retention")
+
+
+def build_cumulative_ltv_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="cum_ltv")
+
+
+def build_cumulative_margin_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="cum_margin")
+
+
+def build_cancellation_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="cancellation")
+
+
+def build_promo_share_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="promo_share")
+
+
+def build_rides_per_user_matrix(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame) -> pd.DataFrame:
+    return _build_metric_matrix(cohort_user_base, trips_df, metric="rides_per_user")
+
+
+def build_cohort_size_matrix(cohort_summary: pd.DataFrame) -> pd.DataFrame:
+    if cohort_summary.empty:
+        return pd.DataFrame()
+    size_matrix = cohort_summary.set_index("cohort_month")[["cohort_size"]]
+    size_matrix.columns = ["M0"]
+    return size_matrix
+
+
+def get_selected_cohort_profile(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame, cohort_month: str) -> dict:
+    summary = get_cohort_summary(cohort_user_base)
+    row = summary.loc[summary["cohort_month"] == cohort_month]
+    if row.empty:
+        return {}
+    profile = row.iloc[0].to_dict()
+    selected_users = cohort_user_base.loc[cohort_user_base["cohort_month"] == cohort_month]
+    profile["cohort_month"] = cohort_month
+    profile["rides_per_user_90d"] = float(selected_users["rides_last_90d"].mean()) if len(selected_users) else 0.0
+    profile["trips_df_rows"] = len(trips_df.loc[trips_df["user_id"].isin(selected_users["user_id"])]) if len(selected_users) else 0
+    return profile
+
+
+def get_selected_cohort_curves(cohort_user_base: pd.DataFrame, trips_df: pd.DataFrame, cohort_month: str) -> dict:
+    matrices = {
+        "retention": build_retention_matrix(cohort_user_base, trips_df),
+        "ltv": build_cumulative_ltv_matrix(cohort_user_base, trips_df),
+        "margin": build_cumulative_margin_matrix(cohort_user_base, trips_df),
+        "rides": build_rides_per_user_matrix(cohort_user_base, trips_df),
+    }
+    curves = {}
+    for key, matrix in matrices.items():
+        if matrix.empty or cohort_month not in matrix.index:
+            curves[key] = pd.DataFrame(columns=["month_index", "selected", "baseline"])
+            continue
+        baseline = matrix.median(axis=0, skipna=True)
+        selected = matrix.loc[cohort_month]
+        curves[key] = pd.DataFrame(
+            {
+                "month_index": [int(col.replace("M", "")) for col in selected.index],
+                "selected": selected.values,
+                "baseline": baseline.values,
+            }
+        )
+    return curves
+
+
+def compare_cohort_to_baseline(
+    cohort_summary: pd.DataFrame,
+    selected_cohort: str,
+    baseline_mode: str = "median",
+) -> pd.DataFrame:
+    if cohort_summary.empty or selected_cohort not in set(cohort_summary["cohort_month"]):
+        return pd.DataFrame(columns=["metric", "selected", "baseline", "delta"])
+    metric_map = {
+        "Размер": "cohort_size",
+        "Зрелость": "maturity_months",
+        "Retention M1": "retention_m1",
+        "Retention M3": "retention_m3",
+        "Retention M6": "retention_m6",
+        "LTV 30д": "avg_ltv_30d",
+        "LTV 90д": "avg_ltv_90d",
+        "LTV 180д": "avg_ltv_180d",
+        "Средняя маржа поездки": "avg_margin_per_completed_order",
+        "Доля отмен": "avg_cancellation_rate",
+        "Доля промо": "avg_promo_trip_share",
+        "Поездки на пользователя 90д": "avg_completed_orders_90d",
+    }
+    selected_row = cohort_summary.loc[cohort_summary["cohort_month"] == selected_cohort].iloc[0]
+    baseline_row = cohort_summary.median(numeric_only=True) if baseline_mode == "median" else cohort_summary.mean(numeric_only=True)
+    rows = []
+    for label, col in metric_map.items():
+        sel = float(selected_row[col]) if col in selected_row and pd.notna(selected_row[col]) else np.nan
+        base = float(baseline_row[col]) if col in baseline_row and pd.notna(baseline_row[col]) else np.nan
+        rows.append({"metric": label, "selected": sel, "baseline": base, "delta": sel - base})
+    return pd.DataFrame(rows)
+
+
+def generate_cohort_diagnostics(selected_profile: dict, baseline_profile: dict) -> list[str]:
+    notes: list[str] = []
+    if not selected_profile or not baseline_profile:
+        return ["Недостаточно данных для диагностики: выберите когорту с достаточной зрелостью и размером."]
+
+    if selected_profile.get("retention_m1", np.nan) > baseline_profile.get("retention_m1", np.nan) and selected_profile.get("avg_ltv_180d", np.nan) < baseline_profile.get("avg_ltv_180d", np.nan):
+        notes.append("Retention M1 выше медианы, но LTV 180д ниже — это может указывать на лучшее удержание при более слабой монетизации.")
+    if selected_profile.get("avg_ltv_180d", np.nan) > baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("avg_promo_trip_share", np.nan) > baseline_profile.get("avg_promo_trip_share", np.nan):
+        notes.append("Когорта даёт высокий LTV, но с повышенной долей промо-поездок — может быть связано с ценой такого роста и требует проверки юнит-экономики.")
+    if selected_profile.get("avg_cancellation_rate", np.nan) > baseline_profile.get("avg_cancellation_rate", np.nan):
+        notes.append("Доля отмен выше эталона — это может указывать на операционные ограничения или нестабильный клиентский опыт в этом срезе.")
+    if selected_profile.get("retention_m1", np.nan) < baseline_profile.get("retention_m1", np.nan) and selected_profile.get("avg_completed_orders_90d", np.nan) < baseline_profile.get("avg_completed_orders_90d", np.nan):
+        notes.append("Слабость проявляется уже в раннем цикле: ниже retention M1 и ниже поездок на пользователя за 90 дней.")
+    if selected_profile.get("cohort_size", 0) < baseline_profile.get("cohort_size", 0):
+        notes.append("Размер когорты ниже медианы, поэтому выводы по отклонениям стоит интерпретировать осторожно из-за более высокой волатильности.")
+    return notes[:5] if notes else ["Когорта близка к медианному эталону по ключевым метрикам; заметных диагностических отклонений не выявлено."]
 
 
 def build_segment_table(user_mart: pd.DataFrame) -> pd.DataFrame:
