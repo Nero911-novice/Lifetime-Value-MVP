@@ -1,7 +1,6 @@
 
 from __future__ import annotations
 
-from typing import Iterable
 import streamlit as st
 
 from .annotations import ITEM_HELP, SCREEN_HELP
@@ -41,6 +40,12 @@ def format_currency(value: float | int | None, digits: int = 0) -> str:
     if value is None:
         return "—"
     return f"{format_number(float(value), digits)} ₽"
+
+
+def format_percent(value: float | int | None, digits: int = 1) -> str:
+    if value is None:
+        return "—"
+    return f"{float(value):.{digits}%}".replace(".", ",")
 
 
 def info_caption(text: str) -> None:
