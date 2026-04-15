@@ -1,0 +1,1161 @@
+campaign_id,campaign_name,campaign_type,touch_channel,start_ts,end_ts,target_segment_demo,touch_count,conversions,conversion_rate_7d,budget_demo
+DIS_001,Discount / Email / DIS_001,Discount,Email,2024-03-24,2026-03-27,Смешанный сегмент,16,0,0.0,198.94
+DIS_001,Discount / In-App / DIS_001,Discount,In-App,2024-06-01,2026-03-27,Смешанный сегмент,14,1,0.0714,298.95
+DIS_001,Discount / Push / DIS_001,Discount,Push,2024-09-30,2026-03-20,Смешанный сегмент,33,1,0.0303,522.63
+DIS_001,Discount / Retargeting / DIS_001,Discount,Retargeting,2024-12-09,2026-03-01,Смешанный сегмент,8,0,0.0,177.9
+DIS_001,Discount / SMS / DIS_001,Discount,SMS,2025-01-25,2026-02-23,Смешанный сегмент,9,0,0.0,132.13
+DIS_002,Discount / SMS / DIS_002,Discount,SMS,2025-08-23,2026-03-10,Смешанный сегмент,5,2,0.4,79.37
+DIS_002,Discount / Push / DIS_002,Discount,Push,2024-02-18,2026-03-28,Смешанный сегмент,31,1,0.0323,477.79
+DIS_002,Discount / Retargeting / DIS_002,Discount,Retargeting,2025-04-24,2025-11-22,Смешанный сегмент,4,0,0.0,86.1
+DIS_002,Discount / Email / DIS_002,Discount,Email,2025-02-05,2026-03-31,Смешанный сегмент,19,0,0.0,285.06
+DIS_002,Discount / In-App / DIS_002,Discount,In-App,2024-10-17,2026-03-24,Смешанный сегмент,16,1,0.0625,255.12
+DIS_003,Discount / Email / DIS_003,Discount,Email,2024-01-31,2026-02-26,Смешанный сегмент,17,0,0.0,340.94
+DIS_003,Discount / In-App / DIS_003,Discount,In-App,2024-10-25,2026-03-30,Смешанный сегмент,18,0,0.0,313.62
+DIS_003,Discount / Push / DIS_003,Discount,Push,2024-12-07,2026-03-31,Смешанный сегмент,21,0,0.0,356.44
+DIS_003,Discount / Retargeting / DIS_003,Discount,Retargeting,2024-06-07,2026-03-10,Смешанный сегмент,9,0,0.0,144.71
+DIS_003,Discount / SMS / DIS_003,Discount,SMS,2024-12-18,2026-03-30,Смешанный сегмент,10,0,0.0,156.03
+DIS_004,Discount / SMS / DIS_004,Discount,SMS,2024-08-15,2026-03-17,Смешанный сегмент,13,2,0.1538,222.48
+DIS_004,Discount / Push / DIS_004,Discount,Push,2024-02-25,2026-03-29,Смешанный сегмент,28,0,0.0,436.64
+DIS_004,Discount / Retargeting / DIS_004,Discount,Retargeting,2024-11-19,2026-03-29,Смешанный сегмент,13,0,0.0,190.94
+DIS_004,Discount / Email / DIS_004,Discount,Email,2024-07-18,2026-03-31,Смешанный сегмент,20,0,0.0,397.37
+DIS_004,Discount / In-App / DIS_004,Discount,In-App,2024-04-28,2026-03-29,Смешанный сегмент,10,2,0.2,169.99
+DIS_005,Discount / Email / DIS_005,Discount,Email,2024-07-25,2026-03-27,Смешанный сегмент,12,1,0.0833,187.65
+DIS_005,Discount / In-App / DIS_005,Discount,In-App,2024-12-08,2026-01-18,Смешанный сегмент,9,0,0.0,155.9
+DIS_005,Discount / Push / DIS_005,Discount,Push,2024-06-29,2026-03-27,Смешанный сегмент,25,0,0.0,404.73
+DIS_005,Discount / Retargeting / DIS_005,Discount,Retargeting,2024-09-05,2026-03-30,Смешанный сегмент,10,0,0.0,123.34
+DIS_005,Discount / SMS / DIS_005,Discount,SMS,2025-02-26,2026-03-30,Смешанный сегмент,8,0,0.0,152.0
+DIS_006,Discount / Push / DIS_006,Discount,Push,2024-07-15,2026-03-29,Смешанный сегмент,24,0,0.0,376.34
+DIS_006,Discount / SMS / DIS_006,Discount,SMS,2024-08-10,2026-01-09,Смешанный сегмент,5,0,0.0,42.63
+DIS_006,Discount / Retargeting / DIS_006,Discount,Retargeting,2024-02-18,2026-03-30,Смешанный сегмент,11,0,0.0,160.73
+DIS_006,Discount / In-App / DIS_006,Discount,In-App,2025-02-09,2026-03-20,Смешанный сегмент,16,1,0.0625,266.55
+DIS_006,Discount / Email / DIS_006,Discount,Email,2024-08-30,2026-03-24,Смешанный сегмент,13,0,0.0,208.03
+DIS_007,Discount / Email / DIS_007,Discount,Email,2024-09-03,2026-03-25,Смешанный сегмент,17,0,0.0,323.32
+DIS_007,Discount / In-App / DIS_007,Discount,In-App,2024-06-05,2026-03-28,Смешанный сегмент,17,0,0.0,267.48
+DIS_007,Discount / Push / DIS_007,Discount,Push,2024-09-17,2026-03-28,Смешанный сегмент,31,2,0.0645,468.27
+DIS_007,Discount / Retargeting / DIS_007,Discount,Retargeting,2024-05-17,2026-03-25,Смешанный сегмент,18,0,0.0,269.4
+DIS_007,Discount / SMS / DIS_007,Discount,SMS,2026-02-06,2026-02-06,Смешанный сегмент,1,0,0.0,3.28
+DIS_008,Discount / SMS / DIS_008,Discount,SMS,2024-04-14,2026-03-27,Смешанный сегмент,11,1,0.0909,159.17
+DIS_008,Discount / Retargeting / DIS_008,Discount,Retargeting,2024-02-28,2026-03-28,Смешанный сегмент,12,0,0.0,221.61
+DIS_008,Discount / Email / DIS_008,Discount,Email,2024-08-17,2026-03-31,Смешанный сегмент,13,1,0.0769,273.74
+DIS_008,Discount / In-App / DIS_008,Discount,In-App,2024-09-11,2026-03-18,Смешанный сегмент,12,0,0.0,223.31
+DIS_008,Discount / Push / DIS_008,Discount,Push,2024-11-04,2026-03-26,Смешанный сегмент,30,1,0.0333,456.37
+DIS_009,Discount / Email / DIS_009,Discount,Email,2024-08-12,2026-03-26,Смешанный сегмент,13,0,0.0,283.61
+DIS_009,Discount / In-App / DIS_009,Discount,In-App,2024-05-03,2026-03-10,Смешанный сегмент,10,1,0.1,129.77
+DIS_009,Discount / Push / DIS_009,Discount,Push,2024-09-12,2026-03-31,Смешанный сегмент,24,1,0.0417,396.69
+DIS_009,Discount / Retargeting / DIS_009,Discount,Retargeting,2024-04-08,2026-03-02,Смешанный сегмент,9,1,0.1111,168.89
+DIS_009,Discount / SMS / DIS_009,Discount,SMS,2024-11-25,2026-03-28,Смешанный сегмент,9,1,0.1111,167.39
+DIS_010,Discount / Email / DIS_010,Discount,Email,2024-12-06,2026-03-31,Смешанный сегмент,14,0,0.0,211.02
+DIS_010,Discount / In-App / DIS_010,Discount,In-App,2024-07-09,2026-03-30,Смешанный сегмент,16,1,0.0625,227.93
+DIS_010,Discount / Push / DIS_010,Discount,Push,2024-11-21,2026-03-28,Смешанный сегмент,11,1,0.0909,157.02
+DIS_010,Discount / Retargeting / DIS_010,Discount,Retargeting,2025-04-10,2026-02-12,Смешанный сегмент,4,0,0.0,69.84
+DIS_010,Discount / SMS / DIS_010,Discount,SMS,2025-10-21,2026-03-20,Смешанный сегмент,4,0,0.0,71.96
+DIS_011,Discount / Retargeting / DIS_011,Discount,Retargeting,2025-05-13,2026-02-22,Смешанный сегмент,8,0,0.0,103.89
+DIS_011,Discount / Push / DIS_011,Discount,Push,2024-10-17,2026-03-25,Смешанный сегмент,18,1,0.0556,286.71
+DIS_011,Discount / SMS / DIS_011,Discount,SMS,2024-07-02,2026-02-13,Смешанный сегмент,12,0,0.0,147.23
+DIS_011,Discount / Email / DIS_011,Discount,Email,2024-09-21,2026-03-25,Смешанный сегмент,18,0,0.0,299.19
+DIS_011,Discount / In-App / DIS_011,Discount,In-App,2024-11-12,2026-03-17,Смешанный сегмент,15,0,0.0,224.68
+DIS_012,Discount / Email / DIS_012,Discount,Email,2024-05-29,2026-03-22,Смешанный сегмент,15,0,0.0,259.24
+DIS_012,Discount / In-App / DIS_012,Discount,In-App,2024-07-30,2026-03-30,Смешанный сегмент,18,0,0.0,271.9
+DIS_012,Discount / Push / DIS_012,Discount,Push,2024-04-13,2026-03-28,Смешанный сегмент,24,0,0.0,402.75
+DIS_012,Discount / Retargeting / DIS_012,Discount,Retargeting,2025-04-25,2026-03-27,Смешанный сегмент,9,0,0.0,140.43
+DIS_012,Discount / SMS / DIS_012,Discount,SMS,2024-12-23,2026-01-19,Смешанный сегмент,4,0,0.0,68.66
+DIS_013,Discount / SMS / DIS_013,Discount,SMS,2024-08-08,2026-03-30,Смешанный сегмент,9,0,0.0,155.52
+DIS_013,Discount / Retargeting / DIS_013,Discount,Retargeting,2025-12-31,2026-03-03,Смешанный сегмент,6,0,0.0,70.25
+DIS_013,Discount / Push / DIS_013,Discount,Push,2024-07-16,2026-03-29,Смешанный сегмент,37,0,0.0,632.73
+DIS_013,Discount / Email / DIS_013,Discount,Email,2024-10-14,2026-03-29,Смешанный сегмент,16,0,0.0,276.05
+DIS_013,Discount / In-App / DIS_013,Discount,In-App,2024-05-13,2026-02-15,Смешанный сегмент,12,0,0.0,183.83
+DIS_014,Discount / Email / DIS_014,Discount,Email,2025-04-03,2026-03-26,Смешанный сегмент,14,0,0.0,253.45
+DIS_014,Discount / In-App / DIS_014,Discount,In-App,2024-09-03,2026-03-19,Смешанный сегмент,12,1,0.0833,206.05
+DIS_014,Discount / Push / DIS_014,Discount,Push,2024-01-19,2026-03-26,Смешанный сегмент,27,0,0.0,438.39
+DIS_014,Discount / Retargeting / DIS_014,Discount,Retargeting,2025-01-01,2026-01-27,Смешанный сегмент,9,1,0.1111,127.32
+DIS_014,Discount / SMS / DIS_014,Discount,SMS,2024-06-13,2026-03-05,Смешанный сегмент,7,1,0.1429,107.95
+DIS_015,Discount / SMS / DIS_015,Discount,SMS,2024-06-10,2026-03-31,Смешанный сегмент,9,0,0.0,203.33
+DIS_015,Discount / Retargeting / DIS_015,Discount,Retargeting,2024-12-02,2026-03-15,Смешанный сегмент,8,0,0.0,152.06
+DIS_015,Discount / Email / DIS_015,Discount,Email,2024-09-19,2026-01-01,Смешанный сегмент,11,1,0.0909,160.17
+DIS_015,Discount / In-App / DIS_015,Discount,In-App,2024-08-11,2026-02-15,Смешанный сегмент,16,0,0.0,297.85
+DIS_015,Discount / Push / DIS_015,Discount,Push,2024-06-06,2026-03-31,Смешанный сегмент,34,0,0.0,494.97
+DIS_016,Discount / Email / DIS_016,Discount,Email,2024-09-17,2026-03-29,Смешанный сегмент,15,0,0.0,273.06
+DIS_016,Discount / In-App / DIS_016,Discount,In-App,2025-06-22,2026-03-30,Смешанный сегмент,13,0,0.0,256.33
+DIS_016,Discount / Push / DIS_016,Discount,Push,2024-06-16,2026-03-20,Смешанный сегмент,27,0,0.0,407.7
+DIS_016,Discount / Retargeting / DIS_016,Discount,Retargeting,2025-06-16,2026-03-28,Смешанный сегмент,10,1,0.1,122.64
+DIS_016,Discount / SMS / DIS_016,Discount,SMS,2024-01-20,2026-03-25,Смешанный сегмент,6,0,0.0,86.99
+DIS_017,Discount / Email / DIS_017,Discount,Email,2024-08-25,2026-02-18,Смешанный сегмент,10,1,0.1,143.95
+DIS_017,Discount / In-App / DIS_017,Discount,In-App,2025-01-28,2026-02-18,Смешанный сегмент,6,0,0.0,96.96
+DIS_017,Discount / Push / DIS_017,Discount,Push,2024-10-19,2026-03-30,Смешанный сегмент,34,1,0.0294,623.62
+DIS_017,Discount / Retargeting / DIS_017,Discount,Retargeting,2025-05-04,2026-02-19,Смешанный сегмент,5,0,0.0,46.15
+DIS_017,Discount / SMS / DIS_017,Discount,SMS,2025-09-18,2026-02-12,Смешанный сегмент,4,1,0.25,79.68
+DIS_018,Discount / Retargeting / DIS_018,Discount,Retargeting,2025-06-29,2026-03-14,Смешанный сегмент,8,0,0.0,158.75
+DIS_018,Discount / Push / DIS_018,Discount,Push,2024-02-09,2026-03-28,Смешанный сегмент,32,0,0.0,503.49
+DIS_018,Discount / SMS / DIS_018,Discount,SMS,2024-06-10,2026-01-08,Смешанный сегмент,8,0,0.0,109.29
+DIS_018,Discount / Email / DIS_018,Discount,Email,2024-02-09,2026-03-25,Смешанный сегмент,20,0,0.0,349.06
+DIS_018,Discount / In-App / DIS_018,Discount,In-App,2024-05-15,2026-03-31,Смешанный сегмент,14,1,0.0714,229.61
+DIS_019,Discount / SMS / DIS_019,Discount,SMS,2024-05-20,2026-03-19,Смешанный сегмент,12,2,0.1667,256.58
+DIS_019,Discount / Retargeting / DIS_019,Discount,Retargeting,2024-12-02,2026-03-29,Смешанный сегмент,10,2,0.2,199.38
+DIS_019,Discount / Email / DIS_019,Discount,Email,2024-09-12,2026-03-25,Смешанный сегмент,11,0,0.0,173.83
+DIS_019,Discount / In-App / DIS_019,Discount,In-App,2024-04-24,2026-03-17,Смешанный сегмент,17,1,0.0588,289.48
+DIS_019,Discount / Push / DIS_019,Discount,Push,2024-08-04,2026-03-23,Смешанный сегмент,23,2,0.087,359.24
+DIS_020,Discount / Email / DIS_020,Discount,Email,2024-07-22,2026-03-02,Смешанный сегмент,16,0,0.0,309.31
+DIS_020,Discount / In-App / DIS_020,Discount,In-App,2024-08-25,2026-03-18,Смешанный сегмент,19,2,0.1053,322.32
+DIS_020,Discount / Retargeting / DIS_020,Discount,Retargeting,2025-05-01,2026-03-26,Смешанный сегмент,6,0,0.0,129.41
+DIS_020,Discount / SMS / DIS_020,Discount,SMS,2025-01-24,2026-03-18,Смешанный сегмент,8,0,0.0,146.94
+DIS_020,Discount / Push / DIS_020,Discount,Push,2024-04-11,2026-03-14,Смешанный сегмент,22,3,0.1364,395.74
+DIS_021,Discount / Email / DIS_021,Discount,Email,2024-07-27,2026-03-22,Смешанный сегмент,17,0,0.0,303.28
+DIS_021,Discount / In-App / DIS_021,Discount,In-App,2024-09-18,2026-03-27,Смешанный сегмент,13,1,0.0769,220.18
+DIS_021,Discount / Push / DIS_021,Discount,Push,2024-07-12,2026-03-22,Смешанный сегмент,32,0,0.0,486.84
+DIS_021,Discount / Retargeting / DIS_021,Discount,Retargeting,2025-02-23,2026-03-21,Смешанный сегмент,10,1,0.1,174.77
+DIS_021,Discount / SMS / DIS_021,Discount,SMS,2025-03-27,2026-03-31,Смешанный сегмент,6,0,0.0,118.44
+DIS_022,Discount / SMS / DIS_022,Discount,SMS,2024-11-28,2026-03-29,Смешанный сегмент,13,3,0.2308,251.37
+DIS_022,Discount / Retargeting / DIS_022,Discount,Retargeting,2024-04-29,2026-03-21,Смешанный сегмент,5,0,0.0,86.78
+DIS_022,Discount / Push / DIS_022,Discount,Push,2024-06-07,2026-03-26,Смешанный сегмент,28,1,0.0357,436.21
+DIS_022,Discount / Email / DIS_022,Discount,Email,2024-02-12,2026-03-23,Смешанный сегмент,16,2,0.125,290.31
+DIS_022,Discount / In-App / DIS_022,Discount,In-App,2024-07-07,2026-03-08,Смешанный сегмент,17,1,0.0588,261.04
+DIS_023,Discount / Email / DIS_023,Discount,Email,2024-07-20,2026-03-13,Смешанный сегмент,15,0,0.0,276.17
+DIS_023,Discount / In-App / DIS_023,Discount,In-App,2024-07-30,2026-03-27,Смешанный сегмент,11,2,0.1818,185.65
+DIS_023,Discount / Push / DIS_023,Discount,Push,2024-05-16,2026-03-31,Смешанный сегмент,36,1,0.0278,594.31
+DIS_023,Discount / Retargeting / DIS_023,Discount,Retargeting,2024-09-12,2026-02-25,Смешанный сегмент,5,0,0.0,93.64
+DIS_023,Discount / SMS / DIS_023,Discount,SMS,2024-07-12,2026-01-07,Смешанный сегмент,7,0,0.0,138.02
+DIS_024,Discount / Email / DIS_024,Discount,Email,2024-03-02,2026-03-30,Смешанный сегмент,14,0,0.0,215.27
+DIS_024,Discount / In-App / DIS_024,Discount,In-App,2024-11-11,2026-03-06,Смешанный сегмент,16,0,0.0,244.12
+DIS_024,Discount / Push / DIS_024,Discount,Push,2024-12-27,2026-03-31,Смешанный сегмент,31,0,0.0,525.65
+DIS_024,Discount / Retargeting / DIS_024,Discount,Retargeting,2025-05-01,2026-03-27,Смешанный сегмент,6,1,0.1667,75.16
+DIS_024,Discount / SMS / DIS_024,Discount,SMS,2024-09-07,2026-03-28,Смешанный сегмент,8,0,0.0,141.4
+DIS_025,Discount / Retargeting / DIS_025,Discount,Retargeting,2025-04-15,2026-03-22,Смешанный сегмент,13,0,0.0,183.77
+DIS_025,Discount / Push / DIS_025,Discount,Push,2024-11-09,2026-03-15,Смешанный сегмент,19,0,0.0,334.94
+DIS_025,Discount / SMS / DIS_025,Discount,SMS,2024-10-07,2026-03-31,Смешанный сегмент,8,0,0.0,129.94
+DIS_025,Discount / Email / DIS_025,Discount,Email,2024-11-09,2026-03-11,Смешанный сегмент,12,1,0.0833,242.92
+DIS_025,Discount / In-App / DIS_025,Discount,In-App,2025-03-18,2026-03-23,Смешанный сегмент,4,0,0.0,75.62
+DIS_026,Discount / Email / DIS_026,Discount,Email,2024-03-06,2026-03-31,Смешанный сегмент,20,3,0.15,376.26
+DIS_026,Discount / In-App / DIS_026,Discount,In-App,2024-04-07,2026-03-26,Смешанный сегмент,15,0,0.0,222.68
+DIS_026,Discount / Push / DIS_026,Discount,Push,2024-01-26,2026-03-26,Смешанный сегмент,32,0,0.0,500.48
+DIS_026,Discount / Retargeting / DIS_026,Discount,Retargeting,2024-06-06,2026-03-30,Смешанный сегмент,9,0,0.0,151.38
+DIS_026,Discount / SMS / DIS_026,Discount,SMS,2024-10-16,2026-03-22,Смешанный сегмент,11,1,0.0909,151.37
+DIS_027,Discount / SMS / DIS_027,Discount,SMS,2024-10-16,2025-11-07,Смешанный сегмент,4,0,0.0,69.91
+DIS_027,Discount / Retargeting / DIS_027,Discount,Retargeting,2024-08-06,2026-01-11,Смешанный сегмент,8,0,0.0,189.63
+DIS_027,Discount / Push / DIS_027,Discount,Push,2024-06-01,2026-03-26,Смешанный сегмент,21,0,0.0,313.14
+DIS_027,Discount / Email / DIS_027,Discount,Email,2024-04-29,2026-03-29,Смешанный сегмент,19,0,0.0,322.1
+DIS_027,Discount / In-App / DIS_027,Discount,In-App,2024-02-13,2026-03-27,Смешанный сегмент,11,1,0.0909,183.95
+DIS_028,Discount / Email / DIS_028,Discount,Email,2024-10-26,2026-03-21,Смешанный сегмент,16,0,0.0,304.46
+DIS_028,Discount / In-App / DIS_028,Discount,In-App,2024-07-13,2026-03-26,Смешанный сегмент,11,0,0.0,189.71
+DIS_028,Discount / Push / DIS_028,Discount,Push,2024-09-15,2026-03-04,Смешанный сегмент,26,1,0.0385,430.92
+DIS_028,Discount / Retargeting / DIS_028,Discount,Retargeting,2024-08-01,2026-03-31,Смешанный сегмент,11,0,0.0,171.93
+DIS_028,Discount / SMS / DIS_028,Discount,SMS,2025-04-15,2026-03-23,Смешанный сегмент,9,0,0.0,180.71
+DIS_029,Discount / SMS / DIS_029,Discount,SMS,2025-06-05,2026-03-23,Смешанный сегмент,5,0,0.0,81.7
+DIS_029,Discount / Push / DIS_029,Discount,Push,2024-03-02,2026-03-26,Смешанный сегмент,27,0,0.0,461.15
+DIS_029,Discount / Retargeting / DIS_029,Discount,Retargeting,2024-12-07,2026-01-17,Смешанный сегмент,9,0,0.0,154.88
+DIS_029,Discount / In-App / DIS_029,Discount,In-App,2024-07-10,2026-03-31,Смешанный сегмент,20,1,0.05,356.72
+DIS_029,Discount / Email / DIS_029,Discount,Email,2024-04-19,2026-02-12,Смешанный сегмент,10,1,0.1,176.36
+DIS_030,Discount / Email / DIS_030,Discount,Email,2024-03-23,2026-01-25,Смешанный сегмент,7,0,0.0,138.42
+DIS_030,Discount / In-App / DIS_030,Discount,In-App,2025-09-16,2026-03-12,Смешанный сегмент,8,0,0.0,108.72
+DIS_030,Discount / Push / DIS_030,Discount,Push,2024-05-07,2026-03-30,Смешанный сегмент,32,0,0.0,568.96
+DIS_030,Discount / Retargeting / DIS_030,Discount,Retargeting,2024-07-12,2026-03-23,Смешанный сегмент,10,0,0.0,151.24
+DIS_030,Discount / SMS / DIS_030,Discount,SMS,2025-04-14,2026-02-05,Смешанный сегмент,7,1,0.1429,146.18
+DIS_031,Discount / SMS / DIS_031,Discount,SMS,2024-12-17,2026-03-28,Смешанный сегмент,12,0,0.0,242.21
+DIS_031,Discount / Retargeting / DIS_031,Discount,Retargeting,2024-10-05,2026-01-01,Смешанный сегмент,8,0,0.0,183.76
+DIS_031,Discount / Push / DIS_031,Discount,Push,2024-07-23,2026-03-29,Смешанный сегмент,28,3,0.1071,468.81
+DIS_031,Discount / In-App / DIS_031,Discount,In-App,2024-09-14,2026-02-25,Смешанный сегмент,9,1,0.1111,141.21
+DIS_031,Discount / Email / DIS_031,Discount,Email,2024-11-12,2026-03-19,Смешанный сегмент,20,0,0.0,241.77
+DIS_032,Discount / Email / DIS_032,Discount,Email,2024-08-06,2026-03-31,Смешанный сегмент,14,0,0.0,153.02
+DIS_032,Discount / In-App / DIS_032,Discount,In-App,2024-07-14,2026-03-29,Смешанный сегмент,19,0,0.0,284.73
+DIS_032,Discount / Push / DIS_032,Discount,Push,2024-12-02,2026-03-28,Смешанный сегмент,25,0,0.0,406.62
+DIS_032,Discount / Retargeting / DIS_032,Discount,Retargeting,2024-02-11,2026-03-14,Смешанный сегмент,12,0,0.0,193.42
+DIS_032,Discount / SMS / DIS_032,Discount,SMS,2024-08-05,2026-03-17,Смешанный сегмент,9,0,0.0,165.94
+DIS_033,Discount / SMS / DIS_033,Discount,SMS,2024-06-02,2026-03-31,Смешанный сегмент,11,2,0.1818,210.66
+DIS_033,Discount / Retargeting / DIS_033,Discount,Retargeting,2024-06-29,2026-02-22,Смешанный сегмент,8,0,0.0,152.3
+DIS_033,Discount / Email / DIS_033,Discount,Email,2024-08-25,2026-03-14,Смешанный сегмент,11,0,0.0,153.31
+DIS_033,Discount / In-App / DIS_033,Discount,In-App,2024-09-24,2026-02-27,Смешанный сегмент,7,0,0.0,113.93
+DIS_033,Discount / Push / DIS_033,Discount,Push,2024-04-18,2026-03-10,Смешанный сегмент,24,0,0.0,370.24
+DIS_034,Discount / Email / DIS_034,Discount,Email,2024-12-23,2026-03-31,Смешанный сегмент,17,0,0.0,265.82
+DIS_034,Discount / In-App / DIS_034,Discount,In-App,2024-08-09,2026-03-31,Смешанный сегмент,19,1,0.0526,215.2
+DIS_034,Discount / Push / DIS_034,Discount,Push,2024-07-23,2026-03-28,Смешанный сегмент,28,1,0.0357,378.79
+DIS_034,Discount / Retargeting / DIS_034,Discount,Retargeting,2024-11-21,2026-03-24,Смешанный сегмент,19,0,0.0,296.17
+DIS_034,Discount / SMS / DIS_034,Discount,SMS,2025-02-09,2026-03-31,Смешанный сегмент,10,0,0.0,224.19
+DIS_035,Discount / Email / DIS_035,Discount,Email,2024-08-26,2026-03-14,Смешанный сегмент,21,2,0.0952,426.88
+DIS_035,Discount / In-App / DIS_035,Discount,In-App,2024-07-14,2026-03-12,Смешанный сегмент,17,0,0.0,293.94
+DIS_035,Discount / Push / DIS_035,Discount,Push,2024-09-13,2026-03-30,Смешанный сегмент,25,2,0.08,409.2
+DIS_035,Discount / Retargeting / DIS_035,Discount,Retargeting,2024-09-02,2026-03-10,Смешанный сегмент,6,0,0.0,91.62
+DIS_035,Discount / SMS / DIS_035,Discount,SMS,2025-02-26,2026-03-22,Смешанный сегмент,11,1,0.0909,185.44
+DIS_036,Discount / Retargeting / DIS_036,Discount,Retargeting,2024-09-08,2026-02-02,Смешанный сегмент,5,0,0.0,78.46
+DIS_036,Discount / SMS / DIS_036,Discount,SMS,2025-02-25,2025-12-29,Смешанный сегмент,3,0,0.0,45.1
+DIS_036,Discount / Push / DIS_036,Discount,Push,2024-05-08,2026-03-09,Смешанный сегмент,26,3,0.1154,449.18
+DIS_036,Discount / In-App / DIS_036,Discount,In-App,2024-12-23,2026-03-31,Смешанный сегмент,14,0,0.0,226.05
+DIS_036,Discount / Email / DIS_036,Discount,Email,2024-08-25,2026-03-24,Смешанный сегмент,14,0,0.0,235.9
+DIS_037,Discount / Email / DIS_037,Discount,Email,2025-04-27,2026-03-21,Смешанный сегмент,16,1,0.0625,277.69
+DIS_037,Discount / In-App / DIS_037,Discount,In-App,2024-12-23,2026-03-18,Смешанный сегмент,18,1,0.0556,282.98
+DIS_037,Discount / Push / DIS_037,Discount,Push,2024-05-27,2026-03-12,Смешанный сегмент,24,1,0.0417,345.77
+DIS_037,Discount / Retargeting / DIS_037,Discount,Retargeting,2024-08-27,2026-03-22,Смешанный сегмент,9,0,0.0,159.09
+DIS_037,Discount / SMS / DIS_037,Discount,SMS,2024-04-21,2026-03-29,Смешанный сегмент,10,0,0.0,117.18
+DIS_038,Discount / Email / DIS_038,Discount,Email,2024-09-22,2026-02-13,Смешанный сегмент,10,0,0.0,176.57
+DIS_038,Discount / In-App / DIS_038,Discount,In-App,2024-06-15,2026-03-16,Смешанный сегмент,20,1,0.05,362.11
+DIS_038,Discount / Push / DIS_038,Discount,Push,2024-04-24,2026-03-28,Смешанный сегмент,29,2,0.069,502.13
+DIS_038,Discount / Retargeting / DIS_038,Discount,Retargeting,2024-04-11,2026-03-27,Смешанный сегмент,13,0,0.0,215.31
+DIS_038,Discount / SMS / DIS_038,Discount,SMS,2024-11-04,2026-03-14,Смешанный сегмент,12,0,0.0,149.49
+DIS_039,Discount / Retargeting / DIS_039,Discount,Retargeting,2024-07-11,2026-02-26,Смешанный сегмент,10,2,0.2,131.45
+DIS_039,Discount / Push / DIS_039,Discount,Push,2024-09-27,2026-03-29,Смешанный сегмент,42,0,0.0,680.81
+DIS_039,Discount / SMS / DIS_039,Discount,SMS,2024-12-10,2026-03-17,Смешанный сегмент,9,0,0.0,109.13
+DIS_039,Discount / Email / DIS_039,Discount,Email,2024-09-06,2026-03-23,Смешанный сегмент,11,1,0.0909,233.05
+DIS_039,Discount / In-App / DIS_039,Discount,In-App,2024-05-13,2026-02-28,Смешанный сегмент,12,1,0.0833,190.23
+REA_001,Reactivation / Email / REA_001,Reactivation,Email,2025-03-29,2026-02-02,Пользователи с риском оттока,10,1,0.1,151.94
+REA_001,Reactivation / In-App / REA_001,Reactivation,In-App,2024-09-11,2026-03-22,Пользователи с риском оттока,12,0,0.0,174.48
+REA_001,Reactivation / Push / REA_001,Reactivation,Push,2024-06-15,2026-03-17,Пользователи с риском оттока,17,1,0.0588,269.66
+REA_001,Reactivation / Retargeting / REA_001,Reactivation,Retargeting,2025-01-24,2026-01-15,Пользователи с риском оттока,8,0,0.0,164.89
+REA_001,Reactivation / SMS / REA_001,Reactivation,SMS,2025-09-09,2026-02-08,Пользователи с риском оттока,3,0,0.0,37.07
+REA_002,Reactivation / SMS / REA_002,Reactivation,SMS,2025-08-22,2026-01-20,Пользователи с риском оттока,4,0,0.0,50.3
+REA_002,Reactivation / Retargeting / REA_002,Reactivation,Retargeting,2024-11-10,2025-11-26,Пользователи с риском оттока,3,0,0.0,58.96
+REA_002,Reactivation / In-App / REA_002,Reactivation,In-App,2024-07-14,2026-02-10,Пользователи с риском оттока,9,0,0.0,159.43
+REA_002,Reactivation / Email / REA_002,Reactivation,Email,2024-04-13,2026-03-26,Пользователи с риском оттока,9,0,0.0,174.58
+REA_002,Reactivation / Push / REA_002,Reactivation,Push,2025-06-11,2026-03-01,Пользователи с риском оттока,10,0,0.0,164.68
+REA_003,Reactivation / Retargeting / REA_003,Reactivation,Retargeting,2025-05-19,2026-03-23,Пользователи с риском оттока,3,0,0.0,60.87
+REA_003,Reactivation / Email / REA_003,Reactivation,Email,2024-06-24,2026-03-26,Пользователи с риском оттока,5,0,0.0,109.07
+REA_003,Reactivation / In-App / REA_003,Reactivation,In-App,2024-12-28,2026-03-26,Пользователи с риском оттока,18,2,0.1111,240.74
+REA_003,Reactivation / Push / REA_003,Reactivation,Push,2024-06-03,2026-03-19,Пользователи с риском оттока,23,0,0.0,366.39
+REA_003,Reactivation / SMS / REA_003,Reactivation,SMS,2025-05-21,2026-03-23,Пользователи с риском оттока,6,0,0.0,100.03
+REA_004,Reactivation / SMS / REA_004,Reactivation,SMS,2024-10-08,2025-10-09,Пользователи с риском оттока,4,0,0.0,53.54
+REA_004,Reactivation / Push / REA_004,Reactivation,Push,2024-10-16,2026-03-29,Пользователи с риском оттока,21,0,0.0,330.57
+REA_004,Reactivation / Retargeting / REA_004,Reactivation,Retargeting,2025-01-20,2026-03-14,Пользователи с риском оттока,5,0,0.0,109.87
+REA_004,Reactivation / In-App / REA_004,Reactivation,In-App,2024-04-17,2025-12-15,Пользователи с риском оттока,10,0,0.0,169.65
+REA_004,Reactivation / Email / REA_004,Reactivation,Email,2024-12-08,2026-03-04,Пользователи с риском оттока,13,0,0.0,214.72
+REA_005,Reactivation / Email / REA_005,Reactivation,Email,2024-10-25,2025-12-06,Пользователи с риском оттока,9,0,0.0,100.76
+REA_005,Reactivation / In-App / REA_005,Reactivation,In-App,2024-12-14,2026-03-15,Пользователи с риском оттока,5,0,0.0,81.76
+REA_005,Reactivation / Push / REA_005,Reactivation,Push,2024-09-22,2026-03-16,Пользователи с риском оттока,18,1,0.0556,335.83
+REA_005,Reactivation / Retargeting / REA_005,Reactivation,Retargeting,2024-12-24,2026-02-28,Пользователи с риском оттока,4,2,0.5,54.89
+REA_005,Reactivation / SMS / REA_005,Reactivation,SMS,2024-09-06,2026-03-21,Пользователи с риском оттока,6,1,0.1667,66.94
+REA_006,Reactivation / Email / REA_006,Reactivation,Email,2025-08-17,2026-03-22,Пользователи с риском оттока,7,0,0.0,109.53
+REA_006,Reactivation / In-App / REA_006,Reactivation,In-App,2024-09-10,2025-12-10,Пользователи с риском оттока,13,0,0.0,216.31
+REA_006,Reactivation / Push / REA_006,Reactivation,Push,2024-05-19,2026-03-24,Пользователи с риском оттока,19,1,0.0526,298.81
+REA_006,Reactivation / Retargeting / REA_006,Reactivation,Retargeting,2025-02-13,2026-01-13,Пользователи с риском оттока,3,0,0.0,54.64
+REA_006,Reactivation / SMS / REA_006,Reactivation,SMS,2024-10-11,2026-01-04,Пользователи с риском оттока,8,0,0.0,111.28
+REA_007,Reactivation / Retargeting / REA_007,Reactivation,Retargeting,2025-06-01,2026-03-07,Пользователи с риском оттока,4,0,0.0,69.9
+REA_007,Reactivation / Push / REA_007,Reactivation,Push,2024-05-30,2026-03-20,Пользователи с риском оттока,16,1,0.0625,336.64
+REA_007,Reactivation / SMS / REA_007,Reactivation,SMS,2025-05-15,2026-03-19,Пользователи с риском оттока,2,0,0.0,18.35
+REA_007,Reactivation / Email / REA_007,Reactivation,Email,2024-08-08,2026-03-24,Пользователи с риском оттока,9,0,0.0,165.8
+REA_007,Reactivation / In-App / REA_007,Reactivation,In-App,2024-10-06,2026-03-28,Пользователи с риском оттока,10,0,0.0,225.04
+REA_008,Reactivation / Email / REA_008,Reactivation,Email,2025-01-18,2026-03-17,Пользователи с риском оттока,11,0,0.0,233.96
+REA_008,Reactivation / In-App / REA_008,Reactivation,In-App,2025-01-15,2026-03-11,Пользователи с риском оттока,8,1,0.125,128.17
+REA_008,Reactivation / Push / REA_008,Reactivation,Push,2024-08-14,2026-03-15,Пользователи с риском оттока,18,2,0.1111,344.26
+REA_008,Reactivation / Retargeting / REA_008,Reactivation,Retargeting,2025-01-17,2026-01-24,Пользователи с риском оттока,5,0,0.0,119.44
+REA_008,Reactivation / SMS / REA_008,Reactivation,SMS,2025-01-16,2025-11-01,Пользователи с риском оттока,3,0,0.0,49.07
+REA_009,Reactivation / SMS / REA_009,Reactivation,SMS,2024-08-25,2026-03-08,Пользователи с риском оттока,5,0,0.0,96.8
+REA_009,Reactivation / Retargeting / REA_009,Reactivation,Retargeting,2024-10-06,2026-02-17,Пользователи с риском оттока,7,0,0.0,100.11
+REA_009,Reactivation / Push / REA_009,Reactivation,Push,2024-05-11,2026-03-26,Пользователи с риском оттока,22,0,0.0,363.08
+REA_009,Reactivation / Email / REA_009,Reactivation,Email,2024-12-01,2026-03-29,Пользователи с риском оттока,11,0,0.0,161.6
+REA_009,Reactivation / In-App / REA_009,Reactivation,In-App,2024-11-05,2026-03-16,Пользователи с риском оттока,10,0,0.0,133.22
+REA_010,Reactivation / Email / REA_010,Reactivation,Email,2024-03-25,2026-03-17,Пользователи с риском оттока,11,1,0.0909,215.02
+REA_010,Reactivation / In-App / REA_010,Reactivation,In-App,2024-11-06,2026-02-27,Пользователи с риском оттока,12,0,0.0,225.27
+REA_010,Reactivation / Push / REA_010,Reactivation,Push,2024-09-04,2026-03-11,Пользователи с риском оттока,19,1,0.0526,317.05
+REA_010,Reactivation / Retargeting / REA_010,Reactivation,Retargeting,2025-02-26,2026-02-13,Пользователи с риском оттока,8,0,0.0,137.23
+REA_010,Reactivation / SMS / REA_010,Reactivation,SMS,2024-11-29,2026-03-27,Пользователи с риском оттока,8,0,0.0,148.06
+REA_011,Reactivation / SMS / REA_011,Reactivation,SMS,2024-09-03,2026-03-24,Пользователи с риском оттока,5,0,0.0,91.72
+REA_011,Reactivation / Retargeting / REA_011,Reactivation,Retargeting,2025-02-24,2026-03-25,Пользователи с риском оттока,9,0,0.0,162.08
+REA_011,Reactivation / In-App / REA_011,Reactivation,In-App,2024-08-17,2026-03-27,Пользователи с риском оттока,9,1,0.1111,100.83
+REA_011,Reactivation / Email / REA_011,Reactivation,Email,2024-09-09,2026-03-23,Пользователи с риском оттока,13,0,0.0,197.02
+REA_011,Reactivation / Push / REA_011,Reactivation,Push,2024-06-02,2026-03-26,Пользователи с риском оттока,28,2,0.0714,425.31
+REA_012,Reactivation / Email / REA_012,Reactivation,Email,2024-07-26,2026-03-16,Пользователи с риском оттока,8,0,0.0,118.9
+REA_012,Reactivation / In-App / REA_012,Reactivation,In-App,2024-10-10,2026-03-26,Пользователи с риском оттока,13,1,0.0769,222.36
+REA_012,Reactivation / Push / REA_012,Reactivation,Push,2024-04-17,2026-03-30,Пользователи с риском оттока,15,0,0.0,243.13
+REA_012,Reactivation / Retargeting / REA_012,Reactivation,Retargeting,2024-09-30,2026-03-18,Пользователи с риском оттока,8,0,0.0,144.9
+REA_012,Reactivation / SMS / REA_012,Reactivation,SMS,2025-07-11,2026-02-07,Пользователи с риском оттока,3,0,0.0,57.35
+REA_013,Reactivation / Email / REA_013,Reactivation,Email,2024-11-06,2026-03-13,Пользователи с риском оттока,5,0,0.0,85.6
+REA_013,Reactivation / In-App / REA_013,Reactivation,In-App,2024-10-07,2026-01-24,Пользователи с риском оттока,7,0,0.0,107.37
+REA_013,Reactivation / Push / REA_013,Reactivation,Push,2024-06-24,2026-03-30,Пользователи с риском оттока,18,1,0.0556,241.44
+REA_013,Reactivation / Retargeting / REA_013,Reactivation,Retargeting,2024-09-06,2025-12-02,Пользователи с риском оттока,7,0,0.0,99.86
+REA_013,Reactivation / SMS / REA_013,Reactivation,SMS,2024-10-27,2025-11-08,Пользователи с риском оттока,4,0,0.0,62.64
+REA_014,Reactivation / SMS / REA_014,Reactivation,SMS,2024-11-14,2026-03-21,Пользователи с риском оттока,5,0,0.0,85.02
+REA_014,Reactivation / Retargeting / REA_014,Reactivation,Retargeting,2024-01-30,2026-01-26,Пользователи с риском оттока,5,0,0.0,75.92
+REA_014,Reactivation / Push / REA_014,Reactivation,Push,2024-10-23,2026-03-30,Пользователи с риском оттока,25,1,0.04,370.01
+REA_014,Reactivation / In-App / REA_014,Reactivation,In-App,2024-06-14,2026-03-31,Пользователи с риском оттока,12,0,0.0,179.01
+REA_014,Reactivation / Email / REA_014,Reactivation,Email,2024-04-26,2026-03-29,Пользователи с риском оттока,15,1,0.0667,232.1
+REA_015,Reactivation / Email / REA_015,Reactivation,Email,2024-03-16,2026-03-27,Пользователи с риском оттока,10,0,0.0,167.95
+REA_015,Reactivation / In-App / REA_015,Reactivation,In-App,2025-05-27,2026-03-12,Пользователи с риском оттока,8,1,0.125,118.8
+REA_015,Reactivation / Push / REA_015,Reactivation,Push,2024-03-24,2026-03-28,Пользователи с риском оттока,18,2,0.1111,300.56
+REA_015,Reactivation / Retargeting / REA_015,Reactivation,Retargeting,2024-08-08,2026-02-11,Пользователи с риском оттока,5,1,0.2,99.39
+REA_015,Reactivation / SMS / REA_015,Reactivation,SMS,2025-07-31,2026-02-27,Пользователи с риском оттока,3,0,0.0,39.89
+REA_016,Reactivation / Email / REA_016,Reactivation,Email,2024-04-19,2026-02-20,Пользователи с риском оттока,13,0,0.0,214.6
+REA_016,Reactivation / In-App / REA_016,Reactivation,In-App,2025-03-06,2026-03-26,Пользователи с риском оттока,5,0,0.0,89.68
+REA_016,Reactivation / Push / REA_016,Reactivation,Push,2024-07-25,2026-03-14,Пользователи с риском оттока,24,0,0.0,420.01
+REA_016,Reactivation / Retargeting / REA_016,Reactivation,Retargeting,2024-06-26,2026-03-24,Пользователи с риском оттока,6,1,0.1667,84.37
+REA_016,Reactivation / SMS / REA_016,Reactivation,SMS,2024-03-14,2026-03-22,Пользователи с риском оттока,5,0,0.0,46.36
+REA_017,Reactivation / Retargeting / REA_017,Reactivation,Retargeting,2024-11-05,2026-03-29,Пользователи с риском оттока,6,0,0.0,79.18
+REA_017,Reactivation / Push / REA_017,Reactivation,Push,2024-05-01,2026-03-27,Пользователи с риском оттока,24,0,0.0,461.35
+REA_017,Reactivation / SMS / REA_017,Reactivation,SMS,2024-02-16,2026-03-25,Пользователи с риском оттока,7,1,0.1429,93.43
+REA_017,Reactivation / Email / REA_017,Reactivation,Email,2025-04-01,2026-03-30,Пользователи с риском оттока,6,0,0.0,107.05
+REA_017,Reactivation / In-App / REA_017,Reactivation,In-App,2025-08-02,2026-03-28,Пользователи с риском оттока,3,0,0.0,69.93
+REA_018,Reactivation / Push / REA_018,Reactivation,Push,2024-11-04,2026-03-27,Пользователи с риском оттока,17,0,0.0,351.78
+REA_018,Reactivation / Retargeting / REA_018,Reactivation,Retargeting,2025-10-11,2026-02-14,Пользователи с риском оттока,5,0,0.0,81.45
+REA_018,Reactivation / Email / REA_018,Reactivation,Email,2024-11-20,2026-03-19,Пользователи с риском оттока,11,1,0.0909,161.15
+REA_018,Reactivation / In-App / REA_018,Reactivation,In-App,2025-04-25,2026-02-26,Пользователи с риском оттока,3,0,0.0,42.12
+REA_018,Reactivation / SMS / REA_018,Reactivation,SMS,2025-03-20,2026-03-20,Пользователи с риском оттока,6,0,0.0,67.35
+REA_019,Reactivation / SMS / REA_019,Reactivation,SMS,2024-08-09,2026-03-15,Пользователи с риском оттока,8,1,0.125,96.61
+REA_019,Reactivation / Push / REA_019,Reactivation,Push,2024-07-08,2026-03-21,Пользователи с риском оттока,15,1,0.0667,229.95
+REA_019,Reactivation / Retargeting / REA_019,Reactivation,Retargeting,2025-09-22,2025-09-22,Пользователи с риском оттока,1,0,0.0,6.62
+REA_019,Reactivation / In-App / REA_019,Reactivation,In-App,2024-11-17,2026-03-19,Пользователи с риском оттока,14,2,0.1429,274.75
+REA_019,Reactivation / Email / REA_019,Reactivation,Email,2024-10-09,2026-03-11,Пользователи с риском оттока,9,0,0.0,154.14
+REA_020,Reactivation / Email / REA_020,Reactivation,Email,2024-07-22,2026-03-06,Пользователи с риском оттока,8,0,0.0,148.04
+REA_020,Reactivation / In-App / REA_020,Reactivation,In-App,2024-11-13,2026-03-30,Пользователи с риском оттока,8,0,0.0,143.46
+REA_020,Reactivation / Push / REA_020,Reactivation,Push,2024-03-06,2026-03-31,Пользователи с риском оттока,25,1,0.04,399.38
+REA_020,Reactivation / Retargeting / REA_020,Reactivation,Retargeting,2025-03-23,2026-03-19,Пользователи с риском оттока,11,1,0.0909,133.66
+REA_020,Reactivation / SMS / REA_020,Reactivation,SMS,2025-02-03,2026-03-26,Пользователи с риском оттока,5,0,0.0,83.04
+REA_021,Reactivation / Email / REA_021,Reactivation,Email,2025-05-25,2026-03-23,Пользователи с риском оттока,6,0,0.0,135.16
+REA_021,Reactivation / In-App / REA_021,Reactivation,In-App,2024-11-06,2026-03-23,Пользователи с риском оттока,7,1,0.1429,76.63
+REA_021,Reactivation / Push / REA_021,Reactivation,Push,2024-05-25,2026-03-08,Пользователи с риском оттока,17,0,0.0,254.6
+REA_021,Reactivation / Retargeting / REA_021,Reactivation,Retargeting,2024-10-06,2026-03-22,Пользователи с риском оттока,5,0,0.0,73.26
+REA_021,Reactivation / SMS / REA_021,Reactivation,SMS,2025-07-12,2026-01-11,Пользователи с риском оттока,3,0,0.0,49.55
+REA_022,Reactivation / Retargeting / REA_022,Reactivation,Retargeting,2025-06-22,2026-03-31,Пользователи с риском оттока,10,0,0.0,148.65
+REA_022,Reactivation / Push / REA_022,Reactivation,Push,2025-01-02,2026-03-31,Пользователи с риском оттока,23,0,0.0,380.7
+REA_022,Reactivation / SMS / REA_022,Reactivation,SMS,2024-04-17,2026-03-21,Пользователи с риском оттока,11,0,0.0,181.67
+REA_022,Reactivation / Email / REA_022,Reactivation,Email,2024-03-29,2026-03-24,Пользователи с риском оттока,17,2,0.1176,278.04
+REA_022,Reactivation / In-App / REA_022,Reactivation,In-App,2024-06-14,2026-03-28,Пользователи с риском оттока,10,0,0.0,164.44
+REA_023,Reactivation / Email / REA_023,Reactivation,Email,2024-09-22,2026-03-02,Пользователи с риском оттока,10,1,0.1,194.58
+REA_023,Reactivation / In-App / REA_023,Reactivation,In-App,2025-02-07,2026-03-18,Пользователи с риском оттока,7,0,0.0,127.9
+REA_023,Reactivation / Push / REA_023,Reactivation,Push,2024-10-05,2026-03-25,Пользователи с риском оттока,18,1,0.0556,347.47
+REA_023,Reactivation / Retargeting / REA_023,Reactivation,Retargeting,2024-07-21,2026-03-27,Пользователи с риском оттока,9,0,0.0,167.54
+REA_023,Reactivation / SMS / REA_023,Reactivation,SMS,2025-07-16,2026-03-27,Пользователи с риском оттока,2,0,0.0,31.7
+REA_024,Reactivation / SMS / REA_024,Reactivation,SMS,2024-10-28,2026-03-30,Пользователи с риском оттока,10,1,0.1,159.11
+REA_024,Reactivation / Retargeting / REA_024,Reactivation,Retargeting,2025-06-21,2026-03-31,Пользователи с риском оттока,8,0,0.0,167.81
+REA_024,Reactivation / Push / REA_024,Reactivation,Push,2025-03-30,2026-03-28,Пользователи с риском оттока,14,0,0.0,295.33
+REA_024,Reactivation / Email / REA_024,Reactivation,Email,2025-03-21,2026-03-07,Пользователи с риском оттока,8,0,0.0,84.31
+REA_024,Reactivation / In-App / REA_024,Reactivation,In-App,2024-10-09,2026-02-27,Пользователи с риском оттока,12,1,0.0833,199.87
+REA_025,Reactivation / Email / REA_025,Reactivation,Email,2025-07-22,2026-03-11,Пользователи с риском оттока,7,0,0.0,91.62
+REA_025,Reactivation / In-App / REA_025,Reactivation,In-App,2024-11-23,2026-03-28,Пользователи с риском оттока,7,1,0.1429,111.82
+REA_025,Reactivation / Push / REA_025,Reactivation,Push,2024-11-17,2026-03-27,Пользователи с риском оттока,17,0,0.0,275.5
+REA_025,Reactivation / Retargeting / REA_025,Reactivation,Retargeting,2025-02-24,2026-01-04,Пользователи с риском оттока,5,0,0.0,68.86
+REA_025,Reactivation / SMS / REA_025,Reactivation,SMS,2024-06-09,2026-03-11,Пользователи с риском оттока,6,0,0.0,98.1
+REA_026,Reactivation / Retargeting / REA_026,Reactivation,Retargeting,2024-05-24,2026-03-19,Пользователи с риском оттока,5,1,0.2,87.76
+REA_026,Reactivation / Push / REA_026,Reactivation,Push,2024-11-03,2026-03-24,Пользователи с риском оттока,17,2,0.1176,272.98
+REA_026,Reactivation / SMS / REA_026,Reactivation,SMS,2024-10-09,2026-03-26,Пользователи с риском оттока,7,0,0.0,92.17
+REA_026,Reactivation / Email / REA_026,Reactivation,Email,2025-01-18,2026-03-29,Пользователи с риском оттока,8,0,0.0,114.36
+REA_026,Reactivation / In-App / REA_026,Reactivation,In-App,2025-05-14,2026-03-09,Пользователи с риском оттока,7,0,0.0,111.36
+REA_027,Reactivation / Email / REA_027,Reactivation,Email,2025-07-16,2026-01-14,Пользователи с риском оттока,6,0,0.0,77.15
+REA_027,Reactivation / In-App / REA_027,Reactivation,In-App,2024-12-23,2026-03-14,Пользователи с риском оттока,6,0,0.0,100.1
+REA_027,Reactivation / Push / REA_027,Reactivation,Push,2024-11-21,2026-03-23,Пользователи с риском оттока,17,0,0.0,295.36
+REA_027,Reactivation / Retargeting / REA_027,Reactivation,Retargeting,2025-03-28,2025-12-30,Пользователи с риском оттока,7,1,0.1429,135.87
+REA_027,Reactivation / SMS / REA_027,Reactivation,SMS,2025-03-24,2026-03-31,Пользователи с риском оттока,4,0,0.0,91.0
+REA_028,Reactivation / SMS / REA_028,Reactivation,SMS,2024-09-23,2026-03-22,Пользователи с риском оттока,5,0,0.0,78.33
+REA_028,Reactivation / Retargeting / REA_028,Reactivation,Retargeting,2025-02-01,2026-03-27,Пользователи с риском оттока,11,1,0.0909,155.46
+REA_028,Reactivation / Email / REA_028,Reactivation,Email,2024-11-26,2026-03-23,Пользователи с риском оттока,11,0,0.0,158.55
+REA_028,Reactivation / In-App / REA_028,Reactivation,In-App,2024-10-19,2026-03-24,Пользователи с риском оттока,9,0,0.0,118.65
+REA_028,Reactivation / Push / REA_028,Reactivation,Push,2024-04-27,2026-03-24,Пользователи с риском оттока,14,1,0.0714,194.48
+REA_029,Reactivation / Email / REA_029,Reactivation,Email,2025-04-04,2026-03-31,Пользователи с риском оттока,6,0,0.0,100.57
+REA_029,Reactivation / In-App / REA_029,Reactivation,In-App,2024-12-09,2026-03-18,Пользователи с риском оттока,11,0,0.0,206.54
+REA_029,Reactivation / Push / REA_029,Reactivation,Push,2024-09-18,2026-03-22,Пользователи с риском оттока,21,1,0.0476,323.78
+REA_029,Reactivation / Retargeting / REA_029,Reactivation,Retargeting,2024-08-25,2026-03-26,Пользователи с риском оттока,5,0,0.0,91.4
+REA_029,Reactivation / SMS / REA_029,Reactivation,SMS,2024-08-02,2026-03-08,Пользователи с риском оттока,8,0,0.0,118.83
+REA_030,Reactivation / Retargeting / REA_030,Reactivation,Retargeting,2024-07-21,2026-02-28,Пользователи с риском оттока,10,1,0.1,151.05
+REA_030,Reactivation / SMS / REA_030,Reactivation,SMS,2024-04-16,2026-03-31,Пользователи с риском оттока,6,0,0.0,88.31
+REA_030,Reactivation / Push / REA_030,Reactivation,Push,2025-01-16,2026-03-27,Пользователи с риском оттока,11,0,0.0,172.86
+REA_030,Reactivation / Email / REA_030,Reactivation,Email,2025-06-21,2026-03-31,Пользователи с риском оттока,12,0,0.0,219.94
+REA_030,Reactivation / In-App / REA_030,Reactivation,In-App,2024-09-18,2026-02-14,Пользователи с риском оттока,12,0,0.0,193.13
+REA_031,Reactivation / Email / REA_031,Reactivation,Email,2024-11-24,2026-03-21,Пользователи с риском оттока,8,0,0.0,151.02
+REA_031,Reactivation / In-App / REA_031,Reactivation,In-App,2024-12-03,2026-03-11,Пользователи с риском оттока,11,1,0.0909,168.65
+REA_031,Reactivation / Push / REA_031,Reactivation,Push,2024-09-13,2026-03-26,Пользователи с риском оттока,19,2,0.1053,311.72
+REA_031,Reactivation / Retargeting / REA_031,Reactivation,Retargeting,2024-03-16,2025-12-31,Пользователи с риском оттока,3,0,0.0,38.18
+REA_031,Reactivation / SMS / REA_031,Reactivation,SMS,2024-08-14,2026-01-15,Пользователи с риском оттока,5,0,0.0,101.67
+REA_032,Reactivation / SMS / REA_032,Reactivation,SMS,2024-09-06,2026-03-12,Пользователи с риском оттока,8,1,0.125,120.32
+REA_032,Reactivation / Retargeting / REA_032,Reactivation,Retargeting,2024-07-22,2026-02-08,Пользователи с риском оттока,11,1,0.0909,174.11
+REA_032,Reactivation / Push / REA_032,Reactivation,Push,2024-03-07,2026-03-20,Пользователи с риском оттока,18,1,0.0556,232.25
+REA_032,Reactivation / Email / REA_032,Reactivation,Email,2024-11-13,2026-02-27,Пользователи с риском оттока,11,0,0.0,206.5
+REA_032,Reactivation / In-App / REA_032,Reactivation,In-App,2024-07-31,2026-03-26,Пользователи с риском оттока,12,1,0.0833,201.86
+REA_033,Reactivation / Email / REA_033,Reactivation,Email,2024-11-24,2026-03-02,Пользователи с риском оттока,9,1,0.1111,127.18
+REA_033,Reactivation / In-App / REA_033,Reactivation,In-App,2024-11-02,2026-02-28,Пользователи с риском оттока,11,1,0.0909,210.12
+REA_033,Reactivation / Push / REA_033,Reactivation,Push,2024-10-11,2026-03-29,Пользователи с риском оттока,18,0,0.0,264.7
+REA_033,Reactivation / Retargeting / REA_033,Reactivation,Retargeting,2024-07-26,2026-03-22,Пользователи с риском оттока,7,0,0.0,148.49
+REA_033,Reactivation / SMS / REA_033,Reactivation,SMS,2025-01-01,2026-03-11,Пользователи с риском оттока,6,0,0.0,91.11
+REA_034,Reactivation / SMS / REA_034,Reactivation,SMS,2024-08-28,2025-10-23,Пользователи с риском оттока,6,0,0.0,79.47
+REA_034,Reactivation / Retargeting / REA_034,Reactivation,Retargeting,2025-08-25,2026-03-27,Пользователи с риском оттока,4,0,0.0,54.39
+REA_034,Reactivation / Email / REA_034,Reactivation,Email,2024-09-25,2026-03-08,Пользователи с риском оттока,15,2,0.1333,260.13
+REA_034,Reactivation / In-App / REA_034,Reactivation,In-App,2024-06-17,2026-03-29,Пользователи с риском оттока,9,0,0.0,134.77
+REA_034,Reactivation / Push / REA_034,Reactivation,Push,2024-07-06,2026-03-22,Пользователи с риском оттока,24,1,0.0417,314.03
+REA_035,Reactivation / Email / REA_035,Reactivation,Email,2024-10-22,2026-02-04,Пользователи с риском оттока,10,1,0.1,170.86
+REA_035,Reactivation / In-App / REA_035,Reactivation,In-App,2025-07-27,2026-03-09,Пользователи с риском оттока,6,0,0.0,74.77
+REA_035,Reactivation / Push / REA_035,Reactivation,Push,2024-07-24,2026-03-28,Пользователи с риском оттока,20,0,0.0,360.72
+REA_035,Reactivation / Retargeting / REA_035,Reactivation,Retargeting,2024-11-12,2026-03-14,Пользователи с риском оттока,6,0,0.0,116.49
+REA_035,Reactivation / SMS / REA_035,Reactivation,SMS,2025-07-02,2026-02-11,Пользователи с риском оттока,9,0,0.0,112.84
+REA_036,Reactivation / Email / REA_036,Reactivation,Email,2025-03-11,2026-03-28,Пользователи с риском оттока,10,0,0.0,113.9
+REA_036,Reactivation / In-App / REA_036,Reactivation,In-App,2024-06-23,2026-03-03,Пользователи с риском оттока,11,0,0.0,137.21
+REA_036,Reactivation / Push / REA_036,Reactivation,Push,2024-07-18,2026-03-17,Пользователи с риском оттока,24,0,0.0,381.06
+REA_036,Reactivation / Retargeting / REA_036,Reactivation,Retargeting,2024-12-04,2026-03-30,Пользователи с риском оттока,9,1,0.1111,143.77
+REA_036,Reactivation / SMS / REA_036,Reactivation,SMS,2024-08-21,2025-10-10,Пользователи с риском оттока,4,0,0.0,44.08
+REA_037,Reactivation / Retargeting / REA_037,Reactivation,Retargeting,2024-04-25,2026-03-27,Пользователи с риском оттока,12,1,0.0833,213.96
+REA_037,Reactivation / Push / REA_037,Reactivation,Push,2024-11-11,2026-03-29,Пользователи с риском оттока,18,0,0.0,311.37
+REA_037,Reactivation / SMS / REA_037,Reactivation,SMS,2025-05-29,2026-03-09,Пользователи с риском оттока,6,0,0.0,104.95
+REA_037,Reactivation / Email / REA_037,Reactivation,Email,2024-09-23,2026-03-11,Пользователи с риском оттока,9,0,0.0,132.21
+REA_037,Reactivation / In-App / REA_037,Reactivation,In-App,2024-10-04,2026-03-23,Пользователи с риском оттока,10,0,0.0,113.45
+REA_038,Reactivation / SMS / REA_038,Reactivation,SMS,2025-06-25,2026-03-17,Пользователи с риском оттока,8,0,0.0,97.2
+REA_038,Reactivation / Retargeting / REA_038,Reactivation,Retargeting,2025-04-16,2026-03-29,Пользователи с риском оттока,8,0,0.0,131.57
+REA_038,Reactivation / Email / REA_038,Reactivation,Email,2024-05-26,2026-03-27,Пользователи с риском оттока,12,0,0.0,206.55
+REA_038,Reactivation / In-App / REA_038,Reactivation,In-App,2025-04-20,2026-03-10,Пользователи с риском оттока,11,1,0.0909,162.31
+REA_038,Reactivation / Push / REA_038,Reactivation,Push,2024-07-25,2026-03-29,Пользователи с риском оттока,18,0,0.0,344.22
+REA_039,Reactivation / Email / REA_039,Reactivation,Email,2024-08-08,2026-03-12,Пользователи с риском оттока,11,1,0.0909,167.34
+REA_039,Reactivation / In-App / REA_039,Reactivation,In-App,2025-02-16,2026-03-24,Пользователи с риском оттока,10,1,0.1,170.38
+REA_039,Reactivation / Retargeting / REA_039,Reactivation,Retargeting,2025-11-12,2026-03-20,Пользователи с риском оттока,2,0,0.0,43.29
+REA_039,Reactivation / SMS / REA_039,Reactivation,SMS,2024-07-12,2026-03-28,Пользователи с риском оттока,11,0,0.0,150.15
+REA_039,Reactivation / Push / REA_039,Reactivation,Push,2024-06-21,2026-03-21,Пользователи с риском оттока,23,0,0.0,380.31
+RET_001,Retention / Email / RET_001,Retention,Email,2025-01-31,2026-03-30,Пользователи с риском оттока,15,1,0.0667,275.94
+RET_001,Retention / In-App / RET_001,Retention,In-App,2024-03-23,2026-02-03,Пользователи с риском оттока,8,0,0.0,140.42
+RET_001,Retention / Push / RET_001,Retention,Push,2024-06-01,2026-03-25,Пользователи с риском оттока,24,0,0.0,351.79
+RET_001,Retention / Retargeting / RET_001,Retention,Retargeting,2025-03-13,2026-02-10,Пользователи с риском оттока,10,0,0.0,121.29
+RET_001,Retention / SMS / RET_001,Retention,SMS,2024-06-14,2026-03-05,Пользователи с риском оттока,8,0,0.0,181.23
+RET_002,Retention / SMS / RET_002,Retention,SMS,2025-02-21,2026-02-04,Пользователи с риском оттока,5,0,0.0,65.03
+RET_002,Retention / Retargeting / RET_002,Retention,Retargeting,2025-04-21,2026-03-30,Пользователи с риском оттока,8,0,0.0,94.39
+RET_002,Retention / Push / RET_002,Retention,Push,2024-05-21,2026-03-30,Пользователи с риском оттока,15,0,0.0,266.92
+RET_002,Retention / Email / RET_002,Retention,Email,2024-11-07,2026-03-13,Пользователи с риском оттока,15,0,0.0,279.87
+RET_002,Retention / In-App / RET_002,Retention,In-App,2024-12-05,2026-02-01,Пользователи с риском оттока,11,0,0.0,100.42
+RET_003,Retention / Email / RET_003,Retention,Email,2024-11-25,2026-03-10,Пользователи с риском оттока,15,0,0.0,281.82
+RET_003,Retention / In-App / RET_003,Retention,In-App,2024-04-10,2026-02-16,Пользователи с риском оттока,15,0,0.0,273.63
+RET_003,Retention / Push / RET_003,Retention,Push,2025-01-17,2026-03-22,Пользователи с риском оттока,21,1,0.0476,334.25
+RET_003,Retention / Retargeting / RET_003,Retention,Retargeting,2024-05-06,2026-03-31,Пользователи с риском оттока,13,0,0.0,260.98
+RET_003,Retention / SMS / RET_003,Retention,SMS,2024-06-12,2026-03-31,Пользователи с риском оттока,11,0,0.0,164.66
+RET_004,Retention / SMS / RET_004,Retention,SMS,2025-07-29,2026-03-22,Пользователи с риском оттока,6,0,0.0,117.72
+RET_004,Retention / Retargeting / RET_004,Retention,Retargeting,2025-07-16,2026-02-18,Пользователи с риском оттока,5,0,0.0,47.4
+RET_004,Retention / Push / RET_004,Retention,Push,2024-09-23,2026-03-31,Пользователи с риском оттока,34,1,0.0294,457.1
+RET_004,Retention / Email / RET_004,Retention,Email,2025-10-07,2025-11-10,Пользователи с риском оттока,3,0,0.0,29.27
+RET_004,Retention / In-App / RET_004,Retention,In-App,2024-07-29,2026-03-24,Пользователи с риском оттока,14,0,0.0,200.81
+RET_005,Retention / Email / RET_005,Retention,Email,2025-04-24,2026-03-24,Пользователи с риском оттока,8,1,0.125,104.89
+RET_005,Retention / In-App / RET_005,Retention,In-App,2025-03-02,2026-03-22,Пользователи с риском оттока,14,1,0.0714,240.93
+RET_005,Retention / Push / RET_005,Retention,Push,2024-04-23,2026-03-22,Пользователи с риском оттока,21,0,0.0,348.24
+RET_005,Retention / Retargeting / RET_005,Retention,Retargeting,2024-10-09,2026-03-20,Пользователи с риском оттока,10,0,0.0,164.94
+RET_005,Retention / SMS / RET_005,Retention,SMS,2025-08-31,2026-03-07,Пользователи с риском оттока,7,0,0.0,141.17
+RET_006,Retention / SMS / RET_006,Retention,SMS,2025-03-31,2026-02-14,Пользователи с риском оттока,8,0,0.0,125.35
+RET_006,Retention / Retargeting / RET_006,Retention,Retargeting,2024-09-28,2026-03-14,Пользователи с риском оттока,7,0,0.0,137.03
+RET_006,Retention / Email / RET_006,Retention,Email,2025-06-30,2026-01-14,Пользователи с риском оттока,5,0,0.0,94.26
+RET_006,Retention / In-App / RET_006,Retention,In-App,2024-09-04,2026-03-23,Пользователи с риском оттока,12,0,0.0,224.59
+RET_006,Retention / Push / RET_006,Retention,Push,2024-12-20,2026-03-19,Пользователи с риском оттока,24,0,0.0,370.68
+RET_007,Retention / Email / RET_007,Retention,Email,2024-06-30,2026-03-27,Пользователи с риском оттока,17,0,0.0,296.03
+RET_007,Retention / In-App / RET_007,Retention,In-App,2024-08-07,2026-03-26,Пользователи с риском оттока,11,0,0.0,135.03
+RET_007,Retention / Push / RET_007,Retention,Push,2024-06-12,2026-03-14,Пользователи с риском оттока,21,0,0.0,348.05
+RET_007,Retention / Retargeting / RET_007,Retention,Retargeting,2025-01-23,2026-03-31,Пользователи с риском оттока,9,0,0.0,181.37
+RET_007,Retention / SMS / RET_007,Retention,SMS,2024-09-12,2026-01-11,Пользователи с риском оттока,8,0,0.0,172.05
+RET_008,Retention / Email / RET_008,Retention,Email,2025-09-03,2026-03-05,Пользователи с риском оттока,7,0,0.0,122.94
+RET_008,Retention / In-App / RET_008,Retention,In-App,2024-09-16,2026-03-26,Пользователи с риском оттока,8,1,0.125,139.75
+RET_008,Retention / Push / RET_008,Retention,Push,2024-07-16,2026-03-18,Пользователи с риском оттока,28,0,0.0,492.3
+RET_008,Retention / Retargeting / RET_008,Retention,Retargeting,2024-11-26,2026-03-30,Пользователи с риском оттока,11,1,0.0909,118.88
+RET_008,Retention / SMS / RET_008,Retention,SMS,2024-09-18,2026-02-16,Пользователи с риском оттока,4,0,0.0,84.93
+RET_009,Retention / Retargeting / RET_009,Retention,Retargeting,2024-06-14,2026-01-22,Пользователи с риском оттока,8,0,0.0,173.9
+RET_009,Retention / SMS / RET_009,Retention,SMS,2024-08-01,2026-01-03,Пользователи с риском оттока,8,0,0.0,135.92
+RET_009,Retention / Push / RET_009,Retention,Push,2024-12-22,2026-03-29,Пользователи с риском оттока,20,1,0.05,318.4
+RET_009,Retention / In-App / RET_009,Retention,In-App,2024-11-15,2026-03-28,Пользователи с риском оттока,12,1,0.0833,208.21
+RET_009,Retention / Email / RET_009,Retention,Email,2024-10-17,2026-03-26,Пользователи с риском оттока,11,0,0.0,150.31
+RET_010,Retention / Email / RET_010,Retention,Email,2024-05-24,2026-03-31,Пользователи с риском оттока,10,0,0.0,148.31
+RET_010,Retention / In-App / RET_010,Retention,In-App,2024-12-07,2026-03-21,Пользователи с риском оттока,15,0,0.0,229.71
+RET_010,Retention / Push / RET_010,Retention,Push,2024-05-09,2026-03-30,Пользователи с риском оттока,21,2,0.0952,316.67
+RET_010,Retention / Retargeting / RET_010,Retention,Retargeting,2024-07-16,2026-03-30,Пользователи с риском оттока,7,1,0.1429,147.01
+RET_010,Retention / SMS / RET_010,Retention,SMS,2024-05-05,2026-02-09,Пользователи с риском оттока,8,0,0.0,169.57
+RET_011,Retention / SMS / RET_011,Retention,SMS,2025-02-09,2026-03-18,Пользователи с риском оттока,7,0,0.0,130.33
+RET_011,Retention / Retargeting / RET_011,Retention,Retargeting,2025-04-20,2026-03-22,Пользователи с риском оттока,3,0,0.0,59.49
+RET_011,Retention / Push / RET_011,Retention,Push,2024-06-04,2026-03-16,Пользователи с риском оттока,19,0,0.0,286.0
+RET_011,Retention / In-App / RET_011,Retention,In-App,2025-07-19,2026-03-22,Пользователи с риском оттока,10,0,0.0,156.21
+RET_011,Retention / Email / RET_011,Retention,Email,2025-01-04,2026-03-14,Пользователи с риском оттока,10,1,0.1,165.03
+RET_012,Retention / Email / RET_012,Retention,Email,2025-01-10,2026-03-31,Пользователи с риском оттока,8,0,0.0,173.12
+RET_012,Retention / In-App / RET_012,Retention,In-App,2024-04-26,2026-03-27,Пользователи с риском оттока,18,0,0.0,256.73
+RET_012,Retention / Push / RET_012,Retention,Push,2024-09-12,2026-03-26,Пользователи с риском оттока,15,1,0.0667,211.99
+RET_012,Retention / Retargeting / RET_012,Retention,Retargeting,2025-02-12,2026-02-11,Пользователи с риском оттока,8,0,0.0,94.68
+RET_012,Retention / SMS / RET_012,Retention,SMS,2025-07-19,2026-03-28,Пользователи с риском оттока,6,1,0.1667,110.06
+RET_013,Retention / SMS / RET_013,Retention,SMS,2025-10-20,2026-03-09,Пользователи с риском оттока,4,0,0.0,46.44
+RET_013,Retention / Retargeting / RET_013,Retention,Retargeting,2024-08-07,2026-03-28,Пользователи с риском оттока,10,0,0.0,126.99
+RET_013,Retention / Email / RET_013,Retention,Email,2024-09-23,2026-03-29,Пользователи с риском оттока,15,1,0.0667,245.1
+RET_013,Retention / In-App / RET_013,Retention,In-App,2025-10-13,2026-03-29,Пользователи с риском оттока,5,0,0.0,79.1
+RET_013,Retention / Push / RET_013,Retention,Push,2024-07-19,2026-03-09,Пользователи с риском оттока,16,1,0.0625,279.92
+RET_014,Retention / Email / RET_014,Retention,Email,2024-06-30,2026-01-31,Пользователи с риском оттока,14,1,0.0714,272.77
+RET_014,Retention / In-App / RET_014,Retention,In-App,2024-06-23,2026-03-27,Пользователи с риском оттока,11,0,0.0,163.83
+RET_014,Retention / Push / RET_014,Retention,Push,2024-01-12,2026-03-07,Пользователи с риском оттока,20,0,0.0,333.04
+RET_014,Retention / Retargeting / RET_014,Retention,Retargeting,2025-10-24,2026-03-26,Пользователи с риском оттока,5,0,0.0,66.02
+RET_014,Retention / SMS / RET_014,Retention,SMS,2024-07-04,2025-12-01,Пользователи с риском оттока,8,0,0.0,168.06
+RET_015,Retention / Email / RET_015,Retention,Email,2025-02-20,2026-03-29,Пользователи с риском оттока,15,2,0.1333,274.79
+RET_015,Retention / In-App / RET_015,Retention,In-App,2024-05-09,2026-03-30,Пользователи с риском оттока,17,1,0.0588,298.85
+RET_015,Retention / Push / RET_015,Retention,Push,2024-09-18,2026-03-31,Пользователи с риском оттока,23,1,0.0435,309.4
+RET_015,Retention / Retargeting / RET_015,Retention,Retargeting,2024-09-22,2026-03-26,Пользователи с риском оттока,9,0,0.0,172.0
+RET_015,Retention / SMS / RET_015,Retention,SMS,2024-04-28,2026-03-30,Пользователи с риском оттока,12,0,0.0,220.15
+RET_016,Retention / SMS / RET_016,Retention,SMS,2025-01-17,2026-03-05,Пользователи с риском оттока,5,0,0.0,78.85
+RET_016,Retention / Retargeting / RET_016,Retention,Retargeting,2024-06-29,2026-03-28,Пользователи с риском оттока,17,0,0.0,304.35
+RET_016,Retention / Push / RET_016,Retention,Push,2024-03-30,2026-03-31,Пользователи с риском оттока,19,0,0.0,274.65
+RET_016,Retention / In-App / RET_016,Retention,In-App,2024-03-18,2026-03-31,Пользователи с риском оттока,10,1,0.1,229.35
+RET_016,Retention / Email / RET_016,Retention,Email,2024-09-24,2026-02-08,Пользователи с риском оттока,12,0,0.0,233.47
+RET_017,Retention / Email / RET_017,Retention,Email,2024-11-15,2026-03-25,Пользователи с риском оттока,10,0,0.0,130.84
+RET_017,Retention / In-App / RET_017,Retention,In-App,2025-06-13,2026-03-29,Пользователи с риском оттока,10,0,0.0,153.37
+RET_017,Retention / Push / RET_017,Retention,Push,2024-06-19,2026-03-29,Пользователи с риском оттока,19,0,0.0,364.51
+RET_017,Retention / Retargeting / RET_017,Retention,Retargeting,2024-11-08,2026-01-26,Пользователи с риском оттока,10,1,0.1,149.44
+RET_017,Retention / SMS / RET_017,Retention,SMS,2025-04-18,2026-03-27,Пользователи с риском оттока,4,0,0.0,66.63
+RET_018,Retention / Email / RET_018,Retention,Email,2024-06-16,2026-01-18,Пользователи с риском оттока,12,1,0.0833,243.91
+RET_018,Retention / In-App / RET_018,Retention,In-App,2025-05-19,2026-03-27,Пользователи с риском оттока,11,1,0.0909,139.13
+RET_018,Retention / Push / RET_018,Retention,Push,2024-08-24,2026-03-18,Пользователи с риском оттока,18,0,0.0,286.62
+RET_018,Retention / Retargeting / RET_018,Retention,Retargeting,2024-10-30,2026-03-16,Пользователи с риском оттока,6,0,0.0,117.35
+RET_018,Retention / SMS / RET_018,Retention,SMS,2024-08-25,2026-03-30,Пользователи с риском оттока,9,1,0.1111,181.15
+RET_019,Retention / Retargeting / RET_019,Retention,Retargeting,2024-11-09,2026-03-02,Пользователи с риском оттока,6,0,0.0,136.46
+RET_019,Retention / Push / RET_019,Retention,Push,2024-08-12,2026-03-30,Пользователи с риском оттока,17,0,0.0,252.13
+RET_019,Retention / SMS / RET_019,Retention,SMS,2024-10-16,2026-03-13,Пользователи с риском оттока,10,0,0.0,168.65
+RET_019,Retention / Email / RET_019,Retention,Email,2024-04-10,2026-03-25,Пользователи с риском оттока,15,0,0.0,201.11
+RET_019,Retention / In-App / RET_019,Retention,In-App,2024-10-02,2026-03-25,Пользователи с риском оттока,13,0,0.0,216.11
+RET_020,Retention / Email / RET_020,Retention,Email,2024-07-20,2026-03-27,Пользователи с риском оттока,11,0,0.0,171.58
+RET_020,Retention / In-App / RET_020,Retention,In-App,2024-04-04,2026-03-25,Пользователи с риском оттока,4,0,0.0,72.67
+RET_020,Retention / Push / RET_020,Retention,Push,2024-12-31,2026-03-16,Пользователи с риском оттока,28,0,0.0,443.93
+RET_020,Retention / Retargeting / RET_020,Retention,Retargeting,2025-06-16,2026-03-14,Пользователи с риском оттока,5,0,0.0,104.89
+RET_020,Retention / SMS / RET_020,Retention,SMS,2024-08-28,2026-02-17,Пользователи с риском оттока,7,0,0.0,160.27
+RET_021,Retention / SMS / RET_021,Retention,SMS,2024-12-01,2026-03-04,Пользователи с риском оттока,7,0,0.0,96.13
+RET_021,Retention / Retargeting / RET_021,Retention,Retargeting,2024-11-16,2026-02-07,Пользователи с риском оттока,10,0,0.0,199.68
+RET_021,Retention / Push / RET_021,Retention,Push,2024-07-07,2026-03-29,Пользователи с риском оттока,25,0,0.0,455.99
+RET_021,Retention / Email / RET_021,Retention,Email,2024-11-04,2026-03-27,Пользователи с риском оттока,16,0,0.0,275.42
+RET_021,Retention / In-App / RET_021,Retention,In-App,2025-01-26,2026-03-31,Пользователи с риском оттока,14,0,0.0,235.77
+RET_022,Retention / Email / RET_022,Retention,Email,2025-04-26,2026-03-06,Пользователи с риском оттока,6,0,0.0,83.31
+RET_022,Retention / In-App / RET_022,Retention,In-App,2024-11-15,2026-03-30,Пользователи с риском оттока,10,0,0.0,145.88
+RET_022,Retention / Push / RET_022,Retention,Push,2024-08-19,2026-03-26,Пользователи с риском оттока,26,0,0.0,436.11
+RET_022,Retention / Retargeting / RET_022,Retention,Retargeting,2024-07-19,2026-03-26,Пользователи с риском оттока,10,0,0.0,190.45
+RET_022,Retention / SMS / RET_022,Retention,SMS,2024-05-11,2026-03-29,Пользователи с риском оттока,4,0,0.0,81.61
+RET_023,Retention / Retargeting / RET_023,Retention,Retargeting,2024-07-16,2026-03-16,Пользователи с риском оттока,8,0,0.0,111.01
+RET_023,Retention / Push / RET_023,Retention,Push,2024-06-03,2026-03-29,Пользователи с риском оттока,16,1,0.0625,236.08
+RET_023,Retention / SMS / RET_023,Retention,SMS,2024-03-23,2026-03-30,Пользователи с риском оттока,13,0,0.0,239.75
+RET_023,Retention / Email / RET_023,Retention,Email,2024-09-02,2026-03-12,Пользователи с риском оттока,9,0,0.0,144.72
+RET_023,Retention / In-App / RET_023,Retention,In-App,2025-02-01,2026-03-19,Пользователи с риском оттока,10,0,0.0,157.56
+RET_024,Retention / Email / RET_024,Retention,Email,2024-10-27,2026-03-09,Пользователи с риском оттока,8,0,0.0,125.83
+RET_024,Retention / In-App / RET_024,Retention,In-App,2024-09-11,2026-03-17,Пользователи с риском оттока,9,0,0.0,110.68
+RET_024,Retention / Push / RET_024,Retention,Push,2024-05-15,2026-03-15,Пользователи с риском оттока,15,0,0.0,218.75
+RET_024,Retention / Retargeting / RET_024,Retention,Retargeting,2025-04-19,2026-03-21,Пользователи с риском оттока,7,0,0.0,138.82
+RET_024,Retention / SMS / RET_024,Retention,SMS,2024-10-27,2026-03-10,Пользователи с риском оттока,5,1,0.2,91.69
+RET_025,Retention / Email / RET_025,Retention,Email,2025-01-05,2026-03-20,Пользователи с риском оттока,19,1,0.0526,361.0
+RET_025,Retention / In-App / RET_025,Retention,In-App,2024-05-03,2026-03-27,Пользователи с риском оттока,15,1,0.0667,235.56
+RET_025,Retention / Push / RET_025,Retention,Push,2024-05-04,2026-03-30,Пользователи с риском оттока,23,1,0.0435,370.03
+RET_025,Retention / Retargeting / RET_025,Retention,Retargeting,2025-01-18,2026-03-21,Пользователи с риском оттока,6,0,0.0,126.28
+RET_025,Retention / SMS / RET_025,Retention,SMS,2025-07-22,2026-03-22,Пользователи с риском оттока,9,1,0.1111,148.31
+RET_026,Retention / Retargeting / RET_026,Retention,Retargeting,2025-04-06,2026-03-29,Пользователи с риском оттока,11,0,0.0,215.02
+RET_026,Retention / Push / RET_026,Retention,Push,2024-05-13,2026-03-16,Пользователи с риском оттока,25,1,0.04,335.39
+RET_026,Retention / SMS / RET_026,Retention,SMS,2025-03-15,2026-03-01,Пользователи с риском оттока,9,0,0.0,171.76
+RET_026,Retention / Email / RET_026,Retention,Email,2024-07-13,2025-12-08,Пользователи с риском оттока,8,2,0.25,143.85
+RET_026,Retention / In-App / RET_026,Retention,In-App,2024-04-05,2026-03-26,Пользователи с риском оттока,7,0,0.0,139.42
+RET_027,Retention / Email / RET_027,Retention,Email,2024-07-31,2026-03-24,Пользователи с риском оттока,16,0,0.0,263.21
+RET_027,Retention / In-App / RET_027,Retention,In-App,2024-10-21,2026-03-29,Пользователи с риском оттока,9,0,0.0,139.44
+RET_027,Retention / Push / RET_027,Retention,Push,2024-09-15,2026-03-28,Пользователи с риском оттока,22,1,0.0455,310.22
+RET_027,Retention / Retargeting / RET_027,Retention,Retargeting,2024-11-10,2026-03-24,Пользователи с риском оттока,7,0,0.0,94.35
+RET_027,Retention / SMS / RET_027,Retention,SMS,2025-02-18,2026-03-04,Пользователи с риском оттока,7,0,0.0,92.96
+RET_028,Retention / SMS / RET_028,Retention,SMS,2024-09-09,2026-03-31,Пользователи с риском оттока,8,0,0.0,186.5
+RET_028,Retention / Retargeting / RET_028,Retention,Retargeting,2024-12-05,2026-03-21,Пользователи с риском оттока,8,1,0.125,81.07
+RET_028,Retention / Push / RET_028,Retention,Push,2024-11-25,2026-03-29,Пользователи с риском оттока,18,0,0.0,325.14
+RET_028,Retention / Email / RET_028,Retention,Email,2025-06-20,2025-10-23,Пользователи с риском оттока,4,0,0.0,72.67
+RET_028,Retention / In-App / RET_028,Retention,In-App,2024-07-06,2026-03-23,Пользователи с риском оттока,9,0,0.0,153.04
+RET_029,Retention / Email / RET_029,Retention,Email,2024-05-30,2026-02-25,Пользователи с риском оттока,12,0,0.0,218.36
+RET_029,Retention / In-App / RET_029,Retention,In-App,2024-07-26,2026-03-29,Пользователи с риском оттока,14,0,0.0,247.41
+RET_029,Retention / Push / RET_029,Retention,Push,2024-11-15,2026-03-31,Пользователи с риском оттока,21,1,0.0476,380.39
+RET_029,Retention / Retargeting / RET_029,Retention,Retargeting,2024-09-24,2026-03-15,Пользователи с риском оттока,8,0,0.0,106.79
+RET_029,Retention / SMS / RET_029,Retention,SMS,2025-04-10,2026-02-15,Пользователи с риском оттока,7,0,0.0,89.3
+RET_030,Retention / SMS / RET_030,Retention,SMS,2025-05-25,2025-09-17,Пользователи с риском оттока,5,0,0.0,132.97
+RET_030,Retention / Push / RET_030,Retention,Push,2024-09-09,2026-03-30,Пользователи с риском оттока,19,1,0.0526,327.22
+RET_030,Retention / Retargeting / RET_030,Retention,Retargeting,2025-12-13,2026-03-21,Пользователи с риском оттока,3,0,0.0,55.96
+RET_030,Retention / Email / RET_030,Retention,Email,2025-04-15,2026-03-16,Пользователи с риском оттока,9,0,0.0,125.72
+RET_030,Retention / In-App / RET_030,Retention,In-App,2024-12-29,2026-03-30,Пользователи с риском оттока,11,0,0.0,171.43
+RET_031,Retention / Email / RET_031,Retention,Email,2025-01-12,2026-03-13,Пользователи с риском оттока,13,1,0.0769,230.65
+RET_031,Retention / In-App / RET_031,Retention,In-App,2024-10-09,2026-03-16,Пользователи с риском оттока,10,2,0.2,188.05
+RET_031,Retention / Push / RET_031,Retention,Push,2024-05-09,2026-03-30,Пользователи с риском оттока,17,0,0.0,208.24
+RET_031,Retention / Retargeting / RET_031,Retention,Retargeting,2024-07-04,2026-03-06,Пользователи с риском оттока,9,0,0.0,126.32
+RET_031,Retention / SMS / RET_031,Retention,SMS,2025-05-24,2026-03-27,Пользователи с риском оттока,5,0,0.0,71.26
+RET_032,Retention / SMS / RET_032,Retention,SMS,2025-02-07,2026-03-30,Пользователи с риском оттока,9,1,0.1111,107.25
+RET_032,Retention / Retargeting / RET_032,Retention,Retargeting,2025-07-03,2026-03-27,Пользователи с риском оттока,6,1,0.1667,112.51
+RET_032,Retention / Email / RET_032,Retention,Email,2024-09-07,2026-01-17,Пользователи с риском оттока,9,0,0.0,156.21
+RET_032,Retention / In-App / RET_032,Retention,In-App,2024-08-10,2026-01-25,Пользователи с риском оттока,12,0,0.0,139.1
+RET_032,Retention / Push / RET_032,Retention,Push,2024-05-25,2026-03-23,Пользователи с риском оттока,26,1,0.0385,504.92
+RET_033,Retention / Email / RET_033,Retention,Email,2024-08-16,2026-03-28,Пользователи с риском оттока,12,0,0.0,161.47
+RET_033,Retention / In-App / RET_033,Retention,In-App,2024-08-26,2026-02-19,Пользователи с риском оттока,7,1,0.1429,120.66
+RET_033,Retention / Push / RET_033,Retention,Push,2024-10-12,2026-03-19,Пользователи с риском оттока,20,1,0.05,375.12
+RET_033,Retention / Retargeting / RET_033,Retention,Retargeting,2024-12-26,2026-03-06,Пользователи с риском оттока,14,1,0.0714,233.24
+RET_033,Retention / SMS / RET_033,Retention,SMS,2024-08-26,2026-03-31,Пользователи с риском оттока,11,1,0.0909,126.02
+RET_034,Retention / Retargeting / RET_034,Retention,Retargeting,2024-07-30,2026-03-28,Пользователи с риском оттока,7,0,0.0,128.19
+RET_034,Retention / SMS / RET_034,Retention,SMS,2024-09-23,2026-03-15,Пользователи с риском оттока,8,0,0.0,83.98
+RET_034,Retention / In-App / RET_034,Retention,In-App,2024-10-13,2026-03-19,Пользователи с риском оттока,6,0,0.0,126.4
+RET_034,Retention / Email / RET_034,Retention,Email,2024-09-07,2026-03-27,Пользователи с риском оттока,14,1,0.0714,259.71
+RET_034,Retention / Push / RET_034,Retention,Push,2024-04-22,2026-03-21,Пользователи с риском оттока,20,0,0.0,286.25
+RET_035,Retention / Email / RET_035,Retention,Email,2024-09-29,2026-03-29,Пользователи с риском оттока,10,0,0.0,184.27
+RET_035,Retention / In-App / RET_035,Retention,In-App,2024-08-14,2026-03-25,Пользователи с риском оттока,5,0,0.0,82.12
+RET_035,Retention / Push / RET_035,Retention,Push,2024-06-11,2026-03-23,Пользователи с риском оттока,27,3,0.1111,418.4
+RET_035,Retention / Retargeting / RET_035,Retention,Retargeting,2024-09-25,2026-03-17,Пользователи с риском оттока,13,0,0.0,216.69
+RET_035,Retention / SMS / RET_035,Retention,SMS,2024-07-04,2026-03-27,Пользователи с риском оттока,6,0,0.0,89.87
+RET_036,Retention / SMS / RET_036,Retention,SMS,2025-01-08,2025-12-29,Пользователи с риском оттока,7,1,0.1429,139.81
+RET_036,Retention / Retargeting / RET_036,Retention,Retargeting,2024-10-26,2026-03-24,Пользователи с риском оттока,6,0,0.0,100.68
+RET_036,Retention / In-App / RET_036,Retention,In-App,2024-11-21,2026-03-27,Пользователи с риском оттока,19,0,0.0,263.77
+RET_036,Retention / Email / RET_036,Retention,Email,2025-06-08,2026-03-29,Пользователи с риском оттока,11,0,0.0,189.78
+RET_036,Retention / Push / RET_036,Retention,Push,2024-08-24,2026-03-20,Пользователи с риском оттока,20,0,0.0,258.31
+RET_037,Retention / Retargeting / RET_037,Retention,Retargeting,2024-10-27,2026-03-25,Пользователи с риском оттока,11,0,0.0,221.82
+RET_037,Retention / Email / RET_037,Retention,Email,2025-05-17,2026-03-27,Пользователи с риском оттока,10,0,0.0,154.14
+RET_037,Retention / In-App / RET_037,Retention,In-App,2025-04-06,2026-03-25,Пользователи с риском оттока,10,0,0.0,159.62
+RET_037,Retention / Push / RET_037,Retention,Push,2024-02-12,2026-03-29,Пользователи с риском оттока,17,0,0.0,324.59
+RET_037,Retention / SMS / RET_037,Retention,SMS,2024-06-18,2026-03-24,Пользователи с риском оттока,6,0,0.0,104.69
+RET_038,Retention / Retargeting / RET_038,Retention,Retargeting,2025-03-25,2026-03-14,Пользователи с риском оттока,5,0,0.0,112.25
+RET_038,Retention / Push / RET_038,Retention,Push,2024-11-13,2026-03-29,Пользователи с риском оттока,16,0,0.0,266.2
+RET_038,Retention / SMS / RET_038,Retention,SMS,2024-10-21,2026-02-14,Пользователи с риском оттока,7,0,0.0,130.7
+RET_038,Retention / Email / RET_038,Retention,Email,2024-07-11,2026-02-15,Пользователи с риском оттока,10,0,0.0,163.92
+RET_038,Retention / In-App / RET_038,Retention,In-App,2025-03-10,2026-03-13,Пользователи с риском оттока,11,0,0.0,194.44
+RET_039,Retention / Email / RET_039,Retention,Email,2024-10-30,2026-03-10,Пользователи с риском оттока,9,0,0.0,138.19
+RET_039,Retention / In-App / RET_039,Retention,In-App,2024-07-20,2026-03-16,Пользователи с риском оттока,13,1,0.0769,208.9
+RET_039,Retention / Push / RET_039,Retention,Push,2024-09-01,2026-03-27,Пользователи с риском оттока,16,0,0.0,300.52
+RET_039,Retention / Retargeting / RET_039,Retention,Retargeting,2024-07-22,2026-01-11,Пользователи с риском оттока,7,1,0.1429,132.24
+RET_039,Retention / SMS / RET_039,Retention,SMS,2024-11-09,2026-01-19,Пользователи с риском оттока,6,0,0.0,79.92
+SER_001,Service / Email / SER_001,Service,Email,2025-02-20,2026-03-08,Смешанный сегмент,5,0,0.0,90.29
+SER_001,Service / In-App / SER_001,Service,In-App,2025-09-21,2026-03-26,Смешанный сегмент,6,0,0.0,103.81
+SER_001,Service / Push / SER_001,Service,Push,2024-09-18,2026-03-25,Смешанный сегмент,13,1,0.0769,201.47
+SER_001,Service / Retargeting / SER_001,Service,Retargeting,2025-05-04,2026-01-01,Смешанный сегмент,3,0,0.0,39.48
+SER_001,Service / SMS / SER_001,Service,SMS,2025-02-24,2026-03-30,Смешанный сегмент,4,0,0.0,67.8
+SER_002,Service / Email / SER_002,Service,Email,2024-07-05,2026-02-08,Смешанный сегмент,5,0,0.0,52.26
+SER_002,Service / Push / SER_002,Service,Push,2024-05-14,2026-02-15,Смешанный сегмент,6,1,0.1667,80.86
+SER_002,Service / Retargeting / SER_002,Service,Retargeting,2024-11-27,2024-11-27,Смешанный сегмент,1,0,0.0,29.17
+SER_002,Service / SMS / SER_002,Service,SMS,2025-03-08,2026-02-09,Смешанный сегмент,3,0,0.0,35.91
+SER_003,Service / SMS / SER_003,Service,SMS,2025-03-27,2026-02-21,Смешанный сегмент,7,0,0.0,132.92
+SER_003,Service / Push / SER_003,Service,Push,2024-12-08,2026-03-15,Смешанный сегмент,6,0,0.0,105.52
+SER_003,Service / Retargeting / SER_003,Service,Retargeting,2024-06-30,2025-09-14,Смешанный сегмент,4,0,0.0,84.19
+SER_003,Service / Email / SER_003,Service,Email,2026-02-13,2026-03-28,Смешанный сегмент,2,0,0.0,38.48
+SER_003,Service / In-App / SER_003,Service,In-App,2025-01-19,2026-03-06,Смешанный сегмент,3,0,0.0,64.67
+SER_004,Service / Email / SER_004,Service,Email,2025-01-20,2026-03-27,Смешанный сегмент,4,0,0.0,75.05
+SER_004,Service / In-App / SER_004,Service,In-App,2024-11-17,2025-10-18,Смешанный сегмент,6,0,0.0,110.64
+SER_004,Service / Push / SER_004,Service,Push,2024-09-27,2026-03-24,Смешанный сегмент,8,1,0.125,79.52
+SER_004,Service / Retargeting / SER_004,Service,Retargeting,2025-11-16,2026-03-28,Смешанный сегмент,4,1,0.25,71.87
+SER_004,Service / SMS / SER_004,Service,SMS,2025-03-10,2026-02-28,Смешанный сегмент,5,0,0.0,91.25
+SER_005,Service / Push / SER_005,Service,Push,2024-07-29,2026-03-23,Смешанный сегмент,11,0,0.0,137.88
+SER_005,Service / SMS / SER_005,Service,SMS,2025-02-06,2026-02-23,Смешанный сегмент,3,0,0.0,60.59
+SER_005,Service / Retargeting / SER_005,Service,Retargeting,2025-05-23,2025-09-16,Смешанный сегмент,3,0,0.0,59.15
+SER_005,Service / In-App / SER_005,Service,In-App,2024-09-30,2026-02-10,Смешанный сегмент,5,0,0.0,82.52
+SER_005,Service / Email / SER_005,Service,Email,2025-09-27,2026-03-13,Смешанный сегмент,5,0,0.0,77.3
+SER_006,Service / Email / SER_006,Service,Email,2025-05-09,2026-03-22,Смешанный сегмент,8,0,0.0,133.74
+SER_006,Service / In-App / SER_006,Service,In-App,2025-11-08,2025-12-14,Смешанный сегмент,2,0,0.0,41.02
+SER_006,Service / Push / SER_006,Service,Push,2024-12-22,2026-03-21,Смешанный сегмент,9,0,0.0,192.99
+SER_006,Service / Retargeting / SER_006,Service,Retargeting,2024-11-15,2026-01-02,Смешанный сегмент,3,1,0.3333,46.0
+SER_006,Service / SMS / SER_006,Service,SMS,2025-02-23,2026-02-23,Смешанный сегмент,3,0,0.0,66.72
+SER_007,Service / SMS / SER_007,Service,SMS,2025-06-28,2025-06-28,Смешанный сегмент,1,0,0.0,28.15
+SER_007,Service / Retargeting / SER_007,Service,Retargeting,2026-01-24,2026-03-30,Смешанный сегмент,2,0,0.0,32.24
+SER_007,Service / In-App / SER_007,Service,In-App,2024-10-10,2026-03-03,Смешанный сегмент,6,1,0.1667,107.83
+SER_007,Service / Email / SER_007,Service,Email,2025-07-13,2026-02-03,Смешанный сегмент,4,0,0.0,59.82
+SER_007,Service / Push / SER_007,Service,Push,2024-10-10,2026-03-16,Смешанный сегмент,7,1,0.1429,132.9
+SER_008,Service / Email / SER_008,Service,Email,2024-12-30,2026-03-22,Смешанный сегмент,4,0,0.0,51.26
+SER_008,Service / In-App / SER_008,Service,In-App,2025-09-01,2026-03-17,Смешанный сегмент,2,0,0.0,49.58
+SER_008,Service / Push / SER_008,Service,Push,2024-03-07,2026-03-05,Смешанный сегмент,14,0,0.0,188.21
+SER_008,Service / Retargeting / SER_008,Service,Retargeting,2025-03-17,2026-03-01,Смешанный сегмент,2,1,0.5,54.73
+SER_008,Service / SMS / SER_008,Service,SMS,2026-02-17,2026-03-29,Смешанный сегмент,3,0,0.0,45.89
+SER_009,Service / Email / SER_009,Service,Email,2024-08-23,2026-01-31,Смешанный сегмент,2,0,0.0,14.46
+SER_009,Service / In-App / SER_009,Service,In-App,2024-07-18,2026-03-29,Смешанный сегмент,8,0,0.0,84.07
+SER_009,Service / Push / SER_009,Service,Push,2025-04-01,2026-03-12,Смешанный сегмент,7,1,0.1429,123.34
+SER_009,Service / Retargeting / SER_009,Service,Retargeting,2024-11-15,2026-03-24,Смешанный сегмент,6,0,0.0,154.18
+SER_009,Service / SMS / SER_009,Service,SMS,2024-10-27,2026-03-26,Смешанный сегмент,3,0,0.0,44.11
+SER_010,Service / SMS / SER_010,Service,SMS,2024-07-21,2026-03-18,Смешанный сегмент,5,1,0.2,60.12
+SER_010,Service / Push / SER_010,Service,Push,2024-10-09,2026-02-13,Смешанный сегмент,7,0,0.0,123.23
+SER_010,Service / Retargeting / SER_010,Service,Retargeting,2024-05-08,2025-12-20,Смешанный сегмент,4,0,0.0,81.21
+SER_010,Service / Email / SER_010,Service,Email,2025-05-26,2026-01-29,Смешанный сегмент,6,0,0.0,88.0
+SER_010,Service / In-App / SER_010,Service,In-App,2025-01-03,2026-03-28,Смешанный сегмент,6,0,0.0,112.84
+SER_011,Service / Email / SER_011,Service,Email,2025-03-30,2026-01-11,Смешанный сегмент,5,1,0.2,98.4
+SER_011,Service / In-App / SER_011,Service,In-App,2024-11-20,2026-03-08,Смешанный сегмент,5,0,0.0,101.67
+SER_011,Service / Push / SER_011,Service,Push,2024-08-23,2026-02-18,Смешанный сегмент,12,0,0.0,190.15
+SER_011,Service / Retargeting / SER_011,Service,Retargeting,2025-07-29,2026-03-13,Смешанный сегмент,5,1,0.2,83.54
+SER_011,Service / SMS / SER_011,Service,SMS,2026-03-20,2026-03-20,Смешанный сегмент,1,0,0.0,31.38
+SER_012,Service / In-App / SER_012,Service,In-App,2024-10-06,2026-03-17,Смешанный сегмент,4,0,0.0,66.77
+SER_012,Service / Email / SER_012,Service,Email,2025-07-29,2026-03-05,Смешанный сегмент,4,0,0.0,63.95
+SER_012,Service / Push / SER_012,Service,Push,2024-03-19,2026-03-18,Смешанный сегмент,8,0,0.0,166.36
+SER_012,Service / Retargeting / SER_012,Service,Retargeting,2024-10-09,2026-02-24,Смешанный сегмент,3,0,0.0,34.78
+SER_012,Service / SMS / SER_012,Service,SMS,2025-05-08,2026-02-13,Смешанный сегмент,3,0,0.0,83.4
+SER_013,Service / Push / SER_013,Service,Push,2025-06-07,2026-03-22,Смешанный сегмент,7,1,0.1429,108.06
+SER_013,Service / Retargeting / SER_013,Service,Retargeting,2024-09-17,2024-09-17,Смешанный сегмент,1,0,0.0,9.07
+SER_013,Service / Email / SER_013,Service,Email,2024-09-13,2025-12-30,Смешанный сегмент,5,0,0.0,86.25
+SER_013,Service / In-App / SER_013,Service,In-App,2024-08-10,2025-07-17,Смешанный сегмент,4,0,0.0,56.29
+SER_013,Service / SMS / SER_013,Service,SMS,2026-02-13,2026-02-13,Смешанный сегмент,1,0,0.0,4.06
+SER_014,Service / SMS / SER_014,Service,SMS,2025-04-22,2026-03-29,Смешанный сегмент,4,1,0.25,114.86
+SER_014,Service / Retargeting / SER_014,Service,Retargeting,2024-12-03,2025-10-02,Смешанный сегмент,3,0,0.0,57.42
+SER_014,Service / Push / SER_014,Service,Push,2025-04-24,2026-02-09,Смешанный сегмент,9,1,0.1111,93.0
+SER_014,Service / In-App / SER_014,Service,In-App,2026-02-04,2026-02-04,Смешанный сегмент,1,0,0.0,12.59
+SER_014,Service / Email / SER_014,Service,Email,2025-03-19,2026-02-02,Смешанный сегмент,3,0,0.0,54.97
+SER_015,Service / Email / SER_015,Service,Email,2024-12-03,2026-03-29,Смешанный сегмент,15,0,0.0,263.66
+SER_015,Service / In-App / SER_015,Service,In-App,2025-11-03,2025-11-03,Смешанный сегмент,1,0,0.0,6.0
+SER_015,Service / Push / SER_015,Service,Push,2024-10-06,2026-03-21,Смешанный сегмент,10,0,0.0,178.68
+SER_015,Service / Retargeting / SER_015,Service,Retargeting,2024-09-28,2025-11-14,Смешанный сегмент,4,0,0.0,84.41
+SER_015,Service / SMS / SER_015,Service,SMS,2025-11-29,2025-11-29,Смешанный сегмент,1,0,0.0,27.16
+SER_016,Service / Email / SER_016,Service,Email,2025-01-14,2026-03-30,Смешанный сегмент,8,1,0.125,129.12
+SER_016,Service / In-App / SER_016,Service,In-App,2024-07-19,2026-03-30,Смешанный сегмент,5,1,0.2,103.82
+SER_016,Service / Push / SER_016,Service,Push,2025-01-23,2026-03-08,Смешанный сегмент,5,0,0.0,73.46
+SER_016,Service / Retargeting / SER_016,Service,Retargeting,2025-06-16,2026-01-07,Смешанный сегмент,2,0,0.0,46.72
+SER_016,Service / SMS / SER_016,Service,SMS,2026-03-09,2026-03-09,Смешанный сегмент,1,0,0.0,20.38
+SER_017,Service / Retargeting / SER_017,Service,Retargeting,2025-02-03,2025-11-23,Смешанный сегмент,4,0,0.0,76.78
+SER_017,Service / Push / SER_017,Service,Push,2024-09-05,2026-03-04,Смешанный сегмент,14,0,0.0,191.63
+SER_017,Service / SMS / SER_017,Service,SMS,2024-12-04,2026-01-29,Смешанный сегмент,3,0,0.0,44.82
+SER_017,Service / Email / SER_017,Service,Email,2025-09-07,2026-03-29,Смешанный сегмент,7,0,0.0,133.97
+SER_017,Service / In-App / SER_017,Service,In-App,2024-12-11,2026-02-17,Смешанный сегмент,6,0,0.0,141.12
+SER_018,Service / Email / SER_018,Service,Email,2025-12-20,2026-03-23,Смешанный сегмент,2,0,0.0,28.8
+SER_018,Service / In-App / SER_018,Service,In-App,2025-02-09,2026-01-21,Смешанный сегмент,3,0,0.0,26.14
+SER_018,Service / Push / SER_018,Service,Push,2024-12-14,2026-03-18,Смешанный сегмент,11,1,0.0909,168.12
+SER_018,Service / Retargeting / SER_018,Service,Retargeting,2025-04-11,2025-04-11,Смешанный сегмент,1,0,0.0,2.62
+SER_019,Service / SMS / SER_019,Service,SMS,2026-01-02,2026-02-18,Смешанный сегмент,2,0,0.0,48.19
+SER_019,Service / Retargeting / SER_019,Service,Retargeting,2024-10-08,2026-03-29,Смешанный сегмент,6,0,0.0,90.55
+SER_019,Service / Push / SER_019,Service,Push,2025-05-02,2026-03-26,Смешанный сегмент,12,1,0.0833,204.72
+SER_019,Service / Email / SER_019,Service,Email,2025-02-17,2026-03-20,Смешанный сегмент,6,0,0.0,94.81
+SER_019,Service / In-App / SER_019,Service,In-App,2025-01-02,2026-03-27,Смешанный сегмент,8,1,0.125,159.37
+SER_020,Service / Email / SER_020,Service,Email,2024-04-13,2026-02-10,Смешанный сегмент,4,0,0.0,89.04
+SER_020,Service / In-App / SER_020,Service,In-App,2025-02-21,2026-03-06,Смешанный сегмент,4,0,0.0,40.01
+SER_020,Service / Push / SER_020,Service,Push,2025-04-04,2026-02-12,Смешанный сегмент,7,0,0.0,129.07
+SER_020,Service / Retargeting / SER_020,Service,Retargeting,2024-12-04,2026-03-24,Смешанный сегмент,5,0,0.0,102.33
+SER_020,Service / SMS / SER_020,Service,SMS,2025-02-03,2026-03-21,Смешанный сегмент,5,0,0.0,50.05
+SER_021,Service / Retargeting / SER_021,Service,Retargeting,2025-12-25,2026-03-23,Смешанный сегмент,2,0,0.0,28.82
+SER_021,Service / Push / SER_021,Service,Push,2024-12-10,2026-03-30,Смешанный сегмент,9,0,0.0,128.34
+SER_021,Service / SMS / SER_021,Service,SMS,2025-07-27,2025-11-18,Смешанный сегмент,2,0,0.0,36.76
+SER_021,Service / Email / SER_021,Service,Email,2025-02-03,2026-03-22,Смешанный сегмент,4,0,0.0,32.62
+SER_021,Service / In-App / SER_021,Service,In-App,2025-06-21,2025-10-14,Смешанный сегмент,2,0,0.0,41.37
+SER_022,Service / Email / SER_022,Service,Email,2025-08-16,2026-03-28,Смешанный сегмент,5,0,0.0,104.14
+SER_022,Service / In-App / SER_022,Service,In-App,2025-08-22,2026-03-02,Смешанный сегмент,4,0,0.0,97.57
+SER_022,Service / Push / SER_022,Service,Push,2024-08-04,2026-03-16,Смешанный сегмент,15,0,0.0,177.52
+SER_022,Service / Retargeting / SER_022,Service,Retargeting,2025-07-14,2026-03-04,Смешанный сегмент,4,1,0.25,80.65
+SER_022,Service / SMS / SER_022,Service,SMS,2025-03-02,2025-08-25,Смешанный сегмент,3,0,0.0,80.36
+SER_023,Service / SMS / SER_023,Service,SMS,2025-05-13,2026-03-11,Смешанный сегмент,4,0,0.0,34.4
+SER_023,Service / Retargeting / SER_023,Service,Retargeting,2025-01-11,2025-01-24,Смешанный сегмент,2,0,0.0,43.73
+SER_023,Service / Email / SER_023,Service,Email,2024-08-31,2026-03-27,Смешанный сегмент,8,0,0.0,92.96
+SER_023,Service / In-App / SER_023,Service,In-App,2024-12-22,2025-11-13,Смешанный сегмент,5,0,0.0,80.07
+SER_023,Service / Push / SER_023,Service,Push,2024-07-31,2026-03-16,Смешанный сегмент,8,0,0.0,135.4
+SER_024,Service / Email / SER_024,Service,Email,2024-01-01,2025-12-12,Смешанный сегмент,3,0,0.0,72.83
+SER_024,Service / In-App / SER_024,Service,In-App,2025-01-31,2025-11-17,Смешанный сегмент,3,0,0.0,44.53
+SER_024,Service / Push / SER_024,Service,Push,2025-06-23,2026-03-14,Смешанный сегмент,7,1,0.1429,72.88
+SER_024,Service / Retargeting / SER_024,Service,Retargeting,2025-02-20,2025-11-30,Смешанный сегмент,6,1,0.1667,71.97
+SER_024,Service / SMS / SER_024,Service,SMS,2024-11-08,2025-10-24,Смешанный сегмент,5,0,0.0,72.39
+SER_025,Service / Retargeting / SER_025,Service,Retargeting,2025-08-25,2025-08-25,Смешанный сегмент,1,0,0.0,27.14
+SER_025,Service / SMS / SER_025,Service,SMS,2025-01-19,2026-02-08,Смешанный сегмент,3,0,0.0,18.35
+SER_025,Service / In-App / SER_025,Service,In-App,2026-01-11,2026-03-06,Смешанный сегмент,7,0,0.0,157.43
+SER_025,Service / Email / SER_025,Service,Email,2025-01-25,2026-01-10,Смешанный сегмент,4,0,0.0,74.06
+SER_025,Service / Push / SER_025,Service,Push,2024-08-06,2026-01-18,Смешанный сегмент,11,0,0.0,142.93
+SER_026,Service / Email / SER_026,Service,Email,2025-03-24,2025-11-18,Смешанный сегмент,4,0,0.0,35.7
+SER_026,Service / In-App / SER_026,Service,In-App,2025-11-30,2026-03-17,Смешанный сегмент,2,0,0.0,40.96
+SER_026,Service / Push / SER_026,Service,Push,2024-06-21,2026-03-20,Смешанный сегмент,15,0,0.0,259.78
+SER_026,Service / Retargeting / SER_026,Service,Retargeting,2025-09-24,2026-03-28,Смешанный сегмент,4,0,0.0,41.62
+SER_026,Service / SMS / SER_026,Service,SMS,2025-07-12,2026-02-26,Смешанный сегмент,2,0,0.0,22.39
+SER_027,Service / SMS / SER_027,Service,SMS,2026-03-26,2026-03-26,Смешанный сегмент,1,0,0.0,4.9
+SER_027,Service / Retargeting / SER_027,Service,Retargeting,2025-12-31,2026-01-28,Смешанный сегмент,2,0,0.0,29.25
+SER_027,Service / In-App / SER_027,Service,In-App,2025-09-18,2025-12-10,Смешанный сегмент,2,0,0.0,26.79
+SER_027,Service / Email / SER_027,Service,Email,2024-12-07,2026-03-09,Смешанный сегмент,5,0,0.0,104.66
+SER_027,Service / Push / SER_027,Service,Push,2024-11-01,2026-03-19,Смешанный сегмент,16,0,0.0,246.08
+SER_028,Service / Email / SER_028,Service,Email,2025-02-07,2026-02-14,Смешанный сегмент,4,0,0.0,34.29
+SER_028,Service / In-App / SER_028,Service,In-App,2025-05-20,2026-02-03,Смешанный сегмент,3,0,0.0,40.65
+SER_028,Service / Push / SER_028,Service,Push,2024-02-28,2026-01-27,Смешанный сегмент,6,0,0.0,129.38
+SER_028,Service / Retargeting / SER_028,Service,Retargeting,2025-01-25,2026-03-31,Смешанный сегмент,4,1,0.25,64.24
+SER_029,Service / Retargeting / SER_029,Service,Retargeting,2025-02-27,2026-01-09,Смешанный сегмент,4,0,0.0,45.91
+SER_029,Service / Push / SER_029,Service,Push,2024-04-08,2026-03-21,Смешанный сегмент,12,0,0.0,172.28
+SER_029,Service / In-App / SER_029,Service,In-App,2025-03-03,2026-02-02,Смешанный сегмент,7,0,0.0,125.72
+SER_029,Service / Email / SER_029,Service,Email,2025-02-08,2026-03-22,Смешанный сегмент,8,1,0.125,121.57
+SER_030,Service / Email / SER_030,Service,Email,2024-09-24,2026-03-29,Смешанный сегмент,5,0,0.0,55.42
+SER_030,Service / Push / SER_030,Service,Push,2025-04-26,2026-03-30,Смешанный сегмент,12,0,0.0,194.28
+SER_030,Service / Retargeting / SER_030,Service,Retargeting,2024-07-28,2025-12-21,Смешанный сегмент,2,0,0.0,45.84
+SER_030,Service / SMS / SER_030,Service,SMS,2025-09-30,2025-09-30,Смешанный сегмент,1,0,0.0,15.06
+SER_031,Service / SMS / SER_031,Service,SMS,2025-03-09,2025-07-01,Смешанный сегмент,3,0,0.0,43.22
+SER_031,Service / Push / SER_031,Service,Push,2024-10-21,2026-02-21,Смешанный сегмент,16,1,0.0625,321.85
+SER_031,Service / Retargeting / SER_031,Service,Retargeting,2024-11-20,2026-02-22,Смешанный сегмент,3,0,0.0,73.26
+SER_031,Service / Email / SER_031,Service,Email,2024-11-28,2025-09-26,Смешанный сегмент,2,0,0.0,27.11
+SER_031,Service / In-App / SER_031,Service,In-App,2025-10-11,2025-10-24,Смешанный сегмент,2,0,0.0,45.37
+SER_032,Service / Email / SER_032,Service,Email,2025-02-23,2025-06-07,Смешанный сегмент,3,0,0.0,50.75
+SER_032,Service / In-App / SER_032,Service,In-App,2025-01-08,2026-03-16,Смешанный сегмент,9,0,0.0,149.2
+SER_032,Service / Push / SER_032,Service,Push,2024-04-21,2026-03-19,Смешанный сегмент,8,0,0.0,170.34
+SER_032,Service / Retargeting / SER_032,Service,Retargeting,2024-12-16,2026-01-09,Смешанный сегмент,3,0,0.0,38.8
+SER_032,Service / SMS / SER_032,Service,SMS,2025-06-10,2026-03-19,Смешанный сегмент,3,0,0.0,65.45
+SER_033,Service / SMS / SER_033,Service,SMS,2025-02-18,2025-02-18,Смешанный сегмент,1,1,1.0,31.35
+SER_033,Service / Retargeting / SER_033,Service,Retargeting,2024-07-11,2026-03-22,Смешанный сегмент,5,0,0.0,65.49
+SER_033,Service / Email / SER_033,Service,Email,2025-04-04,2026-03-18,Смешанный сегмент,5,0,0.0,95.07
+SER_033,Service / In-App / SER_033,Service,In-App,2025-01-26,2026-03-09,Смешанный сегмент,6,0,0.0,78.02
+SER_033,Service / Push / SER_033,Service,Push,2025-05-03,2026-01-09,Смешанный сегмент,7,0,0.0,120.4
+SER_034,Service / Email / SER_034,Service,Email,2024-12-26,2026-01-07,Смешанный сегмент,6,0,0.0,112.12
+SER_034,Service / In-App / SER_034,Service,In-App,2025-10-12,2026-03-04,Смешанный сегмент,5,1,0.2,80.53
+SER_034,Service / Push / SER_034,Service,Push,2024-12-17,2026-03-30,Смешанный сегмент,8,0,0.0,140.2
+SER_034,Service / Retargeting / SER_034,Service,Retargeting,2024-09-07,2026-03-10,Смешанный сегмент,6,0,0.0,114.8
+SER_034,Service / SMS / SER_034,Service,SMS,2025-01-06,2026-03-29,Смешанный сегмент,3,0,0.0,46.88
+SER_035,Service / Email / SER_035,Service,Email,2025-03-31,2026-03-23,Смешанный сегмент,7,1,0.1429,144.56
+SER_035,Service / In-App / SER_035,Service,In-App,2026-03-28,2026-03-28,Смешанный сегмент,1,0,0.0,8.04
+SER_035,Service / Push / SER_035,Service,Push,2025-01-07,2026-03-30,Смешанный сегмент,9,0,0.0,169.06
+SER_035,Service / Retargeting / SER_035,Service,Retargeting,2025-04-26,2026-02-26,Смешанный сегмент,4,0,0.0,71.44
+SER_035,Service / SMS / SER_035,Service,SMS,2024-11-03,2025-01-19,Смешанный сегмент,2,0,0.0,16.21
+SER_036,Service / Retargeting / SER_036,Service,Retargeting,2025-10-29,2026-03-14,Смешанный сегмент,3,0,0.0,36.05
+SER_036,Service / Push / SER_036,Service,Push,2024-05-28,2026-02-27,Смешанный сегмент,10,0,0.0,217.88
+SER_036,Service / SMS / SER_036,Service,SMS,2025-10-29,2026-02-04,Смешанный сегмент,3,0,0.0,65.09
+SER_036,Service / Email / SER_036,Service,Email,2025-01-18,2026-03-02,Смешанный сегмент,8,0,0.0,155.31
+SER_036,Service / In-App / SER_036,Service,In-App,2025-05-10,2026-01-10,Смешанный сегмент,5,1,0.2,53.94
+SER_037,Service / Email / SER_037,Service,Email,2024-09-29,2026-03-21,Смешанный сегмент,6,0,0.0,103.17
+SER_037,Service / In-App / SER_037,Service,In-App,2024-08-30,2026-01-25,Смешанный сегмент,6,1,0.1667,98.48
+SER_037,Service / Push / SER_037,Service,Push,2024-02-27,2026-02-27,Смешанный сегмент,7,0,0.0,77.61
+SER_037,Service / Retargeting / SER_037,Service,Retargeting,2025-04-30,2026-01-22,Смешанный сегмент,4,0,0.0,82.24
+SER_037,Service / SMS / SER_037,Service,SMS,2025-07-05,2025-12-10,Смешанный сегмент,5,0,0.0,99.07
+SER_038,Service / Email / SER_038,Service,Email,2024-08-05,2026-01-02,Смешанный сегмент,3,0,0.0,41.13
+SER_038,Service / Push / SER_038,Service,Push,2025-01-12,2026-03-11,Смешанный сегмент,4,0,0.0,48.88
+SER_038,Service / Retargeting / SER_038,Service,Retargeting,2024-09-23,2026-03-16,Смешанный сегмент,5,0,0.0,64.69
+SER_038,Service / In-App / SER_038,Service,In-App,2024-06-12,2026-03-19,Смешанный сегмент,4,0,0.0,94.1
+SER_039,Service / Email / SER_039,Service,Email,2024-06-27,2026-03-16,Смешанный сегмент,9,0,0.0,137.02
+SER_039,Service / In-App / SER_039,Service,In-App,2025-08-16,2026-01-09,Смешанный сегмент,7,0,0.0,153.89
+SER_039,Service / Push / SER_039,Service,Push,2025-01-12,2025-07-26,Смешанный сегмент,5,0,0.0,71.69
+SER_039,Service / Retargeting / SER_039,Service,Retargeting,2025-09-01,2025-09-01,Смешанный сегмент,1,0,0.0,23.9
+SER_039,Service / SMS / SER_039,Service,SMS,2024-08-07,2026-03-09,Смешанный сегмент,3,0,0.0,61.89
+SUB_001,Subscription / Push / SUB_001,Subscription,Push,2024-11-17,2026-02-18,Смешанный сегмент,6,0,0.0,103.55
+SUB_001,Subscription / Retargeting / SUB_001,Subscription,Retargeting,2026-01-10,2026-02-12,Смешанный сегмент,3,1,0.3333,36.84
+SUB_001,Subscription / In-App / SUB_001,Subscription,In-App,2024-11-18,2026-03-23,Смешанный сегмент,5,0,0.0,67.8
+SUB_001,Subscription / Email / SUB_001,Subscription,Email,2025-05-21,2026-01-25,Смешанный сегмент,5,0,0.0,36.89
+SUB_002,Subscription / Email / SUB_002,Subscription,Email,2024-11-21,2026-03-15,Смешанный сегмент,5,0,0.0,95.22
+SUB_002,Subscription / In-App / SUB_002,Subscription,In-App,2024-07-19,2026-03-06,Смешанный сегмент,6,0,0.0,89.46
+SUB_002,Subscription / Push / SUB_002,Subscription,Push,2024-06-26,2026-03-24,Смешанный сегмент,14,0,0.0,233.0
+SUB_002,Subscription / Retargeting / SUB_002,Subscription,Retargeting,2024-07-16,2024-07-16,Смешанный сегмент,1,0,0.0,20.92
+SUB_002,Subscription / SMS / SUB_002,Subscription,SMS,2025-06-11,2026-03-21,Смешанный сегмент,4,0,0.0,53.34
+SUB_003,Subscription / Push / SUB_003,Subscription,Push,2025-03-25,2026-03-31,Смешанный сегмент,9,0,0.0,135.18
+SUB_003,Subscription / Email / SUB_003,Subscription,Email,2025-07-30,2026-02-23,Смешанный сегмент,6,0,0.0,123.81
+SUB_003,Subscription / In-App / SUB_003,Subscription,In-App,2025-04-07,2026-03-15,Смешанный сегмент,5,0,0.0,49.41
+SUB_003,Subscription / Retargeting / SUB_003,Subscription,Retargeting,2025-05-09,2026-02-17,Смешанный сегмент,2,0,0.0,23.68
+SUB_003,Subscription / SMS / SUB_003,Subscription,SMS,2026-03-09,2026-03-09,Смешанный сегмент,1,0,0.0,5.26
+SUB_004,Subscription / Email / SUB_004,Subscription,Email,2024-10-27,2026-03-05,Смешанный сегмент,3,0,0.0,37.81
+SUB_004,Subscription / In-App / SUB_004,Subscription,In-App,2024-08-04,2025-10-21,Смешанный сегмент,3,0,0.0,28.07
+SUB_004,Subscription / Push / SUB_004,Subscription,Push,2024-10-08,2026-03-24,Смешанный сегмент,8,0,0.0,149.82
+SUB_004,Subscription / SMS / SUB_004,Subscription,SMS,2024-12-10,2025-08-03,Смешанный сегмент,3,0,0.0,44.17
+SUB_005,Subscription / Retargeting / SUB_005,Subscription,Retargeting,2025-10-13,2025-12-14,Смешанный сегмент,3,0,0.0,47.71
+SUB_005,Subscription / Push / SUB_005,Subscription,Push,2024-06-16,2026-03-27,Смешанный сегмент,11,1,0.0909,172.06
+SUB_005,Subscription / SMS / SUB_005,Subscription,SMS,2024-02-27,2026-03-11,Смешанный сегмент,5,0,0.0,80.6
+SUB_005,Subscription / Email / SUB_005,Subscription,Email,2025-01-16,2026-03-28,Смешанный сегмент,9,0,0.0,150.68
+SUB_005,Subscription / In-App / SUB_005,Subscription,In-App,2024-08-09,2026-03-22,Смешанный сегмент,5,0,0.0,97.11
+SUB_006,Subscription / Email / SUB_006,Subscription,Email,2025-02-27,2026-02-25,Смешанный сегмент,3,0,0.0,17.13
+SUB_006,Subscription / In-App / SUB_006,Subscription,In-App,2024-09-28,2026-03-17,Смешанный сегмент,8,0,0.0,108.08
+SUB_006,Subscription / Push / SUB_006,Subscription,Push,2024-06-26,2026-03-11,Смешанный сегмент,11,1,0.0909,205.21
+SUB_006,Subscription / Retargeting / SUB_006,Subscription,Retargeting,2025-01-22,2026-01-16,Смешанный сегмент,3,0,0.0,55.79
+SUB_006,Subscription / SMS / SUB_006,Subscription,SMS,2024-07-31,2026-03-12,Смешанный сегмент,4,0,0.0,67.24
+SUB_007,Subscription / SMS / SUB_007,Subscription,SMS,2024-08-26,2025-07-27,Смешанный сегмент,2,0,0.0,37.21
+SUB_007,Subscription / Retargeting / SUB_007,Subscription,Retargeting,2025-07-10,2025-08-08,Смешанный сегмент,2,0,0.0,23.37
+SUB_007,Subscription / Email / SUB_007,Subscription,Email,2024-10-11,2026-02-28,Смешанный сегмент,4,0,0.0,60.36
+SUB_007,Subscription / In-App / SUB_007,Subscription,In-App,2024-05-30,2026-03-22,Смешанный сегмент,10,0,0.0,146.05
+SUB_007,Subscription / Push / SUB_007,Subscription,Push,2024-08-18,2026-03-05,Смешанный сегмент,10,1,0.1,162.54
+SUB_008,Subscription / Email / SUB_008,Subscription,Email,2025-06-25,2026-03-22,Смешанный сегмент,7,0,0.0,126.06
+SUB_008,Subscription / In-App / SUB_008,Subscription,In-App,2025-09-26,2025-12-05,Смешанный сегмент,3,0,0.0,40.03
+SUB_008,Subscription / Push / SUB_008,Subscription,Push,2025-04-07,2026-03-27,Смешанный сегмент,11,1,0.0909,157.02
+SUB_008,Subscription / Retargeting / SUB_008,Subscription,Retargeting,2024-08-09,2026-01-01,Смешанный сегмент,4,0,0.0,62.04
+SUB_008,Subscription / SMS / SUB_008,Subscription,SMS,2024-08-25,2026-03-11,Смешанный сегмент,3,0,0.0,47.88
+SUB_009,Subscription / Push / SUB_009,Subscription,Push,2024-12-22,2026-02-20,Смешанный сегмент,9,0,0.0,138.45
+SUB_009,Subscription / SMS / SUB_009,Subscription,SMS,2024-09-10,2024-09-10,Смешанный сегмент,1,0,0.0,2.77
+SUB_009,Subscription / In-App / SUB_009,Subscription,In-App,2025-07-28,2025-07-29,Смешанный сегмент,2,0,0.0,29.82
+SUB_009,Subscription / Email / SUB_009,Subscription,Email,2024-11-10,2026-03-14,Смешанный сегмент,8,0,0.0,165.07
+SUB_010,Subscription / Email / SUB_010,Subscription,Email,2024-07-24,2026-03-31,Смешанный сегмент,6,0,0.0,77.29
+SUB_010,Subscription / In-App / SUB_010,Subscription,In-App,2025-06-23,2026-02-22,Смешанный сегмент,8,0,0.0,164.66
+SUB_010,Subscription / Push / SUB_010,Subscription,Push,2024-05-19,2026-03-21,Смешанный сегмент,9,0,0.0,142.17
+SUB_010,Subscription / Retargeting / SUB_010,Subscription,Retargeting,2025-04-22,2026-03-09,Смешанный сегмент,3,0,0.0,60.77
+SUB_010,Subscription / SMS / SUB_010,Subscription,SMS,2024-03-22,2025-06-11,Смешанный сегмент,3,1,0.3333,40.97
+SUB_011,Subscription / Push / SUB_011,Subscription,Push,2025-04-24,2026-03-31,Смешанный сегмент,10,0,0.0,149.87
+SUB_011,Subscription / Email / SUB_011,Subscription,Email,2025-10-24,2026-03-18,Смешанный сегмент,7,1,0.1429,94.51
+SUB_011,Subscription / In-App / SUB_011,Subscription,In-App,2025-12-03,2026-02-27,Смешанный сегмент,3,0,0.0,24.5
+SUB_011,Subscription / Retargeting / SUB_011,Subscription,Retargeting,2026-01-16,2026-03-29,Смешанный сегмент,3,0,0.0,55.7
+SUB_011,Subscription / SMS / SUB_011,Subscription,SMS,2024-05-28,2026-02-05,Смешанный сегмент,6,0,0.0,113.35
+SUB_012,Subscription / Email / SUB_012,Subscription,Email,2025-06-11,2026-02-03,Смешанный сегмент,5,0,0.0,98.05
+SUB_012,Subscription / In-App / SUB_012,Subscription,In-App,2024-12-11,2026-03-19,Смешанный сегмент,5,0,0.0,104.58
+SUB_012,Subscription / Push / SUB_012,Subscription,Push,2025-05-03,2026-03-27,Смешанный сегмент,6,0,0.0,115.55
+SUB_012,Subscription / Retargeting / SUB_012,Subscription,Retargeting,2024-11-04,2026-02-25,Смешанный сегмент,3,0,0.0,45.07
+SUB_012,Subscription / SMS / SUB_012,Subscription,SMS,2025-02-28,2026-01-18,Смешанный сегмент,3,0,0.0,21.42
+SUB_013,Subscription / SMS / SUB_013,Subscription,SMS,2025-08-15,2026-03-17,Смешанный сегмент,4,0,0.0,72.65
+SUB_013,Subscription / Retargeting / SUB_013,Subscription,Retargeting,2025-02-01,2026-01-27,Смешанный сегмент,4,0,0.0,81.44
+SUB_013,Subscription / Email / SUB_013,Subscription,Email,2024-04-02,2026-03-21,Смешанный сегмент,5,0,0.0,84.35
+SUB_013,Subscription / In-App / SUB_013,Subscription,In-App,2024-11-13,2026-01-31,Смешанный сегмент,6,0,0.0,109.3
+SUB_013,Subscription / Push / SUB_013,Subscription,Push,2025-01-06,2026-03-04,Смешанный сегмент,5,0,0.0,106.6
+SUB_014,Subscription / Email / SUB_014,Subscription,Email,2024-11-15,2026-03-26,Смешанный сегмент,8,0,0.0,102.17
+SUB_014,Subscription / In-App / SUB_014,Subscription,In-App,2025-03-18,2026-03-13,Смешанный сегмент,4,0,0.0,67.38
+SUB_014,Subscription / Push / SUB_014,Subscription,Push,2024-10-12,2026-03-21,Смешанный сегмент,12,0,0.0,204.67
+SUB_014,Subscription / Retargeting / SUB_014,Subscription,Retargeting,2025-02-04,2026-03-19,Смешанный сегмент,5,0,0.0,90.56
+SUB_014,Subscription / SMS / SUB_014,Subscription,SMS,2025-04-03,2025-07-31,Смешанный сегмент,2,0,0.0,15.45
+SUB_015,Subscription / Email / SUB_015,Subscription,Email,2025-06-25,2026-03-26,Смешанный сегмент,5,0,0.0,69.3
+SUB_015,Subscription / In-App / SUB_015,Subscription,In-App,2024-11-23,2026-03-30,Смешанный сегмент,7,1,0.1429,124.73
+SUB_015,Subscription / Push / SUB_015,Subscription,Push,2024-07-30,2026-03-30,Смешанный сегмент,16,1,0.0625,214.12
+SUB_015,Subscription / Retargeting / SUB_015,Subscription,Retargeting,2025-01-19,2026-03-21,Смешанный сегмент,5,0,0.0,43.05
+SUB_015,Subscription / SMS / SUB_015,Subscription,SMS,2024-06-04,2026-03-27,Смешанный сегмент,6,0,0.0,138.64
+SUB_016,Subscription / Retargeting / SUB_016,Subscription,Retargeting,2025-02-03,2026-02-20,Смешанный сегмент,4,0,0.0,68.1
+SUB_016,Subscription / Push / SUB_016,Subscription,Push,2024-08-25,2026-03-30,Смешанный сегмент,9,0,0.0,130.31
+SUB_016,Subscription / SMS / SUB_016,Subscription,SMS,2024-09-28,2026-02-07,Смешанный сегмент,9,1,0.1111,153.97
+SUB_016,Subscription / Email / SUB_016,Subscription,Email,2024-09-22,2026-03-06,Смешанный сегмент,7,0,0.0,138.8
+SUB_016,Subscription / In-App / SUB_016,Subscription,In-App,2025-10-11,2026-02-03,Смешанный сегмент,3,0,0.0,29.36
+SUB_017,Subscription / Email / SUB_017,Subscription,Email,2025-07-05,2025-07-05,Смешанный сегмент,1,0,0.0,3.29
+SUB_017,Subscription / In-App / SUB_017,Subscription,In-App,2024-04-05,2026-03-03,Смешанный сегмент,7,2,0.2857,113.81
+SUB_017,Subscription / Push / SUB_017,Subscription,Push,2024-07-04,2026-03-28,Смешанный сегмент,14,1,0.0714,147.78
+SUB_017,Subscription / Retargeting / SUB_017,Subscription,Retargeting,2026-01-28,2026-01-28,Смешанный сегмент,1,0,0.0,22.83
+SUB_017,Subscription / SMS / SUB_017,Subscription,SMS,2024-06-26,2025-12-13,Смешанный сегмент,5,1,0.2,60.49
+SUB_018,Subscription / SMS / SUB_018,Subscription,SMS,2025-01-26,2025-12-27,Смешанный сегмент,3,0,0.0,54.14
+SUB_018,Subscription / Retargeting / SUB_018,Subscription,Retargeting,2025-02-18,2025-07-05,Смешанный сегмент,4,0,0.0,57.29
+SUB_018,Subscription / Push / SUB_018,Subscription,Push,2024-12-21,2026-03-18,Смешанный сегмент,5,1,0.2,66.21
+SUB_018,Subscription / Email / SUB_018,Subscription,Email,2025-01-29,2026-03-29,Смешанный сегмент,9,0,0.0,151.85
+SUB_018,Subscription / In-App / SUB_018,Subscription,In-App,2024-02-15,2026-03-27,Смешанный сегмент,6,0,0.0,141.26
+SUB_019,Subscription / Email / SUB_019,Subscription,Email,2024-09-02,2026-01-29,Смешанный сегмент,6,0,0.0,134.4
+SUB_019,Subscription / In-App / SUB_019,Subscription,In-App,2025-11-22,2025-11-22,Смешанный сегмент,1,0,0.0,1.04
+SUB_019,Subscription / Push / SUB_019,Subscription,Push,2024-07-26,2026-01-19,Смешанный сегмент,5,0,0.0,74.62
+SUB_019,Subscription / Retargeting / SUB_019,Subscription,Retargeting,2025-06-25,2026-01-26,Смешанный сегмент,4,0,0.0,78.68
+SUB_019,Subscription / SMS / SUB_019,Subscription,SMS,2024-03-21,2026-03-04,Смешанный сегмент,5,0,0.0,93.63
+SUB_020,Subscription / SMS / SUB_020,Subscription,SMS,2026-03-10,2026-03-10,Смешанный сегмент,1,0,0.0,21.52
+SUB_020,Subscription / Retargeting / SUB_020,Subscription,Retargeting,2024-11-08,2026-03-06,Смешанный сегмент,6,0,0.0,106.35
+SUB_020,Subscription / Push / SUB_020,Subscription,Push,2024-11-17,2026-03-14,Смешанный сегмент,8,0,0.0,120.26
+SUB_020,Subscription / Email / SUB_020,Subscription,Email,2024-05-26,2025-12-07,Смешанный сегмент,5,0,0.0,80.16
+SUB_020,Subscription / In-App / SUB_020,Subscription,In-App,2024-09-21,2026-03-13,Смешанный сегмент,5,1,0.2,74.48
+SUB_021,Subscription / Email / SUB_021,Subscription,Email,2025-10-27,2026-03-23,Смешанный сегмент,3,0,0.0,64.0
+SUB_021,Subscription / In-App / SUB_021,Subscription,In-App,2025-02-28,2026-02-12,Смешанный сегмент,5,0,0.0,85.12
+SUB_021,Subscription / Push / SUB_021,Subscription,Push,2024-08-30,2026-02-08,Смешанный сегмент,7,0,0.0,171.7
+SUB_021,Subscription / Retargeting / SUB_021,Subscription,Retargeting,2025-02-28,2025-02-28,Смешанный сегмент,1,0,0.0,22.01
+SUB_021,Subscription / SMS / SUB_021,Subscription,SMS,2024-06-14,2025-09-30,Смешанный сегмент,2,0,0.0,29.17
+SUB_022,Subscription / Email / SUB_022,Subscription,Email,2024-10-17,2025-10-15,Смешанный сегмент,4,0,0.0,65.71
+SUB_022,Subscription / In-App / SUB_022,Subscription,In-App,2026-01-09,2026-03-30,Смешанный сегмент,4,0,0.0,77.29
+SUB_022,Subscription / Push / SUB_022,Subscription,Push,2025-03-27,2026-03-30,Смешанный сегмент,9,1,0.1111,184.29
+SUB_022,Subscription / Retargeting / SUB_022,Subscription,Retargeting,2025-03-09,2025-09-08,Смешанный сегмент,2,0,0.0,33.12
+SUB_022,Subscription / SMS / SUB_022,Subscription,SMS,2024-10-23,2025-12-28,Смешанный сегмент,3,0,0.0,73.75
+SUB_023,Subscription / Retargeting / SUB_023,Subscription,Retargeting,2024-12-25,2026-03-23,Смешанный сегмент,4,0,0.0,65.3
+SUB_023,Subscription / Push / SUB_023,Subscription,Push,2024-07-29,2026-02-12,Смешанный сегмент,9,0,0.0,179.56
+SUB_023,Subscription / SMS / SUB_023,Subscription,SMS,2025-04-01,2026-03-31,Смешанный сегмент,4,0,0.0,63.86
+SUB_023,Subscription / Email / SUB_023,Subscription,Email,2024-03-08,2025-10-16,Смешанный сегмент,6,0,0.0,92.17
+SUB_023,Subscription / In-App / SUB_023,Subscription,In-App,2025-06-01,2025-10-21,Смешанный сегмент,3,0,0.0,31.16
+SUB_024,Subscription / Email / SUB_024,Subscription,Email,2025-01-14,2026-02-26,Смешанный сегмент,4,0,0.0,87.0
+SUB_024,Subscription / In-App / SUB_024,Subscription,In-App,2025-02-06,2026-01-04,Смешанный сегмент,3,0,0.0,38.28
+SUB_024,Subscription / Push / SUB_024,Subscription,Push,2024-08-25,2026-03-28,Смешанный сегмент,19,0,0.0,318.56
+SUB_024,Subscription / Retargeting / SUB_024,Subscription,Retargeting,2025-05-23,2026-01-03,Смешанный сегмент,2,0,0.0,46.44
+SUB_024,Subscription / SMS / SUB_024,Subscription,SMS,2026-03-01,2026-03-01,Смешанный сегмент,1,0,0.0,6.15
+SUB_025,Subscription / SMS / SUB_025,Subscription,SMS,2024-08-16,2026-01-23,Смешанный сегмент,5,0,0.0,119.52
+SUB_025,Subscription / Retargeting / SUB_025,Subscription,Retargeting,2024-07-16,2026-01-18,Смешанный сегмент,7,0,0.0,118.73
+SUB_025,Subscription / Push / SUB_025,Subscription,Push,2024-12-04,2026-03-05,Смешанный сегмент,10,1,0.1,239.12
+SUB_025,Subscription / Email / SUB_025,Subscription,Email,2025-02-16,2026-02-27,Смешанный сегмент,4,0,0.0,79.28
+SUB_025,Subscription / In-App / SUB_025,Subscription,In-App,2024-10-25,2025-09-17,Смешанный сегмент,4,0,0.0,65.88
+SUB_026,Subscription / Email / SUB_026,Subscription,Email,2024-09-24,2026-03-21,Смешанный сегмент,8,1,0.125,124.19
+SUB_026,Subscription / In-App / SUB_026,Subscription,In-App,2024-09-26,2026-02-06,Смешанный сегмент,6,1,0.1667,73.49
+SUB_026,Subscription / Push / SUB_026,Subscription,Push,2025-01-27,2026-03-07,Смешанный сегмент,10,0,0.0,157.38
+SUB_026,Subscription / Retargeting / SUB_026,Subscription,Retargeting,2024-05-19,2026-02-07,Смешанный сегмент,5,2,0.4,120.29
+SUB_026,Subscription / SMS / SUB_026,Subscription,SMS,2026-01-04,2026-01-04,Смешанный сегмент,1,0,0.0,13.19
+SUB_027,Subscription / SMS / SUB_027,Subscription,SMS,2024-06-18,2025-05-13,Смешанный сегмент,2,0,0.0,25.06
+SUB_027,Subscription / Retargeting / SUB_027,Subscription,Retargeting,2024-08-01,2025-09-29,Смешанный сегмент,3,0,0.0,59.28
+SUB_027,Subscription / Push / SUB_027,Subscription,Push,2024-12-09,2026-03-23,Смешанный сегмент,9,0,0.0,132.65
+SUB_027,Subscription / In-App / SUB_027,Subscription,In-App,2024-04-15,2026-03-22,Смешанный сегмент,6,1,0.1667,107.56
+SUB_027,Subscription / Email / SUB_027,Subscription,Email,2025-07-02,2026-03-23,Смешанный сегмент,4,0,0.0,74.07
+SUB_028,Subscription / Email / SUB_028,Subscription,Email,2024-09-06,2025-09-04,Смешанный сегмент,3,0,0.0,50.8
+SUB_028,Subscription / In-App / SUB_028,Subscription,In-App,2026-01-21,2026-01-21,Смешанный сегмент,1,0,0.0,10.31
+SUB_028,Subscription / Push / SUB_028,Subscription,Push,2025-03-18,2026-03-20,Смешанный сегмент,5,0,0.0,62.23
+SUB_028,Subscription / Retargeting / SUB_028,Subscription,Retargeting,2025-11-27,2026-03-28,Смешанный сегмент,3,1,0.3333,8.49
+SUB_028,Subscription / SMS / SUB_028,Subscription,SMS,2025-11-29,2026-01-11,Смешанный сегмент,3,1,0.3333,49.19
+SUB_029,Subscription / Email / SUB_029,Subscription,Email,2025-09-16,2026-03-19,Смешанный сегмент,3,0,0.0,72.43
+SUB_029,Subscription / In-App / SUB_029,Subscription,In-App,2024-11-26,2026-01-21,Смешанный сегмент,2,0,0.0,21.29
+SUB_029,Subscription / Push / SUB_029,Subscription,Push,2024-08-25,2026-03-25,Смешанный сегмент,12,0,0.0,192.24
+SUB_029,Subscription / Retargeting / SUB_029,Subscription,Retargeting,2025-01-06,2026-02-26,Смешанный сегмент,5,0,0.0,93.22
+SUB_029,Subscription / SMS / SUB_029,Subscription,SMS,2024-10-04,2026-03-23,Смешанный сегмент,6,0,0.0,90.91
+SUB_030,Subscription / Retargeting / SUB_030,Subscription,Retargeting,2024-09-07,2026-03-03,Смешанный сегмент,4,0,0.0,58.4
+SUB_030,Subscription / Push / SUB_030,Subscription,Push,2024-06-04,2026-03-16,Смешанный сегмент,15,1,0.0667,239.08
+SUB_030,Subscription / SMS / SUB_030,Subscription,SMS,2025-06-17,2026-02-01,Смешанный сегмент,5,0,0.0,69.64
+SUB_030,Subscription / Email / SUB_030,Subscription,Email,2024-08-01,2026-03-31,Смешанный сегмент,9,0,0.0,114.9
+SUB_030,Subscription / In-App / SUB_030,Subscription,In-App,2024-04-04,2026-03-22,Смешанный сегмент,5,0,0.0,81.95
+SUB_031,Subscription / Email / SUB_031,Subscription,Email,2024-08-11,2025-12-27,Смешанный сегмент,4,0,0.0,54.31
+SUB_031,Subscription / In-App / SUB_031,Subscription,In-App,2025-04-10,2026-03-30,Смешанный сегмент,8,0,0.0,100.81
+SUB_031,Subscription / Push / SUB_031,Subscription,Push,2024-04-15,2026-03-30,Смешанный сегмент,13,0,0.0,166.57
+SUB_031,Subscription / Retargeting / SUB_031,Subscription,Retargeting,2025-07-08,2026-01-05,Смешанный сегмент,4,0,0.0,69.08
+SUB_031,Subscription / SMS / SUB_031,Subscription,SMS,2025-05-11,2026-03-15,Смешанный сегмент,6,0,0.0,126.33
+SUB_032,Subscription / SMS / SUB_032,Subscription,SMS,2024-09-24,2025-12-04,Смешанный сегмент,4,0,0.0,76.73
+SUB_032,Subscription / Retargeting / SUB_032,Subscription,Retargeting,2024-11-21,2025-08-25,Смешанный сегмент,2,0,0.0,32.45
+SUB_032,Subscription / Push / SUB_032,Subscription,Push,2024-12-12,2026-03-09,Смешанный сегмент,10,1,0.1,205.16
+SUB_032,Subscription / Email / SUB_032,Subscription,Email,2024-12-08,2026-03-22,Смешанный сегмент,7,0,0.0,116.89
+SUB_032,Subscription / In-App / SUB_032,Subscription,In-App,2025-03-02,2026-01-23,Смешанный сегмент,4,0,0.0,79.97
+SUB_033,Subscription / Email / SUB_033,Subscription,Email,2024-09-09,2026-01-25,Смешанный сегмент,5,1,0.2,59.69
+SUB_033,Subscription / In-App / SUB_033,Subscription,In-App,2025-06-05,2026-03-26,Смешанный сегмент,6,1,0.1667,127.56
+SUB_033,Subscription / Push / SUB_033,Subscription,Push,2025-05-16,2026-03-31,Смешанный сегмент,9,0,0.0,137.72
+SUB_033,Subscription / Retargeting / SUB_033,Subscription,Retargeting,2024-12-15,2026-03-16,Смешанный сегмент,8,0,0.0,102.48
+SUB_033,Subscription / SMS / SUB_033,Subscription,SMS,2025-09-25,2026-01-04,Смешанный сегмент,3,0,0.0,54.08
+SUB_034,Subscription / Retargeting / SUB_034,Subscription,Retargeting,2024-03-18,2026-03-30,Смешанный сегмент,3,0,0.0,44.56
+SUB_034,Subscription / Push / SUB_034,Subscription,Push,2024-07-08,2026-03-25,Смешанный сегмент,11,0,0.0,214.0
+SUB_034,Subscription / SMS / SUB_034,Subscription,SMS,2024-11-29,2025-08-18,Смешанный сегмент,3,0,0.0,80.77
+SUB_034,Subscription / Email / SUB_034,Subscription,Email,2025-02-09,2026-03-22,Смешанный сегмент,11,0,0.0,180.38
+SUB_034,Subscription / In-App / SUB_034,Subscription,In-App,2025-05-16,2026-02-16,Смешанный сегмент,4,0,0.0,81.6
+SUB_035,Subscription / Email / SUB_035,Subscription,Email,2024-05-26,2026-02-05,Смешанный сегмент,4,0,0.0,64.46
+SUB_035,Subscription / In-App / SUB_035,Subscription,In-App,2024-08-31,2026-03-01,Смешанный сегмент,5,0,0.0,57.11
+SUB_035,Subscription / Push / SUB_035,Subscription,Push,2024-09-18,2026-02-17,Смешанный сегмент,5,0,0.0,82.61
+SUB_035,Subscription / Retargeting / SUB_035,Subscription,Retargeting,2025-01-04,2025-05-02,Смешанный сегмент,2,0,0.0,50.25
+SUB_035,Subscription / SMS / SUB_035,Subscription,SMS,2026-02-13,2026-03-30,Смешанный сегмент,2,0,0.0,32.45
+SUB_036,Subscription / Email / SUB_036,Subscription,Email,2025-08-20,2026-03-06,Смешанный сегмент,3,0,0.0,37.44
+SUB_036,Subscription / In-App / SUB_036,Subscription,In-App,2024-10-11,2026-02-13,Смешанный сегмент,8,0,0.0,133.08
+SUB_036,Subscription / Push / SUB_036,Subscription,Push,2024-04-20,2025-11-13,Смешанный сегмент,8,0,0.0,150.38
+SUB_036,Subscription / Retargeting / SUB_036,Subscription,Retargeting,2024-07-28,2026-02-10,Смешанный сегмент,6,0,0.0,91.33
+SUB_036,Subscription / SMS / SUB_036,Subscription,SMS,2025-03-22,2025-12-11,Смешанный сегмент,2,0,0.0,47.38
+SUB_037,Subscription / Retargeting / SUB_037,Subscription,Retargeting,2025-02-27,2025-06-22,Смешанный сегмент,2,0,0.0,20.08
+SUB_037,Subscription / Push / SUB_037,Subscription,Push,2024-09-06,2026-03-28,Смешанный сегмент,9,0,0.0,104.57
+SUB_037,Subscription / SMS / SUB_037,Subscription,SMS,2024-07-23,2026-03-14,Смешанный сегмент,2,0,0.0,35.13
+SUB_037,Subscription / Email / SUB_037,Subscription,Email,2025-07-24,2026-01-31,Смешанный сегмент,3,1,0.3333,31.55
+SUB_037,Subscription / In-App / SUB_037,Subscription,In-App,2025-11-19,2026-03-17,Смешанный сегмент,2,0,0.0,40.86
+SUB_038,Subscription / Email / SUB_038,Subscription,Email,2024-09-01,2026-03-29,Смешанный сегмент,7,0,0.0,116.96
+SUB_038,Subscription / In-App / SUB_038,Subscription,In-App,2025-03-22,2026-01-26,Смешанный сегмент,2,0,0.0,15.91
+SUB_038,Subscription / Push / SUB_038,Subscription,Push,2024-08-18,2026-03-19,Смешанный сегмент,12,0,0.0,199.69
+SUB_038,Subscription / Retargeting / SUB_038,Subscription,Retargeting,2025-06-28,2025-06-28,Смешанный сегмент,1,0,0.0,15.03
+SUB_038,Subscription / SMS / SUB_038,Subscription,SMS,2025-04-17,2026-01-25,Смешанный сегмент,5,1,0.2,66.14
+SUB_039,Subscription / SMS / SUB_039,Subscription,SMS,2025-10-06,2026-01-08,Смешанный сегмент,2,0,0.0,38.71
+SUB_039,Subscription / Retargeting / SUB_039,Subscription,Retargeting,2025-06-30,2025-11-03,Смешанный сегмент,4,0,0.0,87.66
+SUB_039,Subscription / Push / SUB_039,Subscription,Push,2024-05-15,2026-01-25,Смешанный сегмент,10,0,0.0,144.32
+SUB_039,Subscription / Email / SUB_039,Subscription,Email,2025-02-18,2026-03-30,Смешанный сегмент,7,1,0.1429,150.62
+SUB_039,Subscription / In-App / SUB_039,Subscription,In-App,2024-12-24,2026-02-21,Смешанный сегмент,5,0,0.0,61.87
+WEL_001,Welcome / Email / WEL_001,Welcome,Email,2025-03-04,2026-02-07,Новые пользователи,7,0,0.0,130.66
+WEL_001,Welcome / In-App / WEL_001,Welcome,In-App,2025-01-01,2026-03-10,Новые пользователи,7,0,0.0,109.91
+WEL_001,Welcome / Push / WEL_001,Welcome,Push,2024-10-14,2026-03-19,Новые пользователи,18,0,0.0,292.68
+WEL_001,Welcome / Retargeting / WEL_001,Welcome,Retargeting,2024-10-02,2026-03-08,Новые пользователи,11,0,0.0,171.59
+WEL_001,Welcome / SMS / WEL_001,Welcome,SMS,2025-04-05,2026-01-18,Новые пользователи,7,0,0.0,95.14
+WEL_002,Welcome / Retargeting / WEL_002,Welcome,Retargeting,2024-05-07,2026-02-24,Новые пользователи,4,1,0.25,84.98
+WEL_002,Welcome / Push / WEL_002,Welcome,Push,2024-10-24,2026-03-04,Новые пользователи,20,1,0.05,352.29
+WEL_002,Welcome / SMS / WEL_002,Welcome,SMS,2025-05-28,2026-01-31,Новые пользователи,5,0,0.0,93.94
+WEL_002,Welcome / Email / WEL_002,Welcome,Email,2024-12-08,2026-01-12,Новые пользователи,9,0,0.0,216.23
+WEL_002,Welcome / In-App / WEL_002,Welcome,In-App,2025-05-12,2026-03-21,Новые пользователи,7,0,0.0,121.89
+WEL_003,Welcome / Email / WEL_003,Welcome,Email,2024-12-06,2026-03-30,Новые пользователи,13,0,0.0,177.58
+WEL_003,Welcome / In-App / WEL_003,Welcome,In-App,2024-09-29,2026-03-10,Новые пользователи,11,0,0.0,160.76
+WEL_003,Welcome / Push / WEL_003,Welcome,Push,2024-03-02,2026-03-23,Новые пользователи,16,1,0.0625,214.64
+WEL_003,Welcome / Retargeting / WEL_003,Welcome,Retargeting,2025-07-12,2026-03-29,Новые пользователи,5,0,0.0,42.87
+WEL_003,Welcome / SMS / WEL_003,Welcome,SMS,2024-11-26,2026-02-23,Новые пользователи,14,0,0.0,244.35
+WEL_004,Welcome / SMS / WEL_004,Welcome,SMS,2025-06-28,2025-12-28,Новые пользователи,2,0,0.0,52.6
+WEL_004,Welcome / Retargeting / WEL_004,Welcome,Retargeting,2025-10-07,2026-03-30,Новые пользователи,8,0,0.0,173.2
+WEL_004,Welcome / Email / WEL_004,Welcome,Email,2025-07-30,2026-03-12,Новые пользователи,10,0,0.0,160.64
+WEL_004,Welcome / In-App / WEL_004,Welcome,In-App,2024-06-06,2026-02-14,Новые пользователи,21,1,0.0476,321.04
+WEL_004,Welcome / Push / WEL_004,Welcome,Push,2024-11-08,2026-03-28,Новые пользователи,18,2,0.1111,293.16
+WEL_005,Welcome / Email / WEL_005,Welcome,Email,2024-05-18,2026-03-22,Новые пользователи,11,0,0.0,223.63
+WEL_005,Welcome / In-App / WEL_005,Welcome,In-App,2025-03-03,2026-03-02,Новые пользователи,7,0,0.0,87.57
+WEL_005,Welcome / Push / WEL_005,Welcome,Push,2025-01-30,2026-03-29,Новые пользователи,14,0,0.0,295.23
+WEL_005,Welcome / Retargeting / WEL_005,Welcome,Retargeting,2024-10-21,2026-01-28,Новые пользователи,6,0,0.0,110.04
+WEL_005,Welcome / SMS / WEL_005,Welcome,SMS,2025-08-08,2026-03-07,Новые пользователи,7,0,0.0,155.74
+WEL_006,Welcome / Retargeting / WEL_006,Welcome,Retargeting,2024-04-11,2026-01-17,Новые пользователи,9,0,0.0,141.11
+WEL_006,Welcome / SMS / WEL_006,Welcome,SMS,2025-07-06,2026-01-30,Новые пользователи,4,0,0.0,80.14
+WEL_006,Welcome / Push / WEL_006,Welcome,Push,2025-01-30,2026-03-18,Новые пользователи,13,1,0.0769,248.13
+WEL_006,Welcome / Email / WEL_006,Welcome,Email,2025-11-22,2026-03-26,Новые пользователи,7,0,0.0,147.14
+WEL_006,Welcome / In-App / WEL_006,Welcome,In-App,2024-05-26,2026-03-22,Новые пользователи,5,0,0.0,77.25
+WEL_007,Welcome / Email / WEL_007,Welcome,Email,2024-04-10,2026-03-09,Новые пользователи,11,0,0.0,181.75
+WEL_007,Welcome / In-App / WEL_007,Welcome,In-App,2024-11-23,2026-03-17,Новые пользователи,6,0,0.0,112.48
+WEL_007,Welcome / Push / WEL_007,Welcome,Push,2024-02-27,2026-03-18,Новые пользователи,22,1,0.0455,385.81
+WEL_007,Welcome / Retargeting / WEL_007,Welcome,Retargeting,2025-08-13,2025-10-05,Новые пользователи,2,0,0.0,38.9
+WEL_007,Welcome / SMS / WEL_007,Welcome,SMS,2024-11-02,2026-03-31,Новые пользователи,6,0,0.0,90.31
+WEL_008,Welcome / SMS / WEL_008,Welcome,SMS,2024-07-05,2026-03-30,Новые пользователи,10,0,0.0,183.16
+WEL_008,Welcome / Retargeting / WEL_008,Welcome,Retargeting,2025-03-19,2026-02-09,Новые пользователи,7,0,0.0,127.67
+WEL_008,Welcome / Push / WEL_008,Welcome,Push,2024-08-17,2026-03-09,Новые пользователи,19,1,0.0526,281.48
+WEL_008,Welcome / Email / WEL_008,Welcome,Email,2025-07-19,2026-03-19,Новые пользователи,7,0,0.0,100.6
+WEL_008,Welcome / In-App / WEL_008,Welcome,In-App,2025-07-24,2026-02-10,Новые пользователи,7,0,0.0,104.65
+WEL_009,Welcome / Email / WEL_009,Welcome,Email,2025-05-15,2026-03-16,Новые пользователи,8,1,0.125,124.65
+WEL_009,Welcome / In-App / WEL_009,Welcome,In-App,2025-01-15,2026-02-08,Новые пользователи,9,0,0.0,114.81
+WEL_009,Welcome / Push / WEL_009,Welcome,Push,2024-09-15,2026-03-29,Новые пользователи,17,0,0.0,250.95
+WEL_009,Welcome / Retargeting / WEL_009,Welcome,Retargeting,2024-09-28,2025-12-03,Новые пользователи,6,1,0.1667,104.7
+WEL_009,Welcome / SMS / WEL_009,Welcome,SMS,2025-06-17,2026-03-07,Новые пользователи,3,0,0.0,58.37
+WEL_010,Welcome / SMS / WEL_010,Welcome,SMS,2024-12-03,2026-03-28,Новые пользователи,5,0,0.0,59.29
+WEL_010,Welcome / Push / WEL_010,Welcome,Push,2024-06-23,2026-03-22,Новые пользователи,22,1,0.0455,297.25
+WEL_010,Welcome / Retargeting / WEL_010,Welcome,Retargeting,2024-11-24,2025-11-08,Новые пользователи,6,1,0.1667,104.79
+WEL_010,Welcome / Email / WEL_010,Welcome,Email,2024-12-16,2026-03-02,Новые пользователи,5,0,0.0,60.83
+WEL_010,Welcome / In-App / WEL_010,Welcome,In-App,2024-02-29,2026-01-26,Новые пользователи,10,0,0.0,136.92
+WEL_011,Welcome / Email / WEL_011,Welcome,Email,2025-05-14,2026-03-25,Новые пользователи,11,0,0.0,146.91
+WEL_011,Welcome / In-App / WEL_011,Welcome,In-App,2024-10-14,2026-01-19,Новые пользователи,11,0,0.0,133.48
+WEL_011,Welcome / Push / WEL_011,Welcome,Push,2024-08-31,2026-03-26,Новые пользователи,18,0,0.0,319.86
+WEL_011,Welcome / Retargeting / WEL_011,Welcome,Retargeting,2025-04-16,2025-04-16,Новые пользователи,1,0,0.0,25.33
+WEL_011,Welcome / SMS / WEL_011,Welcome,SMS,2024-10-01,2026-03-27,Новые пользователи,8,0,0.0,169.96
+WEL_012,Welcome / Email / WEL_012,Welcome,Email,2024-08-19,2025-12-27,Новые пользователи,8,0,0.0,82.16
+WEL_012,Welcome / In-App / WEL_012,Welcome,In-App,2024-10-19,2026-01-24,Новые пользователи,5,1,0.2,94.05
+WEL_012,Welcome / Push / WEL_012,Welcome,Push,2024-12-02,2026-03-05,Новые пользователи,20,1,0.05,385.11
+WEL_012,Welcome / Retargeting / WEL_012,Welcome,Retargeting,2025-06-23,2026-03-17,Новые пользователи,8,0,0.0,141.9
+WEL_012,Welcome / SMS / WEL_012,Welcome,SMS,2024-10-02,2026-03-14,Новые пользователи,12,0,0.0,205.68
+WEL_013,Welcome / Retargeting / WEL_013,Welcome,Retargeting,2024-07-07,2026-02-01,Новые пользователи,4,0,0.0,78.94
+WEL_013,Welcome / Push / WEL_013,Welcome,Push,2024-08-03,2026-03-26,Новые пользователи,13,0,0.0,256.55
+WEL_013,Welcome / SMS / WEL_013,Welcome,SMS,2025-03-03,2026-03-20,Новые пользователи,4,0,0.0,73.4
+WEL_013,Welcome / Email / WEL_013,Welcome,Email,2024-12-22,2026-03-23,Новые пользователи,9,0,0.0,109.07
+WEL_013,Welcome / In-App / WEL_013,Welcome,In-App,2025-06-01,2026-03-06,Новые пользователи,3,0,0.0,59.94
+WEL_014,Welcome / Email / WEL_014,Welcome,Email,2025-01-16,2026-03-05,Новые пользователи,4,0,0.0,48.47
+WEL_014,Welcome / In-App / WEL_014,Welcome,In-App,2024-09-20,2026-01-17,Новые пользователи,9,0,0.0,181.77
+WEL_014,Welcome / Push / WEL_014,Welcome,Push,2024-01-28,2026-03-30,Новые пользователи,18,1,0.0556,336.93
+WEL_014,Welcome / Retargeting / WEL_014,Welcome,Retargeting,2024-11-22,2026-03-25,Новые пользователи,8,0,0.0,86.64
+WEL_014,Welcome / SMS / WEL_014,Welcome,SMS,2024-09-29,2026-02-01,Новые пользователи,8,0,0.0,107.08
+WEL_015,Welcome / SMS / WEL_015,Welcome,SMS,2025-05-01,2026-02-10,Новые пользователи,5,0,0.0,61.04
+WEL_015,Welcome / Retargeting / WEL_015,Welcome,Retargeting,2025-05-03,2026-03-18,Новые пользователи,6,0,0.0,114.08
+WEL_015,Welcome / Push / WEL_015,Welcome,Push,2025-03-04,2026-03-30,Новые пользователи,14,0,0.0,269.07
+WEL_015,Welcome / Email / WEL_015,Welcome,Email,2024-11-22,2026-03-19,Новые пользователи,9,1,0.1111,187.79
+WEL_015,Welcome / In-App / WEL_015,Welcome,In-App,2024-12-02,2026-02-26,Новые пользователи,7,0,0.0,142.15
+WEL_016,Welcome / Email / WEL_016,Welcome,Email,2025-07-11,2026-03-22,Новые пользователи,5,0,0.0,73.45
+WEL_016,Welcome / In-App / WEL_016,Welcome,In-App,2024-08-19,2026-03-27,Новые пользователи,10,0,0.0,209.63
+WEL_016,Welcome / Push / WEL_016,Welcome,Push,2024-07-02,2026-03-14,Новые пользователи,15,2,0.1333,167.99
+WEL_016,Welcome / Retargeting / WEL_016,Welcome,Retargeting,2024-06-29,2026-03-12,Новые пользователи,10,0,0.0,203.3
+WEL_016,Welcome / SMS / WEL_016,Welcome,SMS,2025-05-30,2026-02-25,Новые пользователи,6,0,0.0,98.88
+WEL_017,Welcome / Retargeting / WEL_017,Welcome,Retargeting,2025-12-12,2026-01-31,Новые пользователи,3,0,0.0,54.14
+WEL_017,Welcome / Push / WEL_017,Welcome,Push,2024-02-28,2026-03-30,Новые пользователи,24,0,0.0,401.2
+WEL_017,Welcome / SMS / WEL_017,Welcome,SMS,2025-04-26,2026-03-21,Новые пользователи,5,0,0.0,60.21
+WEL_017,Welcome / Email / WEL_017,Welcome,Email,2024-07-31,2026-02-19,Новые пользователи,13,0,0.0,199.7
+WEL_017,Welcome / In-App / WEL_017,Welcome,In-App,2025-03-02,2025-12-23,Новые пользователи,4,0,0.0,62.03
+WEL_018,Welcome / Email / WEL_018,Welcome,Email,2025-05-29,2026-02-20,Новые пользователи,3,0,0.0,37.83
+WEL_018,Welcome / In-App / WEL_018,Welcome,In-App,2024-08-19,2026-03-14,Новые пользователи,5,2,0.4,86.53
+WEL_018,Welcome / Push / WEL_018,Welcome,Push,2024-06-03,2026-03-17,Новые пользователи,14,1,0.0714,199.28
+WEL_018,Welcome / Retargeting / WEL_018,Welcome,Retargeting,2024-05-14,2026-03-19,Новые пользователи,9,1,0.1111,138.2
+WEL_018,Welcome / SMS / WEL_018,Welcome,SMS,2025-02-12,2026-03-09,Новые пользователи,5,1,0.2,93.18
+WEL_019,Welcome / SMS / WEL_019,Welcome,SMS,2024-11-20,2026-03-05,Новые пользователи,5,0,0.0,49.28
+WEL_019,Welcome / Retargeting / WEL_019,Welcome,Retargeting,2025-01-04,2026-03-18,Новые пользователи,7,0,0.0,100.42
+WEL_019,Welcome / Email / WEL_019,Welcome,Email,2025-04-17,2026-03-29,Новые пользователи,8,0,0.0,141.36
+WEL_019,Welcome / In-App / WEL_019,Welcome,In-App,2024-08-11,2026-03-28,Новые пользователи,13,0,0.0,228.77
+WEL_019,Welcome / Push / WEL_019,Welcome,Push,2024-06-24,2026-03-27,Новые пользователи,17,1,0.0588,219.14
+WEL_020,Welcome / Email / WEL_020,Welcome,Email,2024-05-18,2025-12-19,Новые пользователи,5,1,0.2,70.92
+WEL_020,Welcome / In-App / WEL_020,Welcome,In-App,2024-06-30,2026-03-25,Новые пользователи,10,0,0.0,179.81
+WEL_020,Welcome / Push / WEL_020,Welcome,Push,2024-04-30,2026-03-10,Новые пользователи,20,0,0.0,285.32
+WEL_020,Welcome / Retargeting / WEL_020,Welcome,Retargeting,2025-03-16,2026-02-25,Новые пользователи,4,1,0.25,15.15
+WEL_020,Welcome / SMS / WEL_020,Welcome,SMS,2025-05-20,2025-11-14,Новые пользователи,6,1,0.1667,70.0
+WEL_021,Welcome / Retargeting / WEL_021,Welcome,Retargeting,2025-01-15,2026-03-31,Новые пользователи,9,0,0.0,189.02
+WEL_021,Welcome / SMS / WEL_021,Welcome,SMS,2025-01-15,2026-02-19,Новые пользователи,4,0,0.0,71.13
+WEL_021,Welcome / Push / WEL_021,Welcome,Push,2024-11-05,2026-03-01,Новые пользователи,15,1,0.0667,221.41
+WEL_021,Welcome / Email / WEL_021,Welcome,Email,2024-05-24,2026-03-30,Новые пользователи,7,0,0.0,126.48
+WEL_021,Welcome / In-App / WEL_021,Welcome,In-App,2025-09-11,2025-09-11,Новые пользователи,1,0,0.0,18.26
+WEL_022,Welcome / Email / WEL_022,Welcome,Email,2025-01-22,2026-03-27,Новые пользователи,7,0,0.0,98.15
+WEL_022,Welcome / In-App / WEL_022,Welcome,In-App,2024-08-28,2026-02-18,Новые пользователи,8,0,0.0,101.34
+WEL_022,Welcome / Push / WEL_022,Welcome,Push,2025-01-08,2026-03-29,Новые пользователи,17,0,0.0,281.48
+WEL_022,Welcome / Retargeting / WEL_022,Welcome,Retargeting,2025-03-24,2026-03-14,Новые пользователи,4,0,0.0,89.09
+WEL_022,Welcome / SMS / WEL_022,Welcome,SMS,2024-07-25,2026-03-03,Новые пользователи,11,0,0.0,159.38
+WEL_023,Welcome / SMS / WEL_023,Welcome,SMS,2025-07-02,2026-03-24,Новые пользователи,7,0,0.0,127.5
+WEL_023,Welcome / Retargeting / WEL_023,Welcome,Retargeting,2024-09-08,2025-12-25,Новые пользователи,7,0,0.0,132.78
+WEL_023,Welcome / Push / WEL_023,Welcome,Push,2024-12-02,2026-03-30,Новые пользователи,17,1,0.0588,294.61
+WEL_023,Welcome / Email / WEL_023,Welcome,Email,2024-12-10,2026-03-13,Новые пользователи,10,1,0.1,152.1
+WEL_023,Welcome / In-App / WEL_023,Welcome,In-App,2025-03-24,2026-03-22,Новые пользователи,11,1,0.0909,187.45
+WEL_024,Welcome / Email / WEL_024,Welcome,Email,2025-04-05,2026-03-14,Новые пользователи,5,0,0.0,64.86
+WEL_024,Welcome / In-App / WEL_024,Welcome,In-App,2024-03-21,2026-03-26,Новые пользователи,11,0,0.0,151.26
+WEL_024,Welcome / Push / WEL_024,Welcome,Push,2024-09-26,2026-02-24,Новые пользователи,19,0,0.0,315.9
+WEL_024,Welcome / Retargeting / WEL_024,Welcome,Retargeting,2025-02-16,2026-03-31,Новые пользователи,2,0,0.0,13.09
+WEL_024,Welcome / SMS / WEL_024,Welcome,SMS,2024-10-28,2026-03-17,Новые пользователи,8,0,0.0,138.68
+WEL_025,Welcome / Retargeting / WEL_025,Welcome,Retargeting,2025-03-06,2026-03-27,Новые пользователи,8,0,0.0,115.76
+WEL_025,Welcome / Push / WEL_025,Welcome,Push,2024-07-20,2026-03-21,Новые пользователи,22,0,0.0,402.55
+WEL_025,Welcome / Email / WEL_025,Welcome,Email,2025-03-07,2026-02-25,Новые пользователи,6,0,0.0,97.1
+WEL_025,Welcome / In-App / WEL_025,Welcome,In-App,2025-03-01,2026-03-23,Новые пользователи,7,0,0.0,108.87
+WEL_026,Welcome / Email / WEL_026,Welcome,Email,2025-02-24,2026-02-02,Новые пользователи,6,0,0.0,90.54
+WEL_026,Welcome / In-App / WEL_026,Welcome,In-App,2024-05-16,2026-03-28,Новые пользователи,7,0,0.0,123.74
+WEL_026,Welcome / Push / WEL_026,Welcome,Push,2024-07-23,2026-03-26,Новые пользователи,14,0,0.0,224.93
+WEL_026,Welcome / Retargeting / WEL_026,Welcome,Retargeting,2025-01-11,2026-03-13,Новые пользователи,6,1,0.1667,53.8
+WEL_026,Welcome / SMS / WEL_026,Welcome,SMS,2025-01-14,2026-03-20,Новые пользователи,2,1,0.5,32.29
+WEL_027,Welcome / Push / WEL_027,Welcome,Push,2024-03-08,2026-01-23,Новые пользователи,23,0,0.0,291.3
+WEL_027,Welcome / Email / WEL_027,Welcome,Email,2024-09-19,2026-02-15,Новые пользователи,7,0,0.0,169.31
+WEL_027,Welcome / In-App / WEL_027,Welcome,In-App,2025-03-01,2026-03-21,Новые пользователи,8,0,0.0,152.78
+WEL_027,Welcome / Retargeting / WEL_027,Welcome,Retargeting,2024-05-28,2026-03-18,Новые пользователи,9,0,0.0,165.94
+WEL_027,Welcome / SMS / WEL_027,Welcome,SMS,2025-01-08,2026-02-24,Новые пользователи,6,0,0.0,68.0
+WEL_028,Welcome / Retargeting / WEL_028,Welcome,Retargeting,2024-07-29,2026-03-21,Новые пользователи,9,0,0.0,120.89
+WEL_028,Welcome / Push / WEL_028,Welcome,Push,2024-10-19,2026-03-31,Новые пользователи,20,0,0.0,350.15
+WEL_028,Welcome / SMS / WEL_028,Welcome,SMS,2025-05-24,2026-03-26,Новые пользователи,4,0,0.0,73.4
+WEL_028,Welcome / Email / WEL_028,Welcome,Email,2025-09-20,2026-03-07,Новые пользователи,9,0,0.0,125.15
+WEL_028,Welcome / In-App / WEL_028,Welcome,In-App,2024-12-13,2026-01-09,Новые пользователи,5,0,0.0,54.4
+WEL_029,Welcome / SMS / WEL_029,Welcome,SMS,2025-01-21,2026-03-28,Новые пользователи,6,0,0.0,103.54
+WEL_029,Welcome / Retargeting / WEL_029,Welcome,Retargeting,2024-12-12,2026-03-12,Новые пользователи,6,1,0.1667,69.64
+WEL_029,Welcome / Email / WEL_029,Welcome,Email,2025-07-28,2026-01-08,Новые пользователи,5,0,0.0,58.84
+WEL_029,Welcome / In-App / WEL_029,Welcome,In-App,2025-07-24,2026-02-20,Новые пользователи,6,0,0.0,90.47
+WEL_029,Welcome / Push / WEL_029,Welcome,Push,2024-03-09,2026-03-30,Новые пользователи,14,1,0.0714,216.91
+WEL_030,Welcome / Email / WEL_030,Welcome,Email,2024-10-08,2026-03-29,Новые пользователи,9,1,0.1111,154.88
+WEL_030,Welcome / In-App / WEL_030,Welcome,In-App,2025-04-26,2026-02-26,Новые пользователи,5,0,0.0,69.41
+WEL_030,Welcome / Push / WEL_030,Welcome,Push,2024-06-12,2026-03-24,Новые пользователи,18,0,0.0,256.97
+WEL_030,Welcome / Retargeting / WEL_030,Welcome,Retargeting,2024-02-04,2026-03-09,Новые пользователи,4,0,0.0,100.71
+WEL_030,Welcome / SMS / WEL_030,Welcome,SMS,2026-03-23,2026-03-23,Новые пользователи,1,0,0.0,12.58
+WEL_031,Welcome / Retargeting / WEL_031,Welcome,Retargeting,2025-07-25,2026-03-24,Новые пользователи,6,1,0.1667,72.3
+WEL_031,Welcome / Email / WEL_031,Welcome,Email,2024-06-02,2026-03-13,Новые пользователи,7,0,0.0,136.16
+WEL_031,Welcome / In-App / WEL_031,Welcome,In-App,2024-07-28,2026-03-23,Новые пользователи,10,0,0.0,229.93
+WEL_031,Welcome / Push / WEL_031,Welcome,Push,2024-05-07,2026-03-25,Новые пользователи,17,0,0.0,253.65
+WEL_031,Welcome / SMS / WEL_031,Welcome,SMS,2025-03-03,2026-03-09,Новые пользователи,4,0,0.0,77.92
+WEL_032,Welcome / SMS / WEL_032,Welcome,SMS,2024-05-27,2026-03-23,Новые пользователи,8,0,0.0,98.78
+WEL_032,Welcome / Retargeting / WEL_032,Welcome,Retargeting,2025-04-04,2026-03-14,Новые пользователи,7,0,0.0,100.98
+WEL_032,Welcome / Push / WEL_032,Welcome,Push,2024-06-24,2026-03-03,Новые пользователи,18,0,0.0,247.28
+WEL_032,Welcome / In-App / WEL_032,Welcome,In-App,2024-07-18,2026-03-29,Новые пользователи,10,0,0.0,144.84
+WEL_032,Welcome / Email / WEL_032,Welcome,Email,2025-07-24,2026-02-19,Новые пользователи,9,0,0.0,151.83
+WEL_033,Welcome / Email / WEL_033,Welcome,Email,2024-07-02,2026-03-02,Новые пользователи,6,0,0.0,54.43
+WEL_033,Welcome / In-App / WEL_033,Welcome,In-App,2025-07-01,2026-03-28,Новые пользователи,8,0,0.0,149.6
+WEL_033,Welcome / Push / WEL_033,Welcome,Push,2025-03-05,2026-03-10,Новые пользователи,17,0,0.0,310.3
+WEL_033,Welcome / Retargeting / WEL_033,Welcome,Retargeting,2025-03-31,2026-03-31,Новые пользователи,8,0,0.0,147.91
+WEL_033,Welcome / SMS / WEL_033,Welcome,SMS,2024-12-04,2026-02-14,Новые пользователи,6,1,0.1667,118.47
+WEL_034,Welcome / Email / WEL_034,Welcome,Email,2024-08-07,2026-03-27,Новые пользователи,8,0,0.0,154.85
+WEL_034,Welcome / In-App / WEL_034,Welcome,In-App,2024-04-01,2026-03-30,Новые пользователи,7,0,0.0,100.48
+WEL_034,Welcome / Push / WEL_034,Welcome,Push,2024-11-15,2026-03-27,Новые пользователи,12,0,0.0,174.29
+WEL_034,Welcome / Retargeting / WEL_034,Welcome,Retargeting,2025-09-08,2025-10-27,Новые пользователи,2,0,0.0,25.97
+WEL_034,Welcome / SMS / WEL_034,Welcome,SMS,2024-11-29,2026-03-02,Новые пользователи,5,0,0.0,76.67
+WEL_035,Welcome / Retargeting / WEL_035,Welcome,Retargeting,2024-11-17,2026-03-27,Новые пользователи,8,0,0.0,132.62
+WEL_035,Welcome / Push / WEL_035,Welcome,Push,2024-08-07,2026-03-29,Новые пользователи,14,1,0.0714,216.26
+WEL_035,Welcome / SMS / WEL_035,Welcome,SMS,2025-06-11,2026-03-17,Новые пользователи,7,0,0.0,112.18
+WEL_035,Welcome / Email / WEL_035,Welcome,Email,2024-04-29,2026-03-23,Новые пользователи,8,1,0.125,177.21
+WEL_035,Welcome / In-App / WEL_035,Welcome,In-App,2025-01-11,2026-02-18,Новые пользователи,7,0,0.0,106.98
+WEL_036,Welcome / Email / WEL_036,Welcome,Email,2024-09-07,2026-03-24,Новые пользователи,12,1,0.0833,161.47
+WEL_036,Welcome / In-App / WEL_036,Welcome,In-App,2025-02-19,2026-03-23,Новые пользователи,10,2,0.2,169.94
+WEL_036,Welcome / Push / WEL_036,Welcome,Push,2024-07-22,2026-03-24,Новые пользователи,23,0,0.0,340.99
+WEL_036,Welcome / Retargeting / WEL_036,Welcome,Retargeting,2024-08-05,2026-03-15,Новые пользователи,7,0,0.0,131.22
+WEL_036,Welcome / SMS / WEL_036,Welcome,SMS,2024-04-11,2026-01-05,Новые пользователи,8,0,0.0,176.15
+WEL_037,Welcome / SMS / WEL_037,Welcome,SMS,2025-06-01,2026-03-01,Новые пользователи,8,0,0.0,185.26
+WEL_037,Welcome / Retargeting / WEL_037,Welcome,Retargeting,2025-04-15,2026-03-19,Новые пользователи,6,0,0.0,97.2
+WEL_037,Welcome / In-App / WEL_037,Welcome,In-App,2024-11-19,2026-03-05,Новые пользователи,8,1,0.125,145.13
+WEL_037,Welcome / Email / WEL_037,Welcome,Email,2024-03-05,2026-03-08,Новые пользователи,6,0,0.0,94.96
+WEL_037,Welcome / Push / WEL_037,Welcome,Push,2024-06-18,2026-02-27,Новые пользователи,18,0,0.0,352.21
+WEL_038,Welcome / SMS / WEL_038,Welcome,SMS,2024-07-30,2026-03-31,Новые пользователи,8,0,0.0,146.8
+WEL_038,Welcome / Email / WEL_038,Welcome,Email,2024-04-21,2025-12-11,Новые пользователи,8,0,0.0,119.32
+WEL_038,Welcome / In-App / WEL_038,Welcome,In-App,2025-01-24,2026-03-30,Новые пользователи,15,1,0.0667,214.01
+WEL_038,Welcome / Push / WEL_038,Welcome,Push,2025-01-21,2026-02-27,Новые пользователи,15,0,0.0,270.65
+WEL_038,Welcome / Retargeting / WEL_038,Welcome,Retargeting,2025-08-14,2026-03-31,Новые пользователи,6,0,0.0,94.82
+WEL_039,Welcome / Push / WEL_039,Welcome,Push,2024-02-12,2026-03-25,Новые пользователи,16,0,0.0,343.32
+WEL_039,Welcome / Retargeting / WEL_039,Welcome,Retargeting,2024-06-20,2026-03-15,Новые пользователи,7,1,0.1429,127.22
+WEL_039,Welcome / Email / WEL_039,Welcome,Email,2025-05-20,2026-03-27,Новые пользователи,7,0,0.0,118.73
+WEL_039,Welcome / In-App / WEL_039,Welcome,In-App,2024-03-25,2026-03-04,Новые пользователи,13,0,0.0,204.64
+WEL_039,Welcome / SMS / WEL_039,Welcome,SMS,2024-11-30,2026-03-30,Новые пользователи,4,0,0.0,78.28
