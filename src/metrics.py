@@ -59,6 +59,29 @@ def _safe_mean(series: pd.Series) -> float:
     return float(series.mean()) if len(series) else 0.0
 
 
+def _recommend_action(row: pd.Series) -> str:
+    risk_segment = str(row.get("risk_segment", ""))
+    value_segment = str(row.get("value_segment", ""))
+    promo_band = str(row.get("promo_band", ""))
+
+    high_value = any(token in value_segment for token in ("VIP", "High"))
+    at_risk = any(token in risk_segment for token in ("At Risk", "Churned"))
+    stable = "Stable" in risk_segment
+    promo_high = any(token in promo_band for token in ("High", "Очень высокая"))
+
+    if at_risk and high_value:
+        return "Приоритетный win-back: персональный оффер + контроль сервиса"
+    if at_risk:
+        return "Триггерный win-back: мягкий стимул и проверка причин оттока"
+    if high_value and promo_high:
+        return "Снизить промо-нагрузку: тест немонетарных стимулов удержания"
+    if high_value and stable:
+        return "Удерживать уровень сервиса и развивать премиальные сценарии"
+    if promo_high:
+        return "Оптимизировать скидки и переводить в регулярный спрос"
+    return "Поддерживающая коммуникация и мониторинг динамики сегмента"
+
+
 def _get_observation_date(user_mart: pd.DataFrame, trips: pd.DataFrame | None = None) -> pd.Timestamp:
     if "observation_date" in user_mart.columns and len(user_mart):
         value = user_mart["observation_date"].iloc[0]
