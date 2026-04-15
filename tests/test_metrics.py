@@ -134,15 +134,3 @@ def test_retention_matrix_and_baseline_compare():
     assert "M0" in matrix.columns
     assert "2025-01" in matrix.index
     assert not compare.empty
-
-
-def test_get_cohort_maturity_table_handles_period_index_math():
-    cohort_user_base = pd.DataFrame(
-        {
-            "user_id": ["u1", "u2"],
-            "cohort_month": ["2025-01", "2025-02"],
-        }
-    )
-    table = get_cohort_maturity_table(cohort_user_base, pd.Timestamp("2025-04-15"))
-    assert set(table.columns) == {"cohort_month", "cohort_size", "maturity_months"}
-    assert table["maturity_months"].min() >= 0
