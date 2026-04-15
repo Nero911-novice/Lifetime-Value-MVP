@@ -1,6 +1,8 @@
 
 from __future__ import annotations
 
+import math
+
 import streamlit as st
 
 from .annotations import ITEM_HELP, SCREEN_HELP
@@ -31,6 +33,8 @@ def render_methodology_footer() -> None:
 def format_number(value: float | int | None, digits: int = 1) -> str:
     if value is None:
         return "—"
+    if isinstance(value, float) and math.isnan(value):
+        return "—"
     if isinstance(value, float):
         return f"{value:,.{digits}f}".replace(",", " ").replace(".", ",")
     return f"{value:,}".replace(",", " ")
@@ -39,11 +43,15 @@ def format_number(value: float | int | None, digits: int = 1) -> str:
 def format_currency(value: float | int | None, digits: int = 0) -> str:
     if value is None:
         return "—"
+    if isinstance(value, float) and math.isnan(value):
+        return "—"
     return f"{format_number(float(value), digits)} ₽"
 
 
 def format_percent(value: float | int | None, digits: int = 1) -> str:
     if value is None:
+        return "—"
+    if isinstance(value, float) and math.isnan(value):
         return "—"
     return f"{float(value):.{digits}%}".replace(".", ",")
 

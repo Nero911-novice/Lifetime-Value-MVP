@@ -904,7 +904,11 @@ def build_segment_user_base(user_mart_df: pd.DataFrame, trips_df: pd.DataFrame |
         },
     )
 
-    segment_base["city"] = segment_base.get("city", segment_base["home_city"]).fillna(segment_base["home_city"])
+    if "city" in user_mart_df.columns:
+        city_source = user_mart_df["city"]
+    else:
+        city_source = segment_base["home_city"]
+    segment_base["city"] = city_source.where(city_source.notna() & (city_source.astype(str) != "Неизвестно"), segment_base["home_city"])
     segment_base["first_completed_trip_date"] = pd.to_datetime(segment_base.get("first_trip_date"), errors="coerce")
     segment_base["registration_date"] = pd.to_datetime(segment_base.get("registration_date"), errors="coerce")
 
@@ -912,19 +916,36 @@ def build_segment_user_base(user_mart_df: pd.DataFrame, trips_df: pd.DataFrame |
     segment_base["observation_date"] = observation_date
     segment_base["tenure_days"] = (observation_date - segment_base["registration_date"]).dt.days
 
-    segment_base["created_orders_count"] = segment_base.get("created_orders_count", segment_base["total_orders"]).fillna(segment_base["total_orders"])
-    segment_base["completed_orders_count"] = segment_base.get("completed_orders_count", segment_base["completed_orders"]).fillna(segment_base["completed_orders"])
-    segment_base["cancelled_orders_count"] = segment_base.get("cancelled_orders_count", segment_base["cancelled_orders"]).fillna(segment_base["cancelled_orders"])
+    source_created = pd.to_numeric(segment_base.get("total_orders"), errors="coerce").fillna(0)
+    source_completed = pd.to_numeric(segment_base.get("completed_orders"), errors="coerce").fillna(0)
+    source_cancelled = pd.to_numeric(segment_base.get("cancelled_orders"), errors="coerce").fillna(0)
+    current_created = pd.to_numeric(segment_base.get("created_orders_count"), errors="coerce")
+    current_completed = pd.to_numeric(segment_base.get("completed_orders_count"), errors="coerce")
+    current_cancelled = pd.to_numeric(segment_base.get("cancelled_orders_count"), errors="coerce")
 
-    segment_base["ltv_30d"] = segment_base.get("ltv_30d", segment_base["margin_30d"])
-    segment_base["ltv_90d"] = segment_base.get("ltv_90d", segment_base["margin_90d"])
-    segment_base["ltv_180d"] = segment_base.get("ltv_180d", segment_base["margin_180d"])
-    segment_base["ltv_365d"] = segment_base.get("ltv_365d", segment_base["margin_365d"])
-    segment_base["total_contribution_margin"] = segment_base.get("total_contribution_margin", segment_base["total_margin"])
-    segment_base["rides_last_30d"] = segment_base.get("rides_last_30d", segment_base["recent_trips_30d"])
-    segment_base["rides_last_90d"] = segment_base.get("rides_last_90d", segment_base["recent_trips_90d"])
-    segment_base["refund_trip_share"] = segment_base.get("refund_trip_share", segment_base["refund_rate"])
-    segment_base["responded_7d_rate"] = segment_base.get("responded_7d_rate", segment_base["response_rate_7d"])
+    segment_base["created_orders_count"] = current_created.where((current_created > 0) | (source_created <= 0), source_created).fillna(source_created)
+    segment_base["completed_orders_count"] = current_completed.where((current_completed > 0) | (source_completed <= 0), source_completed).fillna(source_completed)
+    segment_base["cancelled_orders_count"] = current_cancelled.where((current_cancelled > 0) | (source_cancelled <= 0), source_cancelled).fillna(source_cancelled)
+
+    ltv_30_source = segment_base["ltv_30d"] if "ltv_30d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    ltv_90_source = segment_base["ltv_90d"] if "ltv_90d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    ltv_180_source = segment_base["ltv_180d"] if "ltv_180d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    ltv_365_source = segment_base["ltv_365d"] if "ltv_365d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    total_margin_source = segment_base["total_contribution_margin"] if "total_contribution_margin" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    rides_30_source = segment_base["rides_last_30d"] if "rides_last_30d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    rides_90_source = segment_base["rides_last_90d"] if "rides_last_90d" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    refund_source = segment_base["refund_trip_share"] if "refund_trip_share" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+    responded_source = segment_base["responded_7d_rate"] if "responded_7d_rate" in segment_base.columns else pd.Series(np.nan, index=segment_base.index)
+
+    segment_base["ltv_30d"] = pd.to_numeric(ltv_30_source, errors="coerce").fillna(pd.to_numeric(segment_base["margin_30d"], errors="coerce")).fillna(0)
+    segment_base["ltv_90d"] = pd.to_numeric(ltv_90_source, errors="coerce").fillna(pd.to_numeric(segment_base["margin_90d"], errors="coerce")).fillna(0)
+    segment_base["ltv_180d"] = pd.to_numeric(ltv_180_source, errors="coerce").fillna(pd.to_numeric(segment_base["margin_180d"], errors="coerce")).fillna(0)
+    segment_base["ltv_365d"] = pd.to_numeric(ltv_365_source, errors="coerce").fillna(pd.to_numeric(segment_base["margin_365d"], errors="coerce")).fillna(0)
+    segment_base["total_contribution_margin"] = pd.to_numeric(total_margin_source, errors="coerce").fillna(pd.to_numeric(segment_base["total_margin"], errors="coerce")).fillna(0)
+    segment_base["rides_last_30d"] = pd.to_numeric(rides_30_source, errors="coerce").fillna(pd.to_numeric(segment_base["recent_trips_30d"], errors="coerce")).fillna(0)
+    segment_base["rides_last_90d"] = pd.to_numeric(rides_90_source, errors="coerce").fillna(pd.to_numeric(segment_base["recent_trips_90d"], errors="coerce")).fillna(0)
+    segment_base["refund_trip_share"] = pd.to_numeric(refund_source, errors="coerce").fillna(pd.to_numeric(segment_base["refund_rate"], errors="coerce")).fillna(0)
+    segment_base["responded_7d_rate"] = pd.to_numeric(responded_source, errors="coerce").fillna(pd.to_numeric(segment_base["response_rate_7d"], errors="coerce"))
     segment_base["cac"] = segment_base.get("cac", segment_base["acquisition_cost"])
     segment_base["is_active_90d"] = segment_base.get("is_active_90d", segment_base["active_90d_flag"])
 
@@ -949,6 +970,9 @@ def build_segment_user_base(user_mart_df: pd.DataFrame, trips_df: pd.DataFrame |
         segment_base["cancelled_orders_count"] / segment_base["created_orders_count"].replace({0: np.nan}),
         np.nan,
     )
+    segment_base["promo_trip_share"] = pd.to_numeric(segment_base["promo_trip_share"], errors="coerce")
+    segment_base["responded_7d_rate"] = pd.to_numeric(segment_base["responded_7d_rate"], errors="coerce")
+    segment_base["recency_days"] = pd.to_numeric(segment_base["recency_days"], errors="coerce")
 
     segment_base["value_segment"] = assign_value_segment(segment_base)
     segment_base["risk_segment"] = assign_risk_segment(segment_base)
@@ -975,17 +999,19 @@ def build_segment_user_base(user_mart_df: pd.DataFrame, trips_df: pd.DataFrame |
 def assign_value_segment(df: pd.DataFrame) -> pd.Series:
     ltv = pd.to_numeric(df.get("ltv_180d"), errors="coerce")
     completed_orders = pd.to_numeric(df.get("completed_orders_count"), errors="coerce").fillna(0)
+    margin = pd.to_numeric(df.get("total_contribution_margin"), errors="coerce").fillna(0)
 
-    valid_ltv = ltv[ltv.notna()]
-    if len(valid_ltv) >= 10:
-        q1, q2 = valid_ltv.quantile([0.33, 0.66]).tolist()
+    active_mask = completed_orders > 0
+    valid_ltv = ltv[active_mask & ltv.notna()]
+    if len(valid_ltv) >= 20:
+        q1, q2 = valid_ltv.quantile([0.35, 0.70]).tolist()
     else:
-        q1, q2 = 100.0, 500.0
+        q1, q2 = 120.0, 420.0
 
     segment = pd.Series("Medium value", index=df.index, dtype="string")
-    segment = segment.mask((ltv < q1) | ((ltv <= 0) & (completed_orders > 0)), "Low value")
+    segment = segment.mask((ltv < q1) | ((ltv <= 0) & active_mask), "Low value")
     segment = segment.mask(ltv >= q2, "High value")
-    segment = segment.mask(completed_orders == 0, "Low value")
+    segment = segment.mask((completed_orders == 0) | (margin <= 0), "Low value")
     return segment.fillna("Low value")
 
 
@@ -996,11 +1022,13 @@ def assign_risk_segment(df: pd.DataFrame) -> pd.Series:
     completed_orders = pd.to_numeric(df.get("completed_orders_count"), errors="coerce").fillna(0)
 
     risk = pd.Series("Cooling", index=df.index, dtype="string")
-    stable_mask = ((recency <= 14) & (rides_30 >= 1)) | ((recency <= 30) & (rides_90 >= 3))
-    at_risk_mask = (recency > 60) | ((recency > 45) & (rides_90 <= 1))
-    dormant_mask = (recency > 120) | ((rides_90 == 0) & (completed_orders > 0) & (recency >= 90))
+    stable_mask = ((recency <= 14) & (rides_30 >= 1)) | ((recency <= 30) & (rides_90 >= 4))
+    cooling_mask = ((recency > 14) & (recency <= 45)) | ((recency <= 35) & (rides_90.between(1, 3)))
+    at_risk_mask = ((recency > 45) & (recency <= 90)) | ((rides_90 <= 1) & (recency > 35))
+    dormant_mask = (recency > 90) | ((rides_90 == 0) & (completed_orders > 0))
 
     risk = risk.mask(stable_mask, "Stable / Active")
+    risk = risk.mask(cooling_mask, "Cooling")
     risk = risk.mask(at_risk_mask, "At risk")
     risk = risk.mask(dormant_mask, "Dormant")
     risk = risk.mask(completed_orders == 0, "Dormant")
@@ -1011,8 +1039,8 @@ def assign_promo_dependency_segment(df: pd.DataFrame) -> pd.Series:
     promo_share = pd.to_numeric(df.get("promo_trip_share"), errors="coerce")
     response_rate = pd.to_numeric(df.get("responded_7d_rate"), errors="coerce")
 
-    promo_component = promo_share.fillna(0)
-    response_component = response_rate.fillna(response_rate.median(skipna=True) if response_rate.notna().any() else 0)
+    promo_component = promo_share.fillna(0).clip(0, 1)
+    response_component = response_rate.fillna(response_rate.median(skipna=True) if response_rate.notna().any() else 0).clip(0, 1)
     score = 0.7 * promo_component + 0.3 * response_component
 
     segment = pd.cut(
@@ -1164,7 +1192,7 @@ def get_selected_segment_profile(segment_user_base: pd.DataFrame, segment_name: 
 
 
 def compare_segment_to_baseline(segment_summary: pd.DataFrame, selected_segment: str, baseline_mode: str = "median") -> pd.DataFrame:
-    if segment_summary.empty or selected_segment not in set(segment_summary["compound_segment"]):
+    if segment_summary.empty or selected_segment not in set(segment_summary["compound_segment"]) or segment_summary["compound_segment"].nunique() < 2:
         return pd.DataFrame(columns=["metric", "selected", "baseline", "delta"])
 
     metric_map = {
@@ -1199,7 +1227,8 @@ def get_selected_segment_charts_data(segment_user_base: pd.DataFrame, selected_s
 
     baseline = segment_user_base.loc[segment_user_base["compound_segment"] != selected_segment].copy()
     if baseline.empty:
-        baseline = segment_user_base.copy()
+        empty = pd.DataFrame(columns=["metric", "selected", "baseline"])
+        return {"key_metrics": empty, "recency_rides": empty, "promo_margin": empty, "cancel_value": empty}
 
     key_metrics = pd.DataFrame(
         {
