@@ -1,10 +1,19 @@
 
 from __future__ import annotations
 
+import importlib.util
+
 import streamlit as st
 
 from ..metrics import compute_cohort_matrices
 from ..ui import render_screen_help, render_item_help, render_methodology_footer, info_caption
+
+
+def _style_with_optional_gradient(df, value_format: str, cmap: str):
+    styler = df.style.format(value_format)
+    if importlib.util.find_spec("matplotlib") is not None:
+        styler = styler.background_gradient(cmap=cmap)
+    return styler
 
 
 def render(user_mart, trips):
@@ -25,7 +34,7 @@ def render(user_mart, trips):
     st.subheader("Когортный retention")
     info_caption("Строка — когорта первой поездки. Столбцы M0, M1 ... — месяцы жизни когорты.")
     st.dataframe(
-        matrices["retention_matrix"].style.format("{:.1%}").background_gradient(cmap="Blues"),
+        _style_with_optional_gradient(matrices["retention_matrix"], "{:.1%}", "Blues"),
         use_container_width=True,
     )
     render_item_help("retention_matrix", "Пояснение к retention")
@@ -33,7 +42,7 @@ def render(user_mart, trips):
     st.subheader("Когортный накопленный LTV")
     info_caption("Матрица показывает среднюю накопленную маржу на активированного пользователя когорты.")
     st.dataframe(
-        matrices["cohort_ltv_matrix"].style.format("{:,.0f} ₽").background_gradient(cmap="Greens"),
+        _style_with_optional_gradient(matrices["cohort_ltv_matrix"], "{:,.0f} ₽", "Greens"),
         use_container_width=True,
     )
     render_item_help("cohort_ltv_matrix", "Пояснение к когортному LTV")
