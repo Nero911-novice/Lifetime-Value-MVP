@@ -51,12 +51,6 @@ ACTION_LABELS = {
 }
 
 
-def _map_dataframe(df: pd.DataFrame, func) -> pd.DataFrame:
-    if hasattr(df, "map"):
-        return df.map(func)
-    return df.applymap(func)
-
-
 def _localize(df: pd.DataFrame) -> pd.DataFrame:
     localized = df.copy()
     if "risk_segment" in localized.columns:
@@ -177,11 +171,11 @@ def render_segment_heatmap(segment_map_table: pd.DataFrame) -> None:
 
     formatted = pivot.copy()
     if metric_mode in {"users_share", "avg_cancellation_rate", "avg_promo_trip_share", "avg_response_rate"}:
-        formatted = _map_dataframe(formatted, lambda x: format_percent(x, 1) if pd.notna(x) else "не рассчитывается в текущем срезе")
+        formatted = formatted.applymap(lambda x: format_percent(x, 1) if pd.notna(x) else "не рассчитывается в текущем срезе")
     elif metric_mode in {"avg_ltv_180d", "total_ltv_180d"}:
-        formatted = _map_dataframe(formatted, lambda x: format_currency(x, 0) if pd.notna(x) else "не рассчитывается в текущем срезе")
+        formatted = formatted.applymap(lambda x: format_currency(x, 0) if pd.notna(x) else "не рассчитывается в текущем срезе")
     else:
-        formatted = _map_dataframe(formatted, lambda x: format_number(x, 0) if pd.notna(x) else "0")
+        formatted = formatted.applymap(lambda x: format_number(x, 0) if pd.notna(x) else "0")
 
     st.dataframe(formatted, use_container_width=True)
 
