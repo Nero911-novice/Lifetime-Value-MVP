@@ -41,6 +41,18 @@ def filter_related_tables(data: Dict[str, pd.DataFrame], filtered_users: pd.Data
     }
 
 
+
+
+def _with_default_columns(df: pd.DataFrame, defaults: dict[str, Any]) -> pd.DataFrame:
+    """Return a copy of df with missing columns added using provided defaults."""
+    if not defaults:
+        return df
+    result = df.copy()
+    for column, default in defaults.items():
+        if column not in result.columns:
+            result[column] = default
+    return result
+
 def _safe_mean(series: pd.Series) -> float:
     return float(series.mean()) if len(series) else 0.0
 
@@ -81,11 +93,25 @@ def _period_order_metrics(trips: pd.DataFrame, end_date: pd.Timestamp, days: int
     }
 
 
-def compute_overview_metrics(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
+def compute_overview_metrics(user_mart: pd.DataFrame, trips: pd.DataFrame | None = None) -> dict:
+    trips = trips if trips is not None else pd.DataFrame(columns=["order_status", "request_ts", "contribution_margin", "gmv"])
+    user_mart = _with_default_columns(
+        user_mart,
+        {
+            "activated_flag": False,
+            "active_90d_flag": False,
+            "margin_180d": 0.0,
+            "avg_trip_margin": 0.0,
+            "acquisition_cost": 0.0,
+            "completed_trips": 0.0,
+        },
+    )
+
     total_users = len(user_mart)
     activated_users = int(user_mart["activated_flag"].sum())
     total_orders = int(user_mart["total_orders"].sum()) if "total_orders" in user_mart else int(len(trips))
     completed_orders = int(user_mart["completed_orders"].sum()) if "completed_orders" in user_mart else int((trips["order_status"] == "completed").sum())
+    completed_trips = int(user_mart["completed_trips"].sum()) if "completed_trips" in user_mart else completed_orders
     cancelled_orders = int(user_mart["cancelled_orders"].sum()) if "cancelled_orders" in user_mart else max(total_orders - completed_orders, 0)
     active_90d_share = float(user_mart["active_90d_flag"].mean()) if total_users else 0.0
 
@@ -123,6 +149,7 @@ def compute_overview_metrics(user_mart: pd.DataFrame, trips: pd.DataFrame) -> di
         "activation_rate": activated_users / total_users if total_users else 0.0,
         "total_orders": total_orders,
         "completed_orders": completed_orders,
+        "completed_trips": completed_trips,
         "cancelled_orders": cancelled_orders,
         "cancel_rate": cancel_rate,
         "active_90d_share": active_90d_share,
@@ -140,6 +167,24 @@ def compute_overview_metrics(user_mart: pd.DataFrame, trips: pd.DataFrame) -> di
 
 
 def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
+    user_mart = _with_default_columns(
+        user_mart,
+        {
+            "activated_flag": False,
+            "cohort_month": "Не активирован",
+            "margin_180d": 0.0,
+            "active_90d_flag": False,
+            "cancel_rate": 0.0,
+            "registration_date": pd.NaT,
+            "risk_segment": "Не классифицирован",
+            "value_segment": "Не классифицирован",
+            "acquisition_channel": "Неизвестно",
+            "acquisition_cost": 0.0,
+            "home_city": "Неизвестно",
+            "promo_band": "Неизвестно",
+        },
+    )
+
     activated = user_mart.loc[user_mart["activated_flag"]].copy()
     cohort_trend = (
         activated.groupby("cohort_month", dropna=False)
@@ -303,6 +348,21 @@ def build_key_changes_table(metrics: dict) -> pd.DataFrame:
 
 
 def compute_cohort_matrices(user_mart: pd.DataFrame, trips: pd.DataFrame, max_age_months: int = 12) -> dict:
+    user_mart = _with_default_columns(
+        user_mart,
+        {
+            "activated_flag": False,
+            "first_trip_date": pd.NaT,
+            "cohort_month": "Не активирован",
+            "margin_180d": 0.0,
+            "active_90d_flag": False,
+            "total_orders": 0.0,
+            "completed_orders": 0.0,
+            "cancel_rate": 0.0,
+            "acquisition_cost": 0.0,
+        },
+    )
+
     activated = user_mart.loc[user_mart["activated_flag"], ["user_id", "first_trip_date", "cohort_month"]].copy()
     cohort_sizes = activated.groupby("cohort_month")["user_id"].nunique()
 
@@ -391,6 +451,20 @@ def build_selected_cohort_curves(matrices: dict, cohort_month: str) -> pd.DataFr
 
 
 def build_segment_table(user_mart: pd.DataFrame) -> pd.DataFrame:
+    user_mart = _with_default_columns(
+        user_mart,
+        {
+            "risk_segment": "Не классифицирован",
+            "value_segment": "Не классифицирован",
+            "promo_band": "Неизвестно",
+            "margin_180d": 0.0,
+            "recent_trips_90d": 0.0,
+            "response_rate_7d": 0.0,
+            "active_90d_flag": False,
+            "cancel_rate": 0.0,
+        },
+    )
+
     segment = (
         user_mart.groupby(["risk_segment", "value_segment", "promo_band"], dropna=False)
         .agg(
@@ -446,6 +520,17 @@ def build_value_distribution(user_mart: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_risk_value_pivot(user_mart: pd.DataFrame, metric: str = "users") -> pd.DataFrame:
+    user_mart = _with_default_columns(
+        user_mart,
+        {
+            "risk_segment": "Не классифицирован",
+            "value_segment": "Не классифицирован",
+            "margin_180d": 0.0,
+            "cancel_rate": 0.0,
+            "active_90d_flag": False,
+        },
+    )
+
     source = (
         user_mart.groupby(["risk_segment", "value_segment"], dropna=False)
         .agg(
