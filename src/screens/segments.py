@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import streamlit as st
+import altair as alt
 
 from ..metrics import (
     build_segment_user_base,
@@ -304,14 +305,62 @@ def render_selected_segment_compare(segment_summary: pd.DataFrame, selected_segm
 
 def render_selected_segment_charts(charts: dict[str, pd.DataFrame]) -> None:
     st.subheader("Профиль сегмента")
-    if charts["key_metrics"].empty:
+
+    def _render_selected_vs_baseline_chart(df: pd.DataFrame, title: str, y_axis_title: str, value_format: str) -> None:
+        if df.empty:
+            st.info("Недостаточно данных для построения графика.")
+            return
+        long_df = df.melt(id_vars="metric", value_vars=["selected", "baseline"], var_name="profile", value_name="value")
+        long_df["profile"] = long_df["profile"].map({"selected": "Выбранный сегмент", "baseline": "Эталон"})
+        chart = (
+            alt.Chart(long_df)
+            .mark_bar()
+            .encode(
+                x=alt.X("metric:N", title="Метрика", sort=df["metric"].tolist()),
+                xOffset=alt.XOffset("profile:N", sort=["Выбранный сегмент", "Эталон"]),
+                y=alt.Y("value:Q", title=y_axis_title),
+                color=alt.Color("profile:N", title="", sort=["Выбранный сегмент", "Эталон"]),
+                tooltip=[
+                    alt.Tooltip("metric:N", title="Метрика"),
+                    alt.Tooltip("profile:N", title="Профиль"),
+                    alt.Tooltip("value:Q", title="Значение", format=value_format),
+                ],
+            )
+            .properties(height=260, title=title)
+        )
+        st.altair_chart(chart, use_container_width=True)
+
+    if charts["monetary_metrics"].empty and charts["ratio_metrics"].empty:
         st.info("Недостаточно разнообразия сегментов для профильных графиков.")
-        return
+    else:
+        c_top1, c_top2 = st.columns(2)
+        with c_top1:
+            _render_selected_vs_baseline_chart(
+                charts["monetary_metrics"],
+                title="Денежный профиль: сегмент vs эталон",
+                y_axis_title="Значение",
+                value_format=",.2f",
+            )
+        with c_top2:
+            _render_selected_vs_baseline_chart(
+                charts["ratio_metrics"],
+                title="Долевой профиль: сегмент vs эталон",
+                y_axis_title="Значение, %",
+                value_format=".2f",
+            )
+
+    unavailable_metrics = charts.get("unavailable_metrics", pd.DataFrame())
+    if not unavailable_metrics.empty:
+        reasons = (
+            unavailable_metrics.groupby("reason")["metric"]
+            .apply(lambda s: ", ".join(sorted(set(s))))
+            .reset_index()
+        )
+        for _, row in reasons.iterrows():
+            st.caption(f"{row['reason']}: {row['metric']}.")
 
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Ключевые метрики: сегмент vs эталон")
-        st.bar_chart(charts["key_metrics"].set_index("metric")[["selected", "baseline"]], height=260)
         st.caption("Профиль риск vs активность")
         if not charts["recency_rides"].empty:
             st.bar_chart(charts["recency_rides"].set_index("profile")[["recency_days", "rides_last_90d"]], height=220)

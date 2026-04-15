@@ -15,6 +15,7 @@ from src.metrics import (
     get_segment_map_table,
     get_selected_segment_profile,
     compare_segment_to_baseline,
+    get_selected_segment_charts_data,
     generate_segment_diagnostics,
 )
 from src.data_loader import load_demo_data, build_user_mart
@@ -282,3 +283,32 @@ def test_demo_segment_distribution_is_not_collapsed():
     assert base["risk_segment"].nunique() >= 3
     assert base["promo_dependency_segment"].nunique() >= 3
     assert base["compound_segment"].nunique() >= 6
+
+
+def test_selected_segment_charts_split_monetary_and_ratio_and_handle_missing():
+    segment_user_base = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2", "u3", "u4"],
+            "compound_segment": ["A", "A", "B", "B"],
+            "ltv_180d": [100.0, 120.0, 80.0, 90.0],
+            "avg_margin_per_completed_order": [20.0, 22.0, 18.0, 17.0],
+            "created_orders_count": [5, 4, 6, 5],
+            "completed_orders_count": [3, 2, 4, 3],
+            "cancelled_orders_count": [2, 2, 2, 2],
+            "promo_trip_share": [0.20, 0.10, 0.15, 0.05],
+            "responded_7d_rate": [0.10, 0.20, 0.10, 0.30],
+            "recency_days": [10, 12, 15, 16],
+            "rides_last_90d": [4, 3, 2, 2],
+        }
+    )
+    charts = get_selected_segment_charts_data(segment_user_base, selected_segment="A")
+    assert charts["monetary_metrics"]["metric"].tolist() == ["LTV 180d", "Avg margin per completed order"]
+    assert charts["ratio_metrics"]["metric"].tolist() == ["Cancellation rate", "Promo trip share", "Response rate"]
+    assert charts["ratio_metrics"]["selected"].max() > 1.0  # values are converted to %
+    assert charts["unavailable_metrics"].empty
+
+    no_touches_base = segment_user_base.copy()
+    no_touches_base["responded_7d_rate"] = pd.NA
+    charts_missing = get_selected_segment_charts_data(no_touches_base, selected_segment="A")
+    assert "Response rate" in charts_missing["unavailable_metrics"]["metric"].tolist()
+    assert "Нет маркетинговых касаний" in charts_missing["unavailable_metrics"]["reason"].tolist()
