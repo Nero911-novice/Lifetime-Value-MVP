@@ -4,6 +4,7 @@ import pandas as pd
 from src.metrics import (
     apply_common_filters,
     compute_overview_metrics,
+    build_overview_charts,
     build_cohort_user_base,
     get_cohort_summary,
     get_cohort_maturity_table,
@@ -71,6 +72,40 @@ def test_compute_overview_metrics_returns_expected_counts():
     assert metrics["completed_orders"] == 5
     assert metrics["total_orders"] == 6
     assert round(metrics["cancel_rate"], 4) == round(1 / 6, 4)
+
+
+def test_build_overview_charts_contains_recommended_action():
+    user_mart = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2"],
+            "activated_flag": [True, True],
+            "cohort_month": ["2025-01", "2025-01"],
+            "margin_180d": [100.0, 220.0],
+            "active_90d_flag": [True, False],
+            "cancel_rate": [0.02, 0.25],
+            "registration_date": pd.to_datetime(["2024-12-20", "2024-12-25"]),
+            "risk_segment": ["Stable / Active", "At Risk"],
+            "value_segment": ["High Value", "VIP"],
+            "acquisition_channel": ["Органика", "Платная"],
+            "acquisition_cost": [50.0, 80.0],
+            "home_city": ["Москва", "Казань"],
+            "promo_band": ["High", "Low"],
+        }
+    )
+    trips = pd.DataFrame(
+        {
+            "trip_id": ["t1", "t2"],
+            "user_id": ["u1", "u2"],
+            "order_status": ["completed", "completed"],
+            "request_ts": pd.to_datetime(["2025-01-10", "2025-01-12"]),
+            "contribution_margin": [12.0, 20.0],
+            "gmv": [100.0, 140.0],
+        }
+    )
+
+    charts = build_overview_charts(user_mart, trips)
+    assert "recommended_action" in charts["segment_action_map"].columns
+    assert charts["segment_action_map"]["recommended_action"].notna().all()
 
 
 def test_build_cohort_user_base_and_summary():
