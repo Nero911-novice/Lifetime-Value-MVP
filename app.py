@@ -32,7 +32,7 @@ def main() -> None:
 
     st.title("LTV Demo MVP для райд-хейлинга")
     st.caption(
-        "Демонстрационный аналитический прототип: показывает структуру будущего продукта, модель данных и базовую методологию расчета исторического LTV."
+        "Демонстрационный аналитический прототип: показывает будущую структуру LTV-продукта, связь между данными и метриками, а также управленческую логику экранов."
     )
 
     with st.sidebar:
@@ -72,7 +72,7 @@ def main() -> None:
     filtered_related["user_mart"] = filtered_user_mart
 
     if page == "Обзор":
-        overview.render(filtered_user_mart)
+        overview.render(filtered_user_mart, filtered_related["trips"])
     elif page == "Когорты":
         cohorts.render(filtered_user_mart, filtered_related["trips"])
     elif page == "Сегменты":
