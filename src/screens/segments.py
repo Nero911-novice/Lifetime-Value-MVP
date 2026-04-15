@@ -171,11 +171,11 @@ def render_segment_heatmap(segment_map_table: pd.DataFrame) -> None:
 
     formatted = pivot.copy()
     if metric_mode in {"users_share", "avg_cancellation_rate", "avg_promo_trip_share", "avg_response_rate"}:
-        formatted = formatted.applymap(lambda x: format_percent(x, 1) if pd.notna(x) else "не рассчитывается в текущем срезе")
+        formatted = formatted.map(lambda x: format_percent(x, 1) if pd.notna(x) else "не рассчитывается в текущем срезе")
     elif metric_mode in {"avg_ltv_180d", "total_ltv_180d"}:
-        formatted = formatted.applymap(lambda x: format_currency(x, 0) if pd.notna(x) else "не рассчитывается в текущем срезе")
+        formatted = formatted.map(lambda x: format_currency(x, 0) if pd.notna(x) else "не рассчитывается в текущем срезе")
     else:
-        formatted = formatted.applymap(lambda x: format_number(x, 0) if pd.notna(x) else "0")
+        formatted = formatted.map(lambda x: format_number(x, 0) if pd.notna(x) else "0")
 
     st.dataframe(formatted, use_container_width=True)
 
