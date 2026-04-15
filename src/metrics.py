@@ -865,98 +865,511 @@ def generate_cohort_diagnostics(selected_profile: dict, baseline_profile: dict) 
     return notes[:5] if notes else ["Когорта близка к медианному эталону по ключевым метрикам; заметных диагностических отклонений не выявлено."]
 
 
-def build_segment_table(user_mart: pd.DataFrame) -> pd.DataFrame:
-    user_mart = _with_default_columns(
-        user_mart,
+def build_segment_user_base(user_mart_df: pd.DataFrame, trips_df: pd.DataFrame | None = None, touches_df: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Build per-user segment mart with value/risk/promo labels and recommended actions."""
+    segment_base = _with_default_columns(
+        user_mart_df.copy(),
         {
-            "risk_segment": "Не классифицирован",
-            "value_segment": "Не классифицирован",
-            "promo_band": "Неизвестно",
+            "home_city": "Неизвестно",
+            "city": "Неизвестно",
+            "acquisition_channel": "Неизвестно",
+            "activation_type": "Неизвестно",
+            "preferred_tariff": "Неизвестно",
+            "registration_date": pd.NaT,
+            "first_trip_date": pd.NaT,
+            "total_orders": 0,
+            "created_orders_count": 0,
+            "completed_orders": 0,
+            "completed_orders_count": 0,
+            "cancelled_orders": 0,
+            "cancelled_orders_count": 0,
+            "cancel_rate": np.nan,
+            "margin_30d": 0.0,
+            "margin_90d": 0.0,
             "margin_180d": 0.0,
+            "margin_365d": 0.0,
+            "total_margin": 0.0,
+            "avg_trip_margin": np.nan,
+            "recent_trips_30d": 0.0,
             "recent_trips_90d": 0.0,
-            "response_rate_7d": 0.0,
+            "recency_days": np.nan,
+            "promo_trip_share": np.nan,
+            "refund_rate": np.nan,
+            "response_rate_7d": np.nan,
+            "converted_touches_7d": 0.0,
+            "total_touches": 0.0,
+            "acquisition_cost": 0.0,
+            "cac": 0.0,
             "active_90d_flag": False,
-            "cancel_rate": 0.0,
         },
     )
 
-    segment = (
-        user_mart.groupby(["risk_segment", "value_segment", "promo_band"], dropna=False)
+    segment_base["city"] = segment_base.get("city", segment_base["home_city"]).fillna(segment_base["home_city"])
+    segment_base["first_completed_trip_date"] = pd.to_datetime(segment_base.get("first_trip_date"), errors="coerce")
+    segment_base["registration_date"] = pd.to_datetime(segment_base.get("registration_date"), errors="coerce")
+
+    observation_date = _get_observation_date(segment_base, trips_df)
+    segment_base["observation_date"] = observation_date
+    segment_base["tenure_days"] = (observation_date - segment_base["registration_date"]).dt.days
+
+    segment_base["created_orders_count"] = segment_base.get("created_orders_count", segment_base["total_orders"]).fillna(segment_base["total_orders"])
+    segment_base["completed_orders_count"] = segment_base.get("completed_orders_count", segment_base["completed_orders"]).fillna(segment_base["completed_orders"])
+    segment_base["cancelled_orders_count"] = segment_base.get("cancelled_orders_count", segment_base["cancelled_orders"]).fillna(segment_base["cancelled_orders"])
+
+    segment_base["ltv_30d"] = segment_base.get("ltv_30d", segment_base["margin_30d"])
+    segment_base["ltv_90d"] = segment_base.get("ltv_90d", segment_base["margin_90d"])
+    segment_base["ltv_180d"] = segment_base.get("ltv_180d", segment_base["margin_180d"])
+    segment_base["ltv_365d"] = segment_base.get("ltv_365d", segment_base["margin_365d"])
+    segment_base["total_contribution_margin"] = segment_base.get("total_contribution_margin", segment_base["total_margin"])
+    segment_base["rides_last_30d"] = segment_base.get("rides_last_30d", segment_base["recent_trips_30d"])
+    segment_base["rides_last_90d"] = segment_base.get("rides_last_90d", segment_base["recent_trips_90d"])
+    segment_base["refund_trip_share"] = segment_base.get("refund_trip_share", segment_base["refund_rate"])
+    segment_base["responded_7d_rate"] = segment_base.get("responded_7d_rate", segment_base["response_rate_7d"])
+    segment_base["cac"] = segment_base.get("cac", segment_base["acquisition_cost"])
+    segment_base["is_active_90d"] = segment_base.get("is_active_90d", segment_base["active_90d_flag"])
+
+    if touches_df is not None and not touches_df.empty:
+        touches = touches_df.copy()
+        touch_agg = touches.groupby("user_id").agg(
+            touches_count=("touch_id", "count"),
+            converted_count=("converted_within_7d_flag", "sum"),
+        )
+        touch_agg["responded_7d_rate"] = touch_agg["converted_count"] / touch_agg["touches_count"].replace({0: np.nan})
+        segment_base = segment_base.merge(touch_agg[["responded_7d_rate"]], on="user_id", how="left", suffixes=("", "_touch"))
+        segment_base["responded_7d_rate"] = segment_base["responded_7d_rate_touch"].combine_first(segment_base["responded_7d_rate"])
+        segment_base = segment_base.drop(columns=["responded_7d_rate_touch"])
+
+    segment_base["avg_margin_per_completed_order"] = np.where(
+        segment_base["completed_orders_count"] > 0,
+        segment_base["total_contribution_margin"] / segment_base["completed_orders_count"].replace({0: np.nan}),
+        np.nan,
+    )
+    segment_base["cancellation_rate"] = np.where(
+        segment_base["created_orders_count"] > 0,
+        segment_base["cancelled_orders_count"] / segment_base["created_orders_count"].replace({0: np.nan}),
+        np.nan,
+    )
+
+    segment_base["value_segment"] = assign_value_segment(segment_base)
+    segment_base["risk_segment"] = assign_risk_segment(segment_base)
+    segment_base["promo_dependency_segment"] = assign_promo_dependency_segment(segment_base)
+    segment_base["compound_segment"] = assign_compound_segment(segment_base)
+    segment_base["recommended_action"] = assign_recommended_action(segment_base)
+
+    expected_cols = [
+        "user_id", "city", "acquisition_channel", "activation_type", "preferred_tariff",
+        "registration_date", "first_completed_trip_date", "tenure_days", "created_orders_count",
+        "completed_orders_count", "cancelled_orders_count", "cancellation_rate", "ltv_30d", "ltv_90d",
+        "ltv_180d", "ltv_365d", "total_contribution_margin", "avg_margin_per_completed_order",
+        "rides_last_30d", "rides_last_90d", "recency_days", "promo_trip_share", "refund_trip_share",
+        "responded_7d_rate", "value_segment", "risk_segment", "promo_dependency_segment",
+        "compound_segment", "recommended_action", "is_active_90d", "cac",
+    ]
+    for col in expected_cols:
+        if col not in segment_base.columns:
+            segment_base[col] = np.nan
+
+    return segment_base[expected_cols].copy()
+
+
+def assign_value_segment(df: pd.DataFrame) -> pd.Series:
+    ltv = pd.to_numeric(df.get("ltv_180d"), errors="coerce")
+    completed_orders = pd.to_numeric(df.get("completed_orders_count"), errors="coerce").fillna(0)
+
+    valid_ltv = ltv[ltv.notna()]
+    if len(valid_ltv) >= 10:
+        q1, q2 = valid_ltv.quantile([0.33, 0.66]).tolist()
+    else:
+        q1, q2 = 100.0, 500.0
+
+    segment = pd.Series("Medium value", index=df.index, dtype="string")
+    segment = segment.mask((ltv < q1) | ((ltv <= 0) & (completed_orders > 0)), "Low value")
+    segment = segment.mask(ltv >= q2, "High value")
+    segment = segment.mask(completed_orders == 0, "Low value")
+    return segment.fillna("Low value")
+
+
+def assign_risk_segment(df: pd.DataFrame) -> pd.Series:
+    recency = pd.to_numeric(df.get("recency_days"), errors="coerce")
+    rides_30 = pd.to_numeric(df.get("rides_last_30d"), errors="coerce").fillna(0)
+    rides_90 = pd.to_numeric(df.get("rides_last_90d"), errors="coerce").fillna(0)
+    completed_orders = pd.to_numeric(df.get("completed_orders_count"), errors="coerce").fillna(0)
+
+    risk = pd.Series("Cooling", index=df.index, dtype="string")
+    stable_mask = ((recency <= 14) & (rides_30 >= 1)) | ((recency <= 30) & (rides_90 >= 3))
+    at_risk_mask = (recency > 60) | ((recency > 45) & (rides_90 <= 1))
+    dormant_mask = (recency > 120) | ((rides_90 == 0) & (completed_orders > 0) & (recency >= 90))
+
+    risk = risk.mask(stable_mask, "Stable / Active")
+    risk = risk.mask(at_risk_mask, "At risk")
+    risk = risk.mask(dormant_mask, "Dormant")
+    risk = risk.mask(completed_orders == 0, "Dormant")
+    return risk.fillna("Cooling")
+
+
+def assign_promo_dependency_segment(df: pd.DataFrame) -> pd.Series:
+    promo_share = pd.to_numeric(df.get("promo_trip_share"), errors="coerce")
+    response_rate = pd.to_numeric(df.get("responded_7d_rate"), errors="coerce")
+
+    promo_component = promo_share.fillna(0)
+    response_component = response_rate.fillna(response_rate.median(skipna=True) if response_rate.notna().any() else 0)
+    score = 0.7 * promo_component + 0.3 * response_component
+
+    segment = pd.cut(
+        score,
+        bins=[-0.01, 0.25, 0.55, 1.01],
+        labels=["Low promo dependency", "Medium promo dependency", "High promo dependency"],
+    )
+    return segment.astype("string").fillna("Low promo dependency")
+
+
+def assign_compound_segment(df: pd.DataFrame) -> pd.Series:
+    return (df["risk_segment"].astype("string") + " | " + df["value_segment"].astype("string")).astype("string")
+
+
+def assign_recommended_action(df: pd.DataFrame) -> pd.Series:
+    actions = []
+    for _, row in df.iterrows():
+        value = row.get("value_segment")
+        risk = row.get("risk_segment")
+        promo = row.get("promo_dependency_segment")
+
+        if value == "High value" and risk in {"At risk", "Dormant"}:
+            action = "Protect / Retain" if risk == "At risk" else "Reactivate"
+        elif value == "High value" and risk == "Cooling":
+            action = "Protect / Retain"
+        elif value == "High value" and risk == "Stable / Active":
+            action = "Observe / No immediate action"
+        elif value == "Medium value" and risk == "Cooling" and promo in {"Medium promo dependency", "High promo dependency"}:
+            action = "Stimulate carefully"
+        elif value == "Low value" and promo == "High promo dependency":
+            action = "Limit incentives"
+        elif value == "Low value" and risk == "Dormant":
+            action = "Observe / No immediate action"
+        elif risk in {"At risk", "Dormant"}:
+            action = "Reactivate"
+        else:
+            action = "Observe / No immediate action"
+        actions.append(action)
+    return pd.Series(actions, index=df.index, dtype="string")
+
+
+def get_segment_summary(segment_user_base: pd.DataFrame) -> pd.DataFrame:
+    if segment_user_base.empty:
+        return pd.DataFrame(columns=["compound_segment", "risk_segment", "value_segment"])
+
+    total_users = len(segment_user_base)
+    summary = (
+        segment_user_base.groupby(["compound_segment", "risk_segment", "value_segment"], dropna=False)
         .agg(
-            users=("user_id", "count"),
-            avg_ltv_180=("margin_180d", "mean"),
-            avg_trips_90d=("recent_trips_90d", "mean"),
-            avg_response_7d=("response_rate_7d", "mean"),
-            active_90d_share=("active_90d_flag", "mean"),
-            avg_cancel_rate=("cancel_rate", "mean"),
+            users_count=("user_id", "nunique"),
+            avg_ltv_180d=("ltv_180d", "mean"),
+            median_ltv_180d=("ltv_180d", "median"),
+            avg_margin_per_completed_order=("avg_margin_per_completed_order", "mean"),
+            avg_created_orders=("created_orders_count", "mean"),
+            avg_completed_orders=("completed_orders_count", "mean"),
+            created_orders_total=("created_orders_count", "sum"),
+            cancelled_orders_total=("cancelled_orders_count", "sum"),
+            avg_promo_trip_share=("promo_trip_share", "mean"),
+            avg_recency_days=("recency_days", "mean"),
+            avg_rides_last_90d=("rides_last_90d", "mean"),
+            avg_response_rate=("responded_7d_rate", "mean"),
+            total_ltv_180d=("ltv_180d", "sum"),
+            total_margin=("total_contribution_margin", "sum"),
         )
         .reset_index()
-        .sort_values(["users", "avg_ltv_180"], ascending=[False, False])
     )
-    segment["recommended_action"] = segment.apply(_recommend_action, axis=1)
-    return segment
+    summary["users_share"] = summary["users_count"] / total_users
+    summary["avg_cancellation_rate"] = summary["cancelled_orders_total"] / summary["created_orders_total"].replace({0: np.nan})
+
+    promo_dist = (
+        segment_user_base.groupby(["compound_segment", "promo_dependency_segment"]).size().rename("cnt").reset_index()
+    )
+    if not promo_dist.empty:
+        promo_dominant = promo_dist.sort_values(["compound_segment", "cnt"], ascending=[True, False]).drop_duplicates("compound_segment")
+        summary = summary.merge(
+            promo_dominant[["compound_segment", "promo_dependency_segment"]].rename(columns={"promo_dependency_segment": "dominant_promo_segment"}),
+            on="compound_segment",
+            how="left",
+        )
+    else:
+        summary["dominant_promo_segment"] = pd.NA
+
+    action_map = (
+        segment_user_base.groupby("compound_segment")["recommended_action"]
+        .agg(lambda s: s.mode().iloc[0] if not s.mode().empty else "Observe / No immediate action")
+        .reset_index()
+    )
+    summary = summary.merge(action_map, on="compound_segment", how="left")
+
+    return summary.sort_values(["users_count", "avg_ltv_180d"], ascending=[False, False])
 
 
-def _recommend_action(row: pd.Series) -> str:
-    risk = row.get("risk_segment")
-    value = row.get("value_segment")
-    promo = row.get("promo_band")
-    if value == "Высокая ценность" and risk == "Низкий риск":
-        return "Защитный режим: не субсидировать, поддерживать качество"
-    if value == "Высокая ценность" and risk in {"Средний риск", "Высокий риск"}:
-        return "Приоритетное удержание: мягкий стимул и контроль качества"
-    if value == "Высокая ценность" and risk == "Спящий":
-        return "Реактивационный тест: персональное возвращение"
-    if value == "Средняя ценность" and promo == "Высокая":
-        return "Ограничить дорогие промо, тестировать точечные офферы"
-    if value == "Низкая ценность" and promo == "Высокая":
-        return "Сократить субсидии, оставить дешевые касания"
-    if risk == "Не активирован":
-        return "Дожим до первой поездки: активационный сценарий"
-    return "Наблюдение и стандартная коммуникация"
+def get_segment_map_table(segment_user_base: pd.DataFrame) -> pd.DataFrame:
+    if segment_user_base.empty:
+        return pd.DataFrame(columns=["risk_segment", "value_segment", "users_count"])
+    total_users = len(segment_user_base)
+    grouped = (
+        segment_user_base.groupby(["risk_segment", "value_segment"], dropna=False)
+        .agg(
+            users_count=("user_id", "nunique"),
+            avg_ltv_180d=("ltv_180d", "mean"),
+            created_orders_total=("created_orders_count", "sum"),
+            cancelled_orders_total=("cancelled_orders_count", "sum"),
+            avg_promo_trip_share=("promo_trip_share", "mean"),
+            avg_response_rate=("responded_7d_rate", "mean"),
+        )
+        .reset_index()
+    )
+    grouped["users_share"] = grouped["users_count"] / total_users
+    grouped["avg_cancellation_rate"] = grouped["cancelled_orders_total"] / grouped["created_orders_total"].replace({0: np.nan})
+
+    action_map = (
+        segment_user_base.groupby(["risk_segment", "value_segment"])["recommended_action"]
+        .agg(lambda s: s.mode().iloc[0] if not s.mode().empty else "Observe / No immediate action")
+        .reset_index()
+    )
+    grouped = grouped.merge(action_map, on=["risk_segment", "value_segment"], how="left")
+    return grouped
+
+
+def get_selected_segment_profile(segment_user_base: pd.DataFrame, segment_name: str) -> dict:
+    selected = segment_user_base.loc[segment_user_base["compound_segment"] == segment_name].copy()
+    if selected.empty:
+        return {}
+    created_sum = selected["created_orders_count"].sum()
+    completed_sum = selected["completed_orders_count"].sum()
+    profile = {
+        "compound_segment": segment_name,
+        "risk_segment": selected["risk_segment"].iloc[0],
+        "value_segment": selected["value_segment"].iloc[0],
+        "users_count": int(selected["user_id"].nunique()),
+        "users_share": float(selected["user_id"].nunique() / max(len(segment_user_base), 1)),
+        "avg_ltv_180d": float(selected["ltv_180d"].mean()),
+        "total_ltv_180d": float(selected["ltv_180d"].sum()),
+        "avg_margin_per_completed_order": float(selected["avg_margin_per_completed_order"].mean()),
+        "cancellation_rate": float(selected["cancelled_orders_count"].sum() / created_sum) if created_sum > 0 else np.nan,
+        "promo_trip_share": float(selected["promo_trip_share"].mean()),
+        "avg_recency_days": float(selected["recency_days"].mean()),
+        "avg_rides_last_90d": float(selected["rides_last_90d"].mean()),
+        "avg_response_rate": float(selected["responded_7d_rate"].mean()),
+        "recommended_action": selected["recommended_action"].mode().iloc[0],
+        "dominant_promo_segment": selected["promo_dependency_segment"].mode().iloc[0],
+        "avg_created_orders": float(selected["created_orders_count"].mean()),
+        "avg_completed_orders": float(selected["completed_orders_count"].mean()),
+        "completed_orders_total": float(completed_sum),
+        "created_orders_total": float(created_sum),
+    }
+    return profile
+
+
+def compare_segment_to_baseline(segment_summary: pd.DataFrame, selected_segment: str, baseline_mode: str = "median") -> pd.DataFrame:
+    if segment_summary.empty or selected_segment not in set(segment_summary["compound_segment"]):
+        return pd.DataFrame(columns=["metric", "selected", "baseline", "delta"])
+
+    metric_map = {
+        "Users count": "users_count",
+        "Users share": "users_share",
+        "Avg LTV 180d": "avg_ltv_180d",
+        "Total LTV 180d": "total_ltv_180d",
+        "Avg margin per completed order": "avg_margin_per_completed_order",
+        "Cancellation rate": "avg_cancellation_rate",
+        "Promo trip share": "avg_promo_trip_share",
+        "Avg recency days": "avg_recency_days",
+        "Avg rides last 90d": "avg_rides_last_90d",
+        "Avg response rate": "avg_response_rate",
+    }
+
+    selected_row = segment_summary.loc[segment_summary["compound_segment"] == selected_segment].iloc[0]
+    baseline_row = segment_summary.median(numeric_only=True) if baseline_mode == "median" else segment_summary.mean(numeric_only=True)
+
+    rows = []
+    for label, col in metric_map.items():
+        sel = float(selected_row[col]) if col in selected_row and pd.notna(selected_row[col]) else np.nan
+        base = float(baseline_row[col]) if col in baseline_row and pd.notna(baseline_row[col]) else np.nan
+        rows.append({"metric": label, "selected": sel, "baseline": base, "delta": sel - base})
+    return pd.DataFrame(rows)
+
+
+def get_selected_segment_charts_data(segment_user_base: pd.DataFrame, selected_segment: str) -> dict[str, pd.DataFrame]:
+    selected = segment_user_base.loc[segment_user_base["compound_segment"] == selected_segment].copy()
+    if selected.empty:
+        empty = pd.DataFrame(columns=["metric", "selected", "baseline"])
+        return {"key_metrics": empty, "recency_rides": empty, "promo_margin": empty, "cancel_value": empty}
+
+    baseline = segment_user_base.loc[segment_user_base["compound_segment"] != selected_segment].copy()
+    if baseline.empty:
+        baseline = segment_user_base.copy()
+
+    key_metrics = pd.DataFrame(
+        {
+            "metric": ["LTV 180d", "Margin / completed order", "Cancellation rate", "Promo share", "Response rate"],
+            "selected": [
+                selected["ltv_180d"].mean(),
+                selected["avg_margin_per_completed_order"].mean(),
+                selected["cancelled_orders_count"].sum() / selected["created_orders_count"].sum() if selected["created_orders_count"].sum() > 0 else np.nan,
+                selected["promo_trip_share"].mean(),
+                selected["responded_7d_rate"].mean(),
+            ],
+            "baseline": [
+                baseline["ltv_180d"].mean(),
+                baseline["avg_margin_per_completed_order"].mean(),
+                baseline["cancelled_orders_count"].sum() / baseline["created_orders_count"].sum() if baseline["created_orders_count"].sum() > 0 else np.nan,
+                baseline["promo_trip_share"].mean(),
+                baseline["responded_7d_rate"].mean(),
+            ],
+        }
+    )
+
+    recency_rides = pd.DataFrame(
+        {
+            "profile": ["Selected segment", "Baseline"],
+            "recency_days": [selected["recency_days"].mean(), baseline["recency_days"].mean()],
+            "rides_last_90d": [selected["rides_last_90d"].mean(), baseline["rides_last_90d"].mean()],
+        }
+    )
+
+    promo_margin = pd.DataFrame(
+        {
+            "profile": ["Selected segment", "Baseline"],
+            "promo_trip_share": [selected["promo_trip_share"].mean(), baseline["promo_trip_share"].mean()],
+            "avg_margin_per_completed_order": [selected["avg_margin_per_completed_order"].mean(), baseline["avg_margin_per_completed_order"].mean()],
+        }
+    )
+
+    cancel_value = pd.DataFrame(
+        {
+            "profile": ["Selected segment", "Baseline"],
+            "cancellation_rate": [
+                selected["cancelled_orders_count"].sum() / selected["created_orders_count"].sum() if selected["created_orders_count"].sum() > 0 else np.nan,
+                baseline["cancelled_orders_count"].sum() / baseline["created_orders_count"].sum() if baseline["created_orders_count"].sum() > 0 else np.nan,
+            ],
+            "avg_ltv_180d": [selected["ltv_180d"].mean(), baseline["ltv_180d"].mean()],
+        }
+    )
+
+    return {
+        "key_metrics": key_metrics,
+        "recency_rides": recency_rides,
+        "promo_margin": promo_margin,
+        "cancel_value": cancel_value,
+    }
+
+
+def generate_segment_diagnostics(selected_profile: dict, baseline_profile: dict) -> list[str]:
+    if not selected_profile or not baseline_profile:
+        return ["Недостаточно данных для диагностической интерпретации выбранного сегмента."]
+
+    notes: list[str] = []
+    if selected_profile.get("avg_ltv_180d", np.nan) > baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
+        notes.append("Сегмент показывает LTV выше эталона, но также более высокую долю промо-поездок: это может указывать на частичную промо-поддержку экономики.")
+    if selected_profile.get("cancellation_rate", np.nan) > baseline_profile.get("cancellation_rate", np.nan):
+        notes.append("Доля отмен выше эталона, что может быть связано с операционной нестабильностью или качеством опыта и требует дополнительной проверки.")
+    if selected_profile.get("avg_recency_days", np.nan) > baseline_profile.get("avg_recency_days", np.nan) and selected_profile.get("avg_rides_last_90d", np.nan) < baseline_profile.get("avg_rides_last_90d", np.nan):
+        notes.append("Поведенческий профиль ослаблен: recency выше, а поездок за 90 дней меньше эталона — сегмент следует интерпретировать с осторожностью.")
+    if selected_profile.get("total_ltv_180d", np.nan) > baseline_profile.get("total_ltv_180d", np.nan) and selected_profile.get("avg_ltv_180d", np.nan) <= baseline_profile.get("avg_ltv_180d", np.nan):
+        notes.append("Сегмент значим за счёт масштаба базы: суммарный LTV высокий при среднем качестве пользователя около эталона.")
+    if selected_profile.get("avg_ltv_180d", np.nan) < baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
+        notes.append("Низкий LTV на фоне высокой промо-доли может указывать на экономически слабый и стимулируемый сегмент.")
+
+    if not notes:
+        notes.append("Сегмент близок к эталону по ключевым метрикам; выраженные диагностические отклонения не обнаружены.")
+    return notes[:5]
+
+
+def get_segment_distribution_tables(segment_user_base: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    return {
+        "risk_distribution": segment_user_base.groupby("risk_segment", dropna=False).agg(users_count=("user_id", "nunique")).reset_index(),
+        "value_distribution": segment_user_base.groupby("value_segment", dropna=False).agg(users_count=("user_id", "nunique")).reset_index(),
+        "promo_distribution": segment_user_base.groupby("promo_dependency_segment", dropna=False).agg(users_count=("user_id", "nunique")).reset_index(),
+    }
+
+
+def get_segment_priority_metrics(segment_summary: pd.DataFrame) -> pd.DataFrame:
+    if segment_summary.empty:
+        return segment_summary
+    result = segment_summary.copy()
+    result["segment_priority_flag"] = np.select(
+        [
+            (result["value_segment"] == "High value") & (result["risk_segment"].isin(["At risk", "Dormant"])),
+            (result["value_segment"] == "Low value") & (result["dominant_promo_segment"] == "High promo dependency"),
+        ],
+        ["Retention priority", "Incentive control"],
+        default="Monitor",
+    )
+    return result
+
+
+def get_segment_kpis(segment_user_base: pd.DataFrame, segment_summary: pd.DataFrame) -> dict[str, float]:
+    if segment_user_base.empty:
+        return {
+            "users_count": 0,
+            "compound_segments_count": 0,
+            "avg_ltv_180d": np.nan,
+            "total_ltv_180d": 0.0,
+            "avg_cancellation_rate": np.nan,
+            "avg_promo_trip_share": np.nan,
+            "avg_recency_days": np.nan,
+            "risk_users_share": np.nan,
+            "high_value_users_share": np.nan,
+        }
+
+    users_count = len(segment_user_base)
+    risk_users = segment_user_base["risk_segment"].isin(["At risk", "Dormant"]).mean()
+    high_value = segment_user_base["value_segment"].eq("High value").mean()
+    created_sum = segment_user_base["created_orders_count"].sum()
+    cancel_sum = segment_user_base["cancelled_orders_count"].sum()
+
+    return {
+        "users_count": users_count,
+        "compound_segments_count": int(segment_summary["compound_segment"].nunique()) if not segment_summary.empty else 0,
+        "avg_ltv_180d": float(segment_user_base["ltv_180d"].mean()),
+        "total_ltv_180d": float(segment_user_base["ltv_180d"].sum()),
+        "avg_cancellation_rate": float(cancel_sum / created_sum) if created_sum > 0 else np.nan,
+        "avg_promo_trip_share": float(segment_user_base["promo_trip_share"].mean()),
+        "avg_recency_days": float(segment_user_base["recency_days"].mean()),
+        "risk_users_share": float(risk_users),
+        "high_value_users_share": float(high_value),
+    }
+
+
+# Backward-compatible wrappers for legacy overview/segments code paths.
+def build_segment_table(user_mart: pd.DataFrame) -> pd.DataFrame:
+    base = build_segment_user_base(user_mart)
+    summary = get_segment_summary(base)
+    return summary.rename(columns={
+        "users_count": "users",
+        "avg_ltv_180d": "avg_ltv_180",
+        "avg_rides_last_90d": "avg_trips_90d",
+        "avg_response_rate": "avg_response_7d",
+        "avg_cancellation_rate": "avg_cancel_rate",
+        "dominant_promo_segment": "promo_band",
+    })
 
 
 def build_risk_distribution(user_mart: pd.DataFrame) -> pd.DataFrame:
-    return (
-        user_mart.groupby("risk_segment")
-        .agg(users=("user_id", "count"), avg_ltv_180=("margin_180d", "mean"))
-        .reset_index()
-        .sort_values("users", ascending=False)
-    )
+    base = build_segment_user_base(user_mart)
+    return base.groupby("risk_segment", dropna=False).agg(users_count=("user_id", "nunique"), avg_ltv_180=("ltv_180d", "mean")).reset_index().rename(columns={"users_count": "users"})
 
 
 def build_value_distribution(user_mart: pd.DataFrame) -> pd.DataFrame:
-    return (
-        user_mart.groupby("value_segment")
-        .agg(users=("user_id", "count"), avg_ltv_180=("margin_180d", "mean"))
-        .reset_index()
-        .sort_values("users", ascending=False)
-    )
+    base = build_segment_user_base(user_mart)
+    return base.groupby("value_segment", dropna=False).agg(users_count=("user_id", "nunique"), avg_ltv_180=("ltv_180d", "mean")).reset_index().rename(columns={"users_count": "users"})
 
 
 def build_risk_value_pivot(user_mart: pd.DataFrame, metric: str = "users") -> pd.DataFrame:
-    user_mart = _with_default_columns(
-        user_mart,
-        {
-            "risk_segment": "Не классифицирован",
-            "value_segment": "Не классифицирован",
-            "margin_180d": 0.0,
-            "cancel_rate": 0.0,
-            "active_90d_flag": False,
-        },
-    )
-
-    source = (
-        user_mart.groupby(["risk_segment", "value_segment"], dropna=False)
-        .agg(
-            users=("user_id", "count"),
-            avg_ltv_180=("margin_180d", "mean"),
-            avg_cancel_rate=("cancel_rate", "mean"),
-            active_90d_share=("active_90d_flag", "mean"),
-        )
-        .reset_index()
-    )
-    return source.pivot_table(index="risk_segment", columns="value_segment", values=metric, fill_value=0)
+    table = get_segment_map_table(build_segment_user_base(user_mart)).copy()
+    metric_map = {
+        "users": "users_count",
+        "avg_ltv_180": "avg_ltv_180d",
+        "avg_cancel_rate": "avg_cancellation_rate",
+        "promo_share": "avg_promo_trip_share",
+        "avg_response_rate": "avg_response_rate",
+    }
+    value_col = metric_map.get(metric, metric)
+    if value_col not in table.columns:
+        value_col = "users_count"
+    return table.pivot_table(index="risk_segment", columns="value_segment", values=value_col, fill_value=0)
 
 
 def get_user_snapshot(user_id: str, data: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame | pd.Series]:
