@@ -1,116 +1,202 @@
-
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
-from ..metrics import compute_cohort_matrices, build_selected_cohort_curves
-from ..ui import (
-    render_screen_help,
-    render_item_help,
-    render_methodology_footer,
-    info_caption,
-    format_percent,
-    format_currency,
-    format_number,
+from ..metrics import (
+    build_cohort_user_base,
+    get_cohort_summary,
+    get_cohort_maturity_table,
+    build_retention_matrix,
+    build_cumulative_ltv_matrix,
+    build_cumulative_margin_matrix,
+    build_cancellation_matrix,
+    build_promo_share_matrix,
+    build_rides_per_user_matrix,
+    build_cohort_size_matrix,
+    get_selected_cohort_profile,
+    get_selected_cohort_curves,
+    compare_cohort_to_baseline,
+    generate_cohort_diagnostics,
 )
+from ..ui import render_screen_help, render_item_help, render_methodology_footer, format_currency, format_number, format_percent
 
 
-def render(user_mart, trips):
+def render_cohort_header() -> None:
     st.header("Когорты")
+    st.caption("Диагностический экран качества когорт: размер, удержание, монетизация, маржинальность, отмены и промо-зависимость.")
     render_screen_help("cohorts")
 
-    max_age = st.slider(
-        "Максимальный возраст когорты, месяцев",
-        min_value=6,
-        max_value=18,
-        value=12,
-        step=1,
-        help="Ограничивает глубину когортных матриц по месяцам жизни.",
+
+def render_cohort_filters_info(cohort_summary: pd.DataFrame) -> tuple[pd.DataFrame, int, str]:
+    if cohort_summary.empty:
+        st.warning("После фильтрации нет активированных когорт. Измените глобальные фильтры.")
+        return cohort_summary, 0, "Retention"
+    options = sorted(cohort_summary["cohort_month"].unique().tolist())
+    period = st.select_slider("Диапазон месяцев когорт", options=options, value=(options[0], options[-1]))
+    min_maturity = st.slider("Минимальная зрелость когорты, месяцев", min_value=0, max_value=18, value=1, step=1)
+    mode = st.selectbox(
+        "Режим основной матрицы",
+        options=[
+            "Retention",
+            "Накопленный LTV",
+            "Накопленная маржа",
+            "Доля отмен",
+            "Доля промо-поездок",
+            "Поездки на пользователя",
+            "Размер когорты",
+        ],
     )
+    filtered = cohort_summary.loc[
+        cohort_summary["cohort_month"].between(period[0], period[1]) & (cohort_summary["maturity_months"] >= min_maturity)
+    ].copy()
+    return filtered, min_maturity, mode
 
-    matrices = compute_cohort_matrices(user_mart, trips, max_age_months=max_age)
-    cohort_summary = matrices["cohort_summary"].copy()
 
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    mature = cohort_summary.loc[cohort_summary["maturity_months"] >= 6]
-    kpi1.metric("Когорт активации", format_number(len(cohort_summary), 0))
-    kpi2.metric("Активированных пользователей", format_number(cohort_summary["activated_users"].sum(), 0))
-    kpi3.metric("Средний LTV 180д по зрелым когортам", format_currency(mature["avg_ltv_180"].mean() if len(mature) else 0, 0))
-    kpi4.metric("Средняя активность 90д по зрелым когортам", format_percent(mature["active_90d_share"].mean() if len(mature) else 0, 1))
+def render_cohort_kpis(cohort_summary: pd.DataFrame) -> None:
+    if cohort_summary.empty:
+        return
+    k1, k2, k3, k4, k5 = st.columns(5)
+    k1.metric("Число когорт", format_number(len(cohort_summary), 0))
+    k2.metric("Суммарный размер", format_number(cohort_summary["cohort_size"].sum(), 0))
+    k3.metric("Средняя зрелость", f"{cohort_summary['maturity_months'].mean():.1f} мес.")
+    k4.metric("Средний retention M1", format_percent(cohort_summary["retention_m1"].mean(skipna=True), 1))
+    k5.metric("Средний retention M3", format_percent(cohort_summary["retention_m3"].mean(skipna=True), 1))
+    k6, k7, k8, k9 = st.columns(4)
+    k6.metric("Средний LTV 90д", format_currency(cohort_summary["avg_ltv_90d"].mean(), 0))
+    k7.metric("Средний LTV 180д", format_currency(cohort_summary["avg_ltv_180d"].mean(), 0))
+    k8.metric("Средняя доля отмен", format_percent(cohort_summary["avg_cancellation_rate"].mean(), 1))
+    k9.metric("Средняя доля промо", format_percent(cohort_summary["avg_promo_trip_share"].mean(), 1))
 
-    st.subheader("Сводка по когортам")
-    info_caption(
-        "Сводная таблица нужна для управленческого чтения качества когорт: размер, зрелость, LTV, активность и отмены рассматриваются одновременно."
+
+def _render_matrix(matrix: pd.DataFrame, mode: str) -> None:
+    if matrix.empty:
+        st.info("Нет данных для отображения матрицы в текущем фильтре.")
+        return
+    styled = matrix.style
+    if mode in {"Retention", "Доля отмен", "Доля промо-поездок"}:
+        styled = styled.format("{:.1%}").background_gradient(cmap="Blues")
+    elif mode in {"Накопленный LTV", "Накопленная маржа"}:
+        styled = styled.format("{:,.0f} ₽").background_gradient(cmap="Greens")
+    elif mode == "Поездки на пользователя":
+        styled = styled.format("{:,.2f}").background_gradient(cmap="Purples")
+    else:
+        styled = styled.format("{:,.0f}")
+    st.dataframe(styled, use_container_width=True)
+
+
+def render_cohort_main_matrix(mode: str, matrices: dict[str, pd.DataFrame]) -> None:
+    st.subheader("Основная когортная матрица")
+    mapping = {
+        "Retention": ("retention", "cohort_retention_help"),
+        "Накопленный LTV": ("ltv", "cohort_ltv_help"),
+        "Накопленная маржа": ("margin", "cohort_margin_help"),
+        "Доля отмен": ("cancellation", "cohort_cancellation_help"),
+        "Доля промо-поездок": ("promo_share", "cohort_promo_share_help"),
+        "Поездки на пользователя": ("rides", "cohort_rides_per_user_help"),
+        "Размер когорты": ("size", "cohort_size_help"),
+    }
+    key, help_key = mapping[mode]
+    _render_matrix(matrices[key], mode)
+    render_item_help(help_key, "Пояснение к режиму матрицы")
+
+
+def render_cohort_maturity_table(maturity_table: pd.DataFrame) -> None:
+    st.subheader("Таблица зрелости когорт")
+    if maturity_table.empty:
+        st.info("Нет зрелых когорт в текущем фильтре.")
+        return
+    st.dataframe(maturity_table.rename(columns={"cohort_month": "Когорта", "cohort_size": "Размер", "maturity_months": "Зрелость, месяцев"}), use_container_width=True)
+    render_item_help("cohort_maturity_help", "Пояснение к зрелости")
+
+
+def render_selected_cohort_compare(cohort_summary: pd.DataFrame, selected_cohort: str) -> tuple[dict, dict]:
+    st.subheader("Сравнение выбранной когорты с эталоном (медиана)")
+    compare_table = compare_cohort_to_baseline(cohort_summary, selected_cohort, baseline_mode="median")
+    if compare_table.empty:
+        st.info("Недостаточно данных для сравнения.")
+        return {}, {}
+    styled = compare_table.style.format({"selected": "{:,.3f}", "baseline": "{:,.3f}", "delta": "{:+,.3f}"}).apply(
+        lambda s: ["color: #2e7d32" if v > 0 else "color: #c62828" if v < 0 else "" for v in s] if s.name == "delta" else [""] * len(s),
+        axis=0,
     )
-    st.dataframe(
-        cohort_summary.rename(
-            columns={
-                "cohort_month": "Когорта",
-                "activated_users": "Активированные пользователи",
-                "avg_ltv_180": "Средний LTV 180д",
-                "active_90d_share": "Активные 90д",
-                "avg_orders": "Средние созданные заказы",
-                "avg_completed_orders": "Средние завершенные заказы",
-                "avg_cancel_rate": "Средняя доля отмен",
-                "avg_cac": "Средний CAC",
-                "maturity_months": "Зрелость, месяцев",
-            }
-        ),
-        use_container_width=True,
-    )
-    render_item_help("cohort_summary", "Пояснение к сводке по когортам")
+    st.dataframe(styled, use_container_width=True)
+    render_item_help("cohort_baseline_compare_help", "Пояснение к сравнению")
+    selected_profile = get_selected_cohort_profile(st.session_state["cohort_user_base"], st.session_state["cohort_trips"], selected_cohort)
+    baseline_profile = cohort_summary.median(numeric_only=True).to_dict()
+    return selected_profile, baseline_profile
 
-    st.subheader("Когортный retention")
-    info_caption("Строка — когорта первой поездки. Столбцы M0, M1 ... — месяцы жизни когорты.")
-    st.dataframe(
-        matrices["retention_matrix"].style.format("{:.1%}").background_gradient(cmap="Blues"),
-        use_container_width=True,
-    )
-    render_item_help("retention_matrix", "Пояснение к retention")
 
-    st.subheader("Когортный накопленный LTV")
-    info_caption("Матрица показывает среднюю накопленную маржу на активированного пользователя когорты.")
-    st.dataframe(
-        matrices["cohort_ltv_matrix"].style.format("{:,.0f} ₽").background_gradient(cmap="Greens"),
-        use_container_width=True,
-    )
-    render_item_help("cohort_ltv_matrix", "Пояснение к когортному LTV")
+def render_selected_cohort_curves(curves: dict) -> None:
+    st.subheader("Кривые выбранной когорты")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption("Retention curve")
+        if not curves["retention"].empty:
+            st.line_chart(curves["retention"].set_index("month_index")[["selected", "baseline"]], height=260)
+        st.caption("Cumulative LTV curve")
+        if not curves["ltv"].empty:
+            st.line_chart(curves["ltv"].set_index("month_index")[["selected", "baseline"]], height=260)
+    with c2:
+        st.caption("Cumulative margin curve")
+        if not curves["margin"].empty:
+            st.line_chart(curves["margin"].set_index("month_index")[["selected", "baseline"]], height=260)
+        st.caption("Rides per user curve")
+        if not curves["rides"].empty:
+            st.line_chart(curves["rides"].set_index("month_index")[["selected", "baseline"]], height=260)
 
-    cohort_options = cohort_summary["cohort_month"].tolist()
-    selected_cohort = st.selectbox(
-        "Детализация по когорте",
-        options=cohort_options,
-        help="Позволяет разобрать поведение одной когорты по месяцам жизни и увидеть, как сочетаются retention и накопленный LTV.",
-    )
-    selected_curve = build_selected_cohort_curves(matrices, selected_cohort)
-    selected_row = cohort_summary.loc[cohort_summary["cohort_month"] == selected_cohort].iloc[0]
 
-    det1, det2, det3, det4 = st.columns(4)
-    det1.metric("Пользователи в когорте", format_number(selected_row["activated_users"], 0))
-    det2.metric("Зрелость", f"{int(selected_row['maturity_months'])} мес.")
-    det3.metric("Средний LTV 180д", format_currency(selected_row["avg_ltv_180"], 0))
-    det4.metric("Средняя доля отмен", format_percent(selected_row["avg_cancel_rate"], 1))
+def render_cohort_diagnostics(selected_profile: dict, baseline_profile: dict) -> None:
+    st.subheader("Диагностический блок")
+    diagnostics = generate_cohort_diagnostics(selected_profile, baseline_profile)
+    for line in diagnostics:
+        st.markdown(f"- {line}")
 
-    curve_left, curve_right = st.columns(2)
-    with curve_left:
-        st.caption("Retention выбранной когорты")
-        if not selected_curve.empty:
-            st.line_chart(selected_curve.set_index("age_month")[["retention"]], height=280)
-    with curve_right:
-        st.caption("Накопленный LTV выбранной когорты")
-        if not selected_curve.empty:
-            st.line_chart(selected_curve.set_index("age_month")[["cumulative_ltv"]], height=280)
 
-    st.subheader("Зрелость когорт")
-    st.dataframe(
-        matrices["cohort_maturity"].rename(
-            columns={
-                "cohort_month": "Когорта",
-                "activated_users": "Активированные пользователи",
-                "maturity_months": "Зрелость, месяцев",
-            }
-        ),
-        use_container_width=True,
-    )
-
+def render_cohort_methodology() -> None:
+    st.divider()
     render_methodology_footer()
+
+
+def render(user_mart: pd.DataFrame, trips: pd.DataFrame) -> None:
+    render_cohort_header()
+    cohort_user_base = build_cohort_user_base(user_mart, trips, pd.DataFrame())
+    st.session_state["cohort_user_base"] = cohort_user_base
+    st.session_state["cohort_trips"] = trips
+    cohort_summary = get_cohort_summary(cohort_user_base)
+
+    filtered_summary, _, mode = render_cohort_filters_info(cohort_summary)
+    if filtered_summary.empty:
+        st.warning("После локальных фильтров осталось слишком мало данных. Ослабьте ограничения.")
+        render_cohort_methodology()
+        return
+
+    if filtered_summary["cohort_size"].sum() < 30:
+        st.warning("В срезе менее 30 пользователей: возможна высокая волатильность выводов.")
+    if len(filtered_summary) < 2:
+        st.warning("Для эталонного сравнения желательно минимум 2 когорты.")
+
+    allowed = set(filtered_summary["cohort_month"])
+    scoped_base = cohort_user_base.loc[cohort_user_base["cohort_month"].isin(allowed)].copy()
+    render_cohort_kpis(filtered_summary)
+
+    matrices = {
+        "retention": build_retention_matrix(scoped_base, trips),
+        "ltv": build_cumulative_ltv_matrix(scoped_base, trips),
+        "margin": build_cumulative_margin_matrix(scoped_base, trips),
+        "cancellation": build_cancellation_matrix(scoped_base, trips),
+        "promo_share": build_promo_share_matrix(scoped_base, trips),
+        "rides": build_rides_per_user_matrix(scoped_base, trips),
+        "size": build_cohort_size_matrix(filtered_summary),
+    }
+    render_cohort_main_matrix(mode, matrices)
+    maturity_table = get_cohort_maturity_table(scoped_base, trips["request_ts"].max() if len(trips) else pd.Timestamp.today())
+    render_cohort_maturity_table(maturity_table)
+
+    st.subheader("Детализация выбранной когорты")
+    selected_cohort = st.selectbox("Выберите когорту", options=filtered_summary["cohort_month"].tolist())
+    selected_profile, baseline_profile = render_selected_cohort_compare(filtered_summary, selected_cohort)
+    curves = get_selected_cohort_curves(scoped_base, trips, selected_cohort)
+    render_selected_cohort_curves(curves)
+    render_cohort_diagnostics(selected_profile, baseline_profile)
+    render_cohort_methodology()
