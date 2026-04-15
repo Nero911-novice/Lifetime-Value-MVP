@@ -57,6 +57,12 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
     users["activated_flag"] = users["first_trip_date"].notna()
     observation_date = trips["request_ts"].max().normalize()
 
+    order_agg = trips.groupby("user_id").agg(
+        total_orders=("trip_id", "count"),
+        completed_orders=("order_status", lambda s: int((s == "completed").sum())),
+        cancelled_orders=("order_status", lambda s: int((s != "completed").sum())),
+    ).reset_index()
+
     completed = trips.loc[trips["order_status"] == "completed"].copy()
     completed = completed.merge(
         users[["user_id", "first_trip_date"]],
@@ -80,10 +86,7 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         refund_trip_count=("refund_amount", lambda s: int((s > 0).sum())),
         discounted_trip_count=("promo_discount", lambda s: int((s > 0).sum())),
         negative_margin_trip_count=("contribution_margin", lambda s: int((s < 0).sum())),
-    ).reset_index()
-
-    canceled_agg = trips.loc[trips["order_status"] != "completed"].groupby("user_id").agg(
-        cancelled_orders=("trip_id", "count"),
+        avg_eta_minutes=("eta_minutes", "mean"),
     ).reset_index()
 
     time_windows = {}
@@ -126,10 +129,13 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
     ).reset_index()
 
     user_mart = users.copy()
-    for frame in [overall_trip_agg, canceled_agg, touch_agg, touch_90, *time_windows.values(), *recent_windows.values()]:
+    for frame in [order_agg, overall_trip_agg, touch_agg, touch_90, *time_windows.values(), *recent_windows.values()]:
         user_mart = user_mart.merge(frame, on="user_id", how="left")
 
     fill_zero_cols = [
+        "total_orders",
+        "completed_orders",
+        "cancelled_orders",
         "completed_trips",
         "total_gmv",
         "total_margin",
@@ -140,7 +146,6 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         "refund_trip_count",
         "discounted_trip_count",
         "negative_margin_trip_count",
-        "cancelled_orders",
         "total_touches",
         "opened_touches",
         "clicked_touches",
@@ -164,13 +169,16 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         "recent_margin_30d",
         "recent_trips_90d",
         "recent_margin_90d",
+        "avg_eta_minutes",
     ]
     for col in fill_zero_cols:
         if col in user_mart:
             user_mart[col] = user_mart[col].fillna(0)
 
     user_mart["avg_rating"] = user_mart["avg_rating"].fillna(np.nan)
-    user_mart["cohort_month"] = user_mart["first_trip_date"].dt.to_period("M").astype("string").fillna("Не активирован")
+    user_mart["cohort_month"] = (
+        user_mart["first_trip_date"].dt.to_period("M").astype("string").fillna("Не активирован")
+    )
     user_mart["recency_days"] = (observation_date - user_mart["last_trip_ts"]).dt.days
     user_mart.loc[user_mart["completed_trips"] == 0, "recency_days"] = np.nan
 
@@ -185,9 +193,29 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         user_mart["refund_trip_count"] / user_mart["completed_trips"],
         0.0,
     )
+    user_mart["cancel_rate"] = np.where(
+        user_mart["total_orders"] > 0,
+        user_mart["cancelled_orders"] / user_mart["total_orders"],
+        0.0,
+    )
+    user_mart["completion_rate"] = np.where(
+        user_mart["total_orders"] > 0,
+        user_mart["completed_orders"] / user_mart["total_orders"],
+        0.0,
+    )
     user_mart["response_rate_7d"] = np.where(
         user_mart["total_touches"] > 0,
         user_mart["converted_touches_7d"] / user_mart["total_touches"],
+        0.0,
+    )
+    user_mart["open_rate"] = np.where(
+        user_mart["total_touches"] > 0,
+        user_mart["opened_touches"] / user_mart["total_touches"],
+        0.0,
+    )
+    user_mart["click_rate"] = np.where(
+        user_mart["total_touches"] > 0,
+        user_mart["clicked_touches"] / user_mart["total_touches"],
         0.0,
     )
 
