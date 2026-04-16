@@ -23,50 +23,17 @@ from ..ui import (
     render_methodology_footer,
     render_screen_help,
 )
-
-RISK_ORDER = ["Stable / Active", "Cooling", "At risk", "Dormant"]
-VALUE_ORDER = ["Low value", "Medium value", "High value"]
-
-RISK_LABELS = {
-    "Stable / Active": "Стабильные / активные",
-    "Cooling": "Остывающие",
-    "At risk": "В зоне риска",
-    "Dormant": "Спящие",
-}
-VALUE_LABELS = {
-    "Low value": "Низкая ценность",
-    "Medium value": "Средняя ценность",
-    "High value": "Высокая ценность",
-}
-PROMO_LABELS = {
-    "Low promo dependency": "Низкая промо-зависимость",
-    "Medium promo dependency": "Средняя промо-зависимость",
-    "High promo dependency": "Высокая промо-зависимость",
-}
-ACTION_LABELS = {
-    "Protect / Retain": "Удерживать",
-    "Reactivate": "Реактивировать",
-    "Stimulate carefully": "Стимулировать осторожно",
-    "Limit incentives": "Ограничить субсидии",
-    "Observe / No immediate action": "Наблюдать без немедленного действия",
-}
+from ..segment_labels import (
+    ACTION_LABELS,
+    PROMO_LABELS,
+    RISK_LABELS,
+    RISK_ORDER,
+    VALUE_LABELS,
+    VALUE_ORDER,
+    localize_segment_columns,
+)
 
 
-def _localize(df: pd.DataFrame) -> pd.DataFrame:
-    localized = df.copy()
-    if "risk_segment" in localized.columns:
-        localized["risk_segment_ru"] = localized["risk_segment"].map(RISK_LABELS).fillna("недостаточно данных")
-    if "value_segment" in localized.columns:
-        localized["value_segment_ru"] = localized["value_segment"].map(VALUE_LABELS).fillna("недостаточно данных")
-    if "promo_dependency_segment" in localized.columns:
-        localized["promo_dependency_segment_ru"] = localized["promo_dependency_segment"].map(PROMO_LABELS).fillna("недостаточно данных")
-    if "recommended_action" in localized.columns:
-        localized["recommended_action_ru"] = localized["recommended_action"].map(ACTION_LABELS).fillna("Наблюдать без немедленного действия")
-    if "dominant_promo_segment" in localized.columns:
-        localized["dominant_promo_segment_ru"] = localized["dominant_promo_segment"].map(PROMO_LABELS).fillna("недостаточно данных")
-    if "compound_segment" in localized.columns:
-        localized["compound_segment_ru"] = localized["risk_segment"].map(RISK_LABELS).fillna("недостаточно данных") + " × " + localized["value_segment"].map(VALUE_LABELS).fillna("недостаточно данных")
-    return localized
 
 
 def render_segment_header() -> None:
@@ -76,7 +43,7 @@ def render_segment_header() -> None:
 
 
 def render_segment_filters_info(segment_user_base: pd.DataFrame) -> pd.DataFrame:
-    localized = _localize(segment_user_base)
+    localized = localize_segment_columns(segment_user_base)
     c1, c2, c3, c4 = st.columns(4)
 
     city = c1.selectbox("Город", ["Все"] + sorted(localized["city"].dropna().astype(str).unique().tolist()))
@@ -140,7 +107,7 @@ def render_segment_heatmap(segment_map_table: pd.DataFrame) -> None:
         st.info("Недостаточно данных для построения карты сегментов.")
         return
 
-    localized = _localize(segment_map_table)
+    localized = localize_segment_columns(segment_map_table)
     metric_mode = st.selectbox(
         "Режим карты",
         [
@@ -187,7 +154,7 @@ def render_segment_summary_table(segment_summary: pd.DataFrame) -> str | None:
         st.info("Нет сегментов в текущем срезе.")
         return None
 
-    localized = _localize(segment_summary.copy()).sort_values(["users_count", "total_ltv_180d"], ascending=[False, False])
+    localized = localize_segment_columns(segment_summary.copy()).sort_values(["users_count", "total_ltv_180d"], ascending=[False, False])
     table = localized[
         [
             "compound_segment",

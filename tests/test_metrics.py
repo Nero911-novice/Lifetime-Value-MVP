@@ -86,12 +86,17 @@ def test_build_overview_charts_contains_recommended_action():
             "active_90d_flag": [True, False],
             "cancel_rate": [0.02, 0.25],
             "registration_date": pd.to_datetime(["2024-12-20", "2024-12-25"]),
-            "risk_segment": ["Stable / Active", "At Risk"],
-            "value_segment": ["High Value", "VIP"],
+            "total_orders": [4, 2],
+            "completed_orders": [4, 2],
+            "cancelled_orders": [0, 0],
+            "recent_trips_30d": [3, 1],
+            "recent_trips_90d": [5, 2],
+            "recency_days": [8, 50],
+            "promo_trip_share": [0.2, 0.6],
+            "response_rate_7d": [0.1, 0.4],
             "acquisition_channel": ["Органика", "Платная"],
             "acquisition_cost": [50.0, 80.0],
             "home_city": ["Москва", "Казань"],
-            "promo_band": ["High", "Low"],
         }
     )
     trips = pd.DataFrame(
@@ -108,6 +113,9 @@ def test_build_overview_charts_contains_recommended_action():
     charts = build_overview_charts(user_mart, trips)
     assert "recommended_action" in charts["segment_action_map"].columns
     assert charts["segment_action_map"]["recommended_action"].notna().all()
+    assert "users_count" in charts["segment_action_map"].columns
+    assert "Стабильные / активные" in charts["risk_value_pivot"].index
+    assert "Высокая ценность" in charts["risk_value_pivot"].columns
 
 
 def test_build_cohort_user_base_and_summary():
