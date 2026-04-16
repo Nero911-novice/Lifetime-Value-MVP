@@ -7,6 +7,8 @@ from typing import Dict, Any
 import numpy as np
 import pandas as pd
 
+from .metrics import build_segment_user_base
+
 
 DATA_FILES = {
     "users": "users.csv",
@@ -219,36 +221,12 @@ def build_user_mart(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         0.0,
     )
 
-    user_mart["risk_segment"] = np.select(
-        [
-            ~user_mart["activated_flag"],
-            user_mart["recency_days"].between(0, 30, inclusive="both"),
-            user_mart["recency_days"].between(31, 90, inclusive="both"),
-            user_mart["recency_days"].between(91, 180, inclusive="both"),
-            user_mart["recency_days"] > 180,
-        ],
-        [
-            "Не активирован",
-            "Низкий риск",
-            "Средний риск",
-            "Высокий риск",
-            "Спящий",
-        ],
-        default="Не классифицирован",
+    segment_base = build_segment_user_base(user_mart, trips, touches)
+    user_mart = user_mart.merge(
+        segment_base[["user_id", "risk_segment", "value_segment", "promo_dependency_segment"]],
+        on="user_id",
+        how="left",
     )
-
-    promo_score = 0.55 * user_mart["promo_dependency_score"] + 0.45 * user_mart["promo_trip_share"]
-    user_mart["promo_band"] = pd.cut(
-        promo_score,
-        bins=[-0.01, 0.25, 0.55, 1.01],
-        labels=["Низкая", "Средняя", "Высокая"],
-    ).astype("string")
-
-    user_mart["value_segment"] = pd.cut(
-        user_mart["margin_180d"],
-        bins=[-10_000, 0, 500, 1500, 10_000],
-        labels=["Отрицательная ценность", "Низкая ценность", "Средняя ценность", "Высокая ценность"],
-    ).astype("string")
 
     user_mart["ltv_cac_180d"] = np.where(
         user_mart["acquisition_cost"] > 0,

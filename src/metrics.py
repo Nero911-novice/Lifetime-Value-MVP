@@ -62,12 +62,12 @@ def _safe_mean(series: pd.Series) -> float:
 def _recommend_action(row: pd.Series) -> str:
     risk_segment = str(row.get("risk_segment", ""))
     value_segment = str(row.get("value_segment", ""))
-    promo_band = str(row.get("promo_band", ""))
+    promo_dependency_segment = str(row.get("promo_dependency_segment", ""))
 
-    high_value = any(token in value_segment for token in ("VIP", "High"))
-    at_risk = any(token in risk_segment for token in ("At Risk", "Churned"))
-    stable = "Stable" in risk_segment
-    promo_high = any(token in promo_band for token in ("High", "Очень высокая"))
+    high_value = value_segment == "High value" or "High" in value_segment
+    at_risk = risk_segment in {"At risk", "Dormant"} or any(token in risk_segment for token in ("At Risk", "Churned"))
+    stable = risk_segment == "Stable / Active" or "Stable" in risk_segment
+    promo_high = promo_dependency_segment == "High promo dependency" or "High" in promo_dependency_segment
 
     if at_risk and high_value:
         return "Приоритетный win-back: персональный оффер + контроль сервиса"
@@ -206,7 +206,7 @@ def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
             "acquisition_channel": "Неизвестно",
             "acquisition_cost": 0.0,
             "home_city": "Неизвестно",
-            "promo_band": "Неизвестно",
+            "promo_dependency_segment": "Low promo dependency",
         },
     )
 
@@ -278,7 +278,7 @@ def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
     )
 
     segment_action_map = (
-        user_mart.groupby(["risk_segment", "value_segment", "promo_band"], dropna=False)
+        user_mart.groupby(["risk_segment", "value_segment", "promo_dependency_segment"], dropna=False)
         .agg(
             users=("user_id", "count"),
             avg_ltv_180=("margin_180d", "mean"),
@@ -1456,7 +1456,7 @@ def build_segment_table(user_mart: pd.DataFrame) -> pd.DataFrame:
         "avg_rides_last_90d": "avg_trips_90d",
         "avg_response_rate": "avg_response_7d",
         "avg_cancellation_rate": "avg_cancel_rate",
-        "dominant_promo_segment": "promo_band",
+        "dominant_promo_segment": "promo_dependency_segment",
     })
 
 
