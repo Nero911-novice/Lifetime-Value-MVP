@@ -1362,20 +1362,41 @@ def generate_segment_diagnostics(selected_profile: dict, baseline_profile: dict)
     if not selected_profile or not baseline_profile:
         return ["Недостаточно данных для диагностической интерпретации выбранного сегмента."]
 
+    def _fmt_delta(selected: float, baseline: float, percent: bool = False, suffix: str = "") -> str:
+        if pd.isna(selected) or pd.isna(baseline):
+            return "не рассчитывается"
+        delta = selected - baseline
+        sign = "+" if delta >= 0 else ""
+        if percent:
+            return f"{sign}{delta * 100:.1f} п.п."
+        if suffix:
+            return f"{sign}{delta:.1f} {suffix}"
+        return f"{sign}{delta:.1f}"
+
     notes: list[str] = []
+    ltv_delta = _fmt_delta(selected_profile.get("avg_ltv_180d", np.nan), baseline_profile.get("avg_ltv_180d", np.nan))
+    promo_delta = _fmt_delta(selected_profile.get("promo_trip_share", np.nan), baseline_profile.get("promo_trip_share", np.nan), percent=True)
+    cancel_delta = _fmt_delta(selected_profile.get("cancellation_rate", np.nan), baseline_profile.get("cancellation_rate", np.nan), percent=True)
+    recency_delta = _fmt_delta(selected_profile.get("avg_recency_days", np.nan), baseline_profile.get("avg_recency_days", np.nan), suffix="дн.")
+    rides_delta = _fmt_delta(selected_profile.get("avg_rides_last_90d", np.nan), baseline_profile.get("avg_rides_last_90d", np.nan))
+    total_ltv_delta = _fmt_delta(selected_profile.get("total_ltv_180d", np.nan), baseline_profile.get("total_ltv_180d", np.nan))
+
     if selected_profile.get("avg_ltv_180d", np.nan) > baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
-        notes.append("Сегмент показывает LTV выше эталона, но также более высокую долю промо-поездок: это может указывать на частичную промо-поддержку экономики.")
+        notes.append(f"LTV 180д выше эталона ({ltv_delta}), но доля промо-поездок также выше ({promo_delta}): экономика сегмента может быть частично промо-поддерживаемой.")
     if selected_profile.get("cancellation_rate", np.nan) > baseline_profile.get("cancellation_rate", np.nan):
-        notes.append("Доля отмен выше эталона, что может быть связано с операционной нестабильностью или качеством опыта и требует дополнительной проверки.")
+        notes.append(f"Доля отмен выше эталона на {cancel_delta}; это операционный риск, который стоит проверять вместе с качеством supply/UX.")
     if selected_profile.get("avg_recency_days", np.nan) > baseline_profile.get("avg_recency_days", np.nan) and selected_profile.get("avg_rides_last_90d", np.nan) < baseline_profile.get("avg_rides_last_90d", np.nan):
-        notes.append("Поведенческий профиль ослаблен: recency выше, а поездок за 90 дней меньше эталона — сегмент следует интерпретировать с осторожностью.")
+        notes.append(f"Поведенческий профиль ослаблен: recency {recency_delta}, а поездок за 90 дней {rides_delta} относительно эталона.")
     if selected_profile.get("total_ltv_180d", np.nan) > baseline_profile.get("total_ltv_180d", np.nan) and selected_profile.get("avg_ltv_180d", np.nan) <= baseline_profile.get("avg_ltv_180d", np.nan):
-        notes.append("Сегмент значим за счёт масштаба базы: суммарный LTV высокий при среднем качестве пользователя около эталона.")
+        notes.append(f"Сегмент значим за счёт масштаба: суммарный LTV 180д выше на {total_ltv_delta}, при этом средний LTV на пользователя не выше эталона.")
     if selected_profile.get("avg_ltv_180d", np.nan) < baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
-        notes.append("Низкий LTV на фоне высокой промо-доли может указывать на экономически слабый и стимулируемый сегмент.")
+        notes.append(f"Средний LTV 180д ниже эталона ({ltv_delta}) при повышенной промо-доле ({promo_delta}): сегмент экономически уязвим к стимулированию.")
 
     if not notes:
-        notes.append("Сегмент близок к эталону по ключевым метрикам; выраженные диагностические отклонения не обнаружены.")
+        notes.append(
+            "Сегмент близок к эталону: "
+            f"LTV 180д {ltv_delta}, доля отмен {cancel_delta}, доля промо-поездок {promo_delta}, recency {recency_delta}."
+        )
     return notes[:5]
 
 
