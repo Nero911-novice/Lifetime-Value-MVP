@@ -13,6 +13,7 @@ from ..ui import (
     format_percent,
     info_caption,
 )
+from ..segment_labels import localize_segment_columns
 
 
 def _delta_text(current: float, previous: float, is_percent: bool = False) -> str:
@@ -108,19 +109,29 @@ def render(user_mart, trips):
     info_caption(
         "Ниже показаны самые крупные сочетания риска, ценности и промо-зависимости с rule-based рекомендацией. Это демонстрационный мост к будущему decision layer."
     )
+    segment_action_map = localize_segment_columns(charts["segment_action_map"]).rename(
+        columns={
+            "risk_segment_ru": "Риск",
+            "value_segment_ru": "Ценность",
+            "promo_dependency_segment_ru": "Промо-зависимость",
+            "users_count": "Пользователи",
+            "users_share": "Доля пользователей",
+            "avg_ltv_180d": "Средний LTV 180 дней",
+            "avg_cancellation_rate": "Средняя доля отмен",
+            "recommended_action_ru": "Рекомендованное действие",
+        }
+    )
     st.dataframe(
-        charts["segment_action_map"].rename(
-            columns={
-                "risk_segment": "Риск",
-                "value_segment": "Ценность",
-                "promo_dependency_segment": "Промо-зависимость",
-                "users": "Пользователи",
-                "avg_ltv_180": "Средний LTV 180д",
-                "avg_cancel_rate": "Средняя доля отмен",
-                "active_90d_share": "Активные 90д",
-                "recommended_action": "Рекомендованное действие",
-            }
-        ),
+        segment_action_map[[
+            "Риск",
+            "Ценность",
+            "Промо-зависимость",
+            "Пользователи",
+            "Доля пользователей",
+            "Средний LTV 180 дней",
+            "Средняя доля отмен",
+            "Рекомендованное действие",
+        ]],
         use_container_width=True,
     )
 

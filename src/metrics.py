@@ -6,6 +6,8 @@ from typing import Dict, Any
 import numpy as np
 import pandas as pd
 
+from .segment_labels import RISK_LABELS, RISK_ORDER, VALUE_LABELS, VALUE_ORDER
+
 COHORT_MAX_HORIZON = 18
 
 
@@ -57,29 +59,6 @@ def _with_default_columns(df: pd.DataFrame, defaults: dict[str, Any]) -> pd.Data
 
 def _safe_mean(series: pd.Series) -> float:
     return float(series.mean()) if len(series) else 0.0
-
-
-def _recommend_action(row: pd.Series) -> str:
-    risk_segment = str(row.get("risk_segment", ""))
-    value_segment = str(row.get("value_segment", ""))
-    promo_dependency_segment = str(row.get("promo_dependency_segment", ""))
-
-    high_value = value_segment == "High value" or "High" in value_segment
-    at_risk = risk_segment in {"At risk", "Dormant"} or any(token in risk_segment for token in ("At Risk", "Churned"))
-    stable = risk_segment == "Stable / Active" or "Stable" in risk_segment
-    promo_high = promo_dependency_segment == "High promo dependency" or "High" in promo_dependency_segment
-
-    if at_risk and high_value:
-        return "Приоритетный win-back: персональный оффер + контроль сервиса"
-    if at_risk:
-        return "Триггерный win-back: мягкий стимул и проверка причин оттока"
-    if high_value and promo_high:
-        return "Снизить промо-нагрузку: тест немонетарных стимулов удержания"
-    if high_value and stable:
-        return "Удерживать уровень сервиса и развивать премиальные сценарии"
-    if promo_high:
-        return "Оптимизировать скидки и переводить в регулярный спрос"
-    return "Поддерживающая коммуникация и мониторинг динамики сегмента"
 
 
 def _get_observation_date(user_mart: pd.DataFrame, trips: pd.DataFrame | None = None) -> pd.Timestamp:
@@ -201,12 +180,9 @@ def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
             "active_90d_flag": False,
             "cancel_rate": 0.0,
             "registration_date": pd.NaT,
-            "risk_segment": "Не классифицирован",
-            "value_segment": "Не классифицирован",
             "acquisition_channel": "Неизвестно",
             "acquisition_cost": 0.0,
             "home_city": "Неизвестно",
-            "promo_dependency_segment": "Low promo dependency",
         },
     )
 
@@ -234,23 +210,39 @@ def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
         .sort_values("registration_month")
     )
 
-    risk_value_map = (
-        user_mart.groupby(["risk_segment", "value_segment"], dropna=False)
+    segment_user_base = build_segment_user_base(user_mart, trips, touches_df=None)
+    risk_value_map = get_segment_map_table(segment_user_base)
+
+    risk_value_pivot = (
+        risk_value_map.assign(
+            risk_segment_ru=lambda d: d["risk_segment"].map(RISK_LABELS),
+            value_segment_ru=lambda d: d["value_segment"].map(VALUE_LABELS),
+        )
+        .pivot_table(
+            index="risk_segment_ru",
+            columns="value_segment_ru",
+            values="users_count",
+            fill_value=0,
+            aggfunc="sum",
+        )
+        .reindex(index=[RISK_LABELS[x] for x in RISK_ORDER], columns=[VALUE_LABELS[x] for x in VALUE_ORDER], fill_value=0)
+    )
+
+    segment_action_map = (
+        segment_user_base.groupby(["risk_segment", "value_segment", "promo_dependency_segment"], dropna=False)
         .agg(
-            users=("user_id", "count"),
-            avg_ltv_180=("margin_180d", "mean"),
-            active_90d_share=("active_90d_flag", "mean"),
-            avg_cancel_rate=("cancel_rate", "mean"),
+            users_count=("user_id", "nunique"),
+            avg_ltv_180d=("ltv_180d", "mean"),
+            created_orders_total=("created_orders_count", "sum"),
+            cancelled_orders_total=("cancelled_orders_count", "sum"),
+            recommended_action=("recommended_action", lambda s: s.mode().iloc[0] if not s.mode().empty else "Observe / No immediate action"),
         )
         .reset_index()
     )
-
-    risk_value_pivot = risk_value_map.pivot_table(
-        index="risk_segment",
-        columns="value_segment",
-        values="users",
-        fill_value=0,
-    )
+    total_segment_users = max(len(segment_user_base), 1)
+    segment_action_map["users_share"] = segment_action_map["users_count"] / total_segment_users
+    segment_action_map["avg_cancellation_rate"] = segment_action_map["cancelled_orders_total"] / segment_action_map["created_orders_total"].replace({0: np.nan})
+    segment_action_map = segment_action_map.sort_values(["users_count", "avg_ltv_180d"], ascending=[False, False]).head(12)
 
     channel_summary = (
         user_mart.groupby("acquisition_channel")
@@ -276,19 +268,6 @@ def build_overview_charts(user_mart: pd.DataFrame, trips: pd.DataFrame) -> dict:
         .reset_index()
         .sort_values("avg_ltv_180", ascending=False)
     )
-
-    segment_action_map = (
-        user_mart.groupby(["risk_segment", "value_segment", "promo_dependency_segment"], dropna=False)
-        .agg(
-            users=("user_id", "count"),
-            avg_ltv_180=("margin_180d", "mean"),
-            avg_cancel_rate=("cancel_rate", "mean"),
-            active_90d_share=("active_90d_flag", "mean"),
-        )
-        .reset_index()
-    )
-    segment_action_map["recommended_action"] = segment_action_map.apply(_recommend_action, axis=1)
-    segment_action_map = segment_action_map.sort_values(["users", "avg_ltv_180"], ascending=[False, False]).head(12)
 
     completed = trips.loc[trips["order_status"] == "completed"].copy()
     if not completed.empty:
