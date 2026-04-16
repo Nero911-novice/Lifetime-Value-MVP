@@ -9,6 +9,7 @@ from ..metrics import (
     build_segment_user_base,
     compare_segment_to_baseline,
     generate_segment_diagnostics,
+    get_ltv_concentration_by_value_segment,
     get_segment_kpis,
     get_segment_map_table,
     get_segment_summary,
@@ -257,9 +258,9 @@ def render_selected_segment_profile(selected_profile: dict) -> None:
 
 def render_distribution_analytics(segment_user_base: pd.DataFrame) -> None:
     st.subheader("Распределительная аналитика")
-    st.caption("Распределение LTV 180 дней показывает не только среднее, но и неоднородность внутри базы и сегментов.")
+    st.caption("Блоки ниже фокусируются на разбросе, хвостах и концентрации ценности, а не только на среднем уровне метрик.")
 
-    chart_df = segment_user_base[["ltv_180d", "value_segment"]].copy()
+    chart_df = segment_user_base[["ltv_180d", "value_segment", "promo_trip_share", "recency_days"]].copy()
     chart_df["value_segment_ru"] = chart_df["value_segment"].map(VALUE_LABELS).fillna("недостаточно данных")
     chart_df = chart_df.loc[chart_df["ltv_180d"].notna()]
 
@@ -268,39 +269,121 @@ def render_distribution_analytics(segment_user_base: pd.DataFrame) -> None:
         return
 
     max_ltv = float(chart_df["ltv_180d"].quantile(0.99))
-    clipped_df = chart_df.assign(ltv_180d=chart_df["ltv_180d"].clip(lower=0, upper=max(max_ltv, 1.0)))
-    left, right = st.columns(2)
-    with left:
-        histogram = (
-            alt.Chart(clipped_df)
-            .mark_bar(opacity=0.8)
-            .encode(
-                x=alt.X("ltv_180d:Q", bin=alt.Bin(maxbins=35), title="LTV 180 дней"),
-                y=alt.Y("count():Q", title="Пользователи"),
-                tooltip=[
-                    alt.Tooltip("count():Q", title="Пользователи"),
-                    alt.Tooltip("ltv_180d:Q", bin=True, title="Диапазон LTV"),
-                ],
+    max_ltv = max(max_ltv, 1.0)
+    clipped_df = chart_df.assign(ltv_180d=chart_df["ltv_180d"].clip(lower=0, upper=max_ltv))
+
+    t1, t2, t3 = st.tabs(["LTV и хвосты", "Поведение: recency и promo", "Концентрация ценности"])
+
+    with t1:
+        left, right = st.columns(2)
+        with left:
+            histogram = (
+                alt.Chart(clipped_df)
+                .mark_bar(opacity=0.8)
+                .encode(
+                    x=alt.X("ltv_180d:Q", bin=alt.Bin(maxbins=35), title="LTV 180 дней"),
+                    y=alt.Y("count():Q", title="Пользователи"),
+                    tooltip=[
+                        alt.Tooltip("count():Q", title="Пользователи"),
+                        alt.Tooltip("ltv_180d:Q", bin=True, title="Диапазон LTV"),
+                    ],
+                )
+                .properties(height=280, title="Гистограмма LTV 180д (до 99-го перцентиля)")
             )
-            .properties(height=280, title="Гистограмма LTV 180д (до 99-го перцентиля)")
-        )
-        st.altair_chart(histogram, use_container_width=True)
-    with right:
-        boxplot = (
-            alt.Chart(clipped_df)
-            .mark_boxplot(size=38)
-            .encode(
-                x=alt.X("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
-                y=alt.Y("ltv_180d:Q", title="LTV 180 дней"),
-                color=alt.Color("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
-                tooltip=[
-                    alt.Tooltip("value_segment_ru:N", title="Сегмент ценности"),
-                    alt.Tooltip("median(ltv_180d):Q", title="Медиана LTV", format=",.0f"),
-                ],
+            st.altair_chart(histogram, use_container_width=True)
+        with right:
+            boxplot = (
+                alt.Chart(clipped_df)
+                .mark_boxplot(size=38)
+                .encode(
+                    x=alt.X("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
+                    y=alt.Y("ltv_180d:Q", title="LTV 180 дней"),
+                    color=alt.Color("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
+                    tooltip=[
+                        alt.Tooltip("value_segment_ru:N", title="Сегмент ценности"),
+                        alt.Tooltip("median(ltv_180d):Q", title="Медиана LTV", format=",.0f"),
+                    ],
+                )
+                .properties(height=280, title="Boxplot LTV 180д по сегментам ценности")
             )
-            .properties(height=280, title="Boxplot LTV 180д по сегментам ценности")
-        )
-        st.altair_chart(boxplot, use_container_width=True)
+            st.altair_chart(boxplot, use_container_width=True)
+
+    with t2:
+        recency_promo = chart_df[["recency_days", "promo_trip_share"]].copy()
+        recency_promo = recency_promo.loc[recency_promo["recency_days"].notna() & recency_promo["promo_trip_share"].notna()]
+        left, right = st.columns(2)
+        with left:
+            if recency_promo.empty:
+                st.info("Недостаточно данных для распределения recency.")
+            else:
+                recency_max = float(recency_promo["recency_days"].quantile(0.99))
+                recency_hist = (
+                    alt.Chart(recency_promo.assign(recency_days=recency_promo["recency_days"].clip(lower=0, upper=max(recency_max, 1.0))))
+                    .mark_bar(opacity=0.85)
+                    .encode(
+                        x=alt.X("recency_days:Q", bin=alt.Bin(maxbins=30), title="Recency, дней"),
+                        y=alt.Y("count():Q", title="Пользователи"),
+                        tooltip=[alt.Tooltip("count():Q", title="Пользователи"), alt.Tooltip("recency_days:Q", bin=True, title="Интервал recency")],
+                    )
+                    .properties(height=260, title="Распределение recency (до 99-го перцентиля)")
+                )
+                st.altair_chart(recency_hist, use_container_width=True)
+        with right:
+            if recency_promo.empty:
+                st.info("Недостаточно данных для распределения promo_trip_share.")
+            else:
+                promo_hist = (
+                    alt.Chart(recency_promo)
+                    .mark_bar(opacity=0.85)
+                    .encode(
+                        x=alt.X("promo_trip_share:Q", bin=alt.Bin(maxbins=25), title="Доля промо-поездок"),
+                        y=alt.Y("count():Q", title="Пользователи"),
+                        tooltip=[alt.Tooltip("count():Q", title="Пользователи"), alt.Tooltip("promo_trip_share:Q", bin=True, title="Интервал доли промо")],
+                    )
+                    .properties(height=260, title="Распределение promo_trip_share")
+                )
+                st.altair_chart(promo_hist, use_container_width=True)
+
+    with t3:
+        concentration = get_ltv_concentration_by_value_segment(segment_user_base)
+        concentration["value_segment_ru"] = concentration["value_segment"].map(VALUE_LABELS).fillna("недостаточно данных")
+        concentration = concentration.sort_values("total_ltv_180d", ascending=False)
+        if concentration.empty:
+            st.info("Недостаточно данных для концентрации ценности.")
+        else:
+            concentration["ltv_share_pct"] = concentration["ltv_share"] * 100
+            concentration["users_share_pct"] = concentration["users_share"] * 100
+            c_chart = (
+                alt.Chart(concentration)
+                .mark_bar()
+                .encode(
+                    x=alt.X("value_segment_ru:N", sort="-y", title="Сегмент ценности"),
+                    y=alt.Y("ltv_share_pct:Q", title="Доля суммарного LTV, %"),
+                    color=alt.Color("value_segment_ru:N", title="Сегмент ценности"),
+                    tooltip=[
+                        alt.Tooltip("value_segment_ru:N", title="Сегмент ценности"),
+                        alt.Tooltip("users_count:Q", title="Пользователи", format=",.0f"),
+                        alt.Tooltip("users_share_pct:Q", title="Доля пользователей", format=".1f"),
+                        alt.Tooltip("ltv_share_pct:Q", title="Доля суммарного LTV", format=".1f"),
+                        alt.Tooltip("total_ltv_180d:Q", title="Суммарный LTV 180д", format=",.0f"),
+                    ],
+                )
+                .properties(height=260, title="Концентрация суммарного LTV по value-сегментам")
+            )
+            st.altair_chart(c_chart, use_container_width=True)
+            view = concentration[["value_segment_ru", "users_count", "users_share", "ltv_share", "total_ltv_180d"]].rename(
+                columns={
+                    "value_segment_ru": "Сегмент ценности",
+                    "users_count": "Пользователи",
+                    "users_share": "Доля пользователей",
+                    "ltv_share": "Доля суммарного LTV 180д",
+                    "total_ltv_180d": "Суммарный LTV 180д",
+                }
+            )
+            view["Доля пользователей"] = view["Доля пользователей"].map(lambda x: format_percent(x, 1) if pd.notna(x) else "—")
+            view["Доля суммарного LTV 180д"] = view["Доля суммарного LTV 180д"].map(lambda x: format_percent(x, 1) if pd.notna(x) else "—")
+            view["Суммарный LTV 180д"] = view["Суммарный LTV 180д"].map(lambda x: format_currency(x, 0) if pd.notna(x) else "—")
+            st.dataframe(view, use_container_width=True)
 
 
 def render_selected_segment_compare(segment_summary: pd.DataFrame, selected_segment: str) -> tuple[dict, dict]:
@@ -414,7 +497,7 @@ def render_selected_segment_charts(charts: dict[str, pd.DataFrame]) -> None:
 
 def render_segment_diagnostics(selected_profile: dict, baseline_profile: dict) -> None:
     st.subheader("Диагностический блок")
-    st.caption("Ниже — краткие численно привязанные наблюдения относительно эталона (медианы по сегментам в текущем срезе).")
+    st.caption("Короткие наблюдения только по значимым отклонениям от эталона (медианы по сегментам), без шаблонных формулировок.")
     notes = generate_segment_diagnostics(selected_profile, baseline_profile)
     with st.expander("Показать диагностические наблюдения", expanded=False):
         for note in notes:

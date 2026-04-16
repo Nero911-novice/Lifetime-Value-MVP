@@ -1456,30 +1456,88 @@ def generate_segment_diagnostics(selected_profile: dict, baseline_profile: dict)
         return f"{sign}{delta:.1f}"
 
     notes: list[str] = []
-    ltv_delta = _fmt_delta(selected_profile.get("avg_ltv_180d", np.nan), baseline_profile.get("avg_ltv_180d", np.nan))
-    promo_delta = _fmt_delta(selected_profile.get("promo_trip_share", np.nan), baseline_profile.get("promo_trip_share", np.nan), percent=True)
-    cancel_delta = _fmt_delta(selected_profile.get("cancellation_rate", np.nan), baseline_profile.get("cancellation_rate", np.nan), percent=True)
-    recency_delta = _fmt_delta(selected_profile.get("avg_recency_days", np.nan), baseline_profile.get("avg_recency_days", np.nan), suffix="дн.")
-    rides_delta = _fmt_delta(selected_profile.get("avg_rides_last_90d", np.nan), baseline_profile.get("avg_rides_last_90d", np.nan))
-    total_ltv_delta = _fmt_delta(selected_profile.get("total_ltv_180d", np.nan), baseline_profile.get("total_ltv_180d", np.nan))
+    sel_ltv = selected_profile.get("avg_ltv_180d", np.nan)
+    base_ltv = baseline_profile.get("avg_ltv_180d", np.nan)
+    sel_total_ltv = selected_profile.get("total_ltv_180d", np.nan)
+    base_total_ltv = baseline_profile.get("total_ltv_180d", np.nan)
+    sel_promo = selected_profile.get("promo_trip_share", np.nan)
+    base_promo = baseline_profile.get("promo_trip_share", np.nan)
+    sel_cancel = selected_profile.get("cancellation_rate", np.nan)
+    base_cancel = baseline_profile.get("cancellation_rate", np.nan)
+    sel_recency = selected_profile.get("avg_recency_days", np.nan)
+    base_recency = baseline_profile.get("avg_recency_days", np.nan)
+    sel_rides = selected_profile.get("avg_rides_last_90d", np.nan)
+    base_rides = baseline_profile.get("avg_rides_last_90d", np.nan)
 
-    if selected_profile.get("avg_ltv_180d", np.nan) > baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
-        notes.append(f"LTV 180д выше эталона ({ltv_delta}), но доля промо-поездок также выше ({promo_delta}): экономика сегмента может быть частично промо-поддерживаемой.")
-    if selected_profile.get("cancellation_rate", np.nan) > baseline_profile.get("cancellation_rate", np.nan):
-        notes.append(f"Доля отмен выше эталона на {cancel_delta}; это операционный риск, который стоит проверять вместе с качеством supply/UX.")
-    if selected_profile.get("avg_recency_days", np.nan) > baseline_profile.get("avg_recency_days", np.nan) and selected_profile.get("avg_rides_last_90d", np.nan) < baseline_profile.get("avg_rides_last_90d", np.nan):
-        notes.append(f"Поведенческий профиль ослаблен: recency {recency_delta}, а поездок за 90 дней {rides_delta} относительно эталона.")
-    if selected_profile.get("total_ltv_180d", np.nan) > baseline_profile.get("total_ltv_180d", np.nan) and selected_profile.get("avg_ltv_180d", np.nan) <= baseline_profile.get("avg_ltv_180d", np.nan):
-        notes.append(f"Сегмент значим за счёт масштаба: суммарный LTV 180д выше на {total_ltv_delta}, при этом средний LTV на пользователя не выше эталона.")
-    if selected_profile.get("avg_ltv_180d", np.nan) < baseline_profile.get("avg_ltv_180d", np.nan) and selected_profile.get("promo_trip_share", np.nan) > baseline_profile.get("promo_trip_share", np.nan):
-        notes.append(f"Средний LTV 180д ниже эталона ({ltv_delta}) при повышенной промо-доле ({promo_delta}): сегмент экономически уязвим к стимулированию.")
+    ltv_delta = _fmt_delta(sel_ltv, base_ltv)
+    promo_delta = _fmt_delta(sel_promo, base_promo, percent=True)
+    cancel_delta = _fmt_delta(sel_cancel, base_cancel, percent=True)
+    recency_delta = _fmt_delta(sel_recency, base_recency, suffix="дн.")
+    rides_delta = _fmt_delta(sel_rides, base_rides)
+    total_ltv_delta = _fmt_delta(sel_total_ltv, base_total_ltv)
+
+    def _rel(selected: float, baseline: float) -> float:
+        if pd.isna(selected) or pd.isna(baseline) or baseline == 0:
+            return np.nan
+        return (selected - baseline) / abs(baseline)
+
+    rel_ltv = _rel(sel_ltv, base_ltv)
+    rel_total_ltv = _rel(sel_total_ltv, base_total_ltv)
+    rel_recency = _rel(sel_recency, base_recency)
+    rel_rides = _rel(sel_rides, base_rides)
+    abs_cancel_pp = (sel_cancel - base_cancel) * 100 if pd.notna(sel_cancel) and pd.notna(base_cancel) else np.nan
+    abs_promo_pp = (sel_promo - base_promo) * 100 if pd.notna(sel_promo) and pd.notna(base_promo) else np.nan
+
+    if pd.notna(rel_ltv) and rel_ltv >= 0.2 and pd.notna(abs_cancel_pp) and abs_cancel_pp >= 3:
+        notes.append(
+            f"Ценность сегмента выше эталона (LTV 180д {ltv_delta}), но отмены выше на {cancel_delta}; "
+            "для роста нужно снижать операционные потери."
+        )
+    if pd.notna(rel_ltv) and rel_ltv <= -0.15 and pd.notna(abs_promo_pp) and abs_promo_pp >= 5:
+        notes.append(
+            f"LTV 180д ниже эталона ({ltv_delta}) при промо-доле {promo_delta}; "
+            "сегмент чувствителен к субсидиям и требует проверки unit-экономики."
+        )
+    if (
+        pd.notna(rel_recency) and rel_recency >= 0.2
+        and pd.notna(rel_rides) and rel_rides <= -0.2
+    ):
+        notes.append(
+            f"Признак охлаждения: recency {recency_delta}, поездок за 90 дней {rides_delta} "
+            "(оба сигнала хуже эталона)."
+        )
+    if pd.notna(rel_total_ltv) and rel_total_ltv >= 0.2 and (pd.isna(rel_ltv) or rel_ltv <= 0.05):
+        notes.append(
+            f"Сегмент даёт масштаб ценности (суммарный LTV {total_ltv_delta}) "
+            "в основном за счёт объёма, а не высокой ценности на пользователя."
+        )
+    if pd.notna(abs_cancel_pp) and abs_cancel_pp <= -3 and pd.notna(rel_ltv) and rel_ltv >= 0:
+        notes.append(
+            f"Профиль устойчивее эталона: отмены {cancel_delta} при LTV 180д {ltv_delta}."
+        )
 
     if not notes:
         notes.append(
-            "Сегмент близок к эталону: "
-            f"LTV 180д {ltv_delta}, доля отмен {cancel_delta}, доля промо-поездок {promo_delta}, recency {recency_delta}."
+            "Существенных отклонений от эталона не выявлено: "
+            f"LTV 180д {ltv_delta}, отмены {cancel_delta}, промо {promo_delta}, recency {recency_delta}."
         )
-    return notes[:5]
+    return notes[:4]
+
+
+def get_ltv_concentration_by_value_segment(segment_user_base: pd.DataFrame) -> pd.DataFrame:
+    if segment_user_base.empty:
+        return pd.DataFrame(columns=["value_segment", "users_count", "users_share", "total_ltv_180d", "ltv_share"])
+
+    total_users = max(int(segment_user_base["user_id"].nunique()), 1)
+    total_ltv = float(segment_user_base["ltv_180d"].sum())
+    grouped = (
+        segment_user_base.groupby("value_segment", dropna=False)
+        .agg(users_count=("user_id", "nunique"), total_ltv_180d=("ltv_180d", "sum"))
+        .reset_index()
+    )
+    grouped["users_share"] = grouped["users_count"] / total_users
+    grouped["ltv_share"] = grouped["total_ltv_180d"] / total_ltv if total_ltv > 0 else np.nan
+    return grouped
 
 
 def get_segment_distribution_tables(segment_user_base: pd.DataFrame) -> dict[str, pd.DataFrame]:

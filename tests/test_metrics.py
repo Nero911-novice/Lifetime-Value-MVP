@@ -17,6 +17,7 @@ from src.metrics import (
     compare_segment_to_baseline,
     get_selected_segment_charts_data,
     generate_segment_diagnostics,
+    get_ltv_concentration_by_value_segment,
     assign_risk_segment,
 )
 from src.data_loader import load_demo_data, build_user_mart
@@ -381,3 +382,18 @@ def test_selected_segment_charts_split_monetary_and_ratio_and_handle_missing():
     charts_missing = get_selected_segment_charts_data(no_touches_base, selected_segment="A")
     assert "Response rate" in charts_missing["unavailable_metrics"]["metric"].tolist()
     assert "Нет маркетинговых касаний" in charts_missing["unavailable_metrics"]["reason"].tolist()
+
+
+def test_ltv_concentration_by_value_segment_has_consistent_shares():
+    segment_user_base = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2", "u3", "u4"],
+            "value_segment": ["High value", "High value", "Medium value", "Low value"],
+            "ltv_180d": [300.0, 100.0, 80.0, 20.0],
+        }
+    )
+    concentration = get_ltv_concentration_by_value_segment(segment_user_base)
+    assert round(concentration["users_share"].sum(), 6) == 1.0
+    assert round(concentration["ltv_share"].sum(), 6) == 1.0
+    high_value_ltv_share = concentration.loc[concentration["value_segment"] == "High value", "ltv_share"].iloc[0]
+    assert round(high_value_ltv_share, 4) == round(400 / 500, 4)
