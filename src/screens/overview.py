@@ -137,9 +137,9 @@ def render(user_mart, trips):
     )
     render_item_help("risk_value_map", "Пояснение к карте риска и ценности")
 
-    st.subheader("Ключевые сегменты для действия")
+    st.subheader("Сегменты и rule-based интерпретация")
     info_caption(
-        "Ниже показаны самые крупные сочетания риска, ценности и промо-зависимости с rule-based рекомендацией. Это демонстрационный мост к будущему decision layer."
+        "Ниже показаны крупнейшие сочетания риска, ценности и промо-зависимости. Интерпретация в правом столбце — эвристика на правилах, а не расчетная метрика и не decision engine."
     )
     segment_action_map = localize_segment_columns(charts["segment_action_map"]).rename(
         columns={
@@ -150,22 +150,14 @@ def render(user_mart, trips):
             "users_share": "Доля пользователей",
             "avg_ltv_180d": "Средний LTV 180 дней",
             "avg_cancellation_rate": "Средняя доля отмен",
-            "recommended_action_ru": "Рекомендованное действие",
+            "recommended_action_ru": "Rule-based интерпретация",
         }
     )
-    st.dataframe(
-        segment_action_map[[
-            "Риск",
-            "Ценность",
-            "Промо-зависимость",
-            "Пользователи",
-            "Доля пользователей",
-            "Средний LTV 180 дней",
-            "Средняя доля отмен",
-            "Рекомендованное действие",
-        ]],
-        use_container_width=True,
-    )
+    metric_columns = ["Риск", "Ценность", "Промо-зависимость", "Пользователи", "Доля пользователей", "Средний LTV 180 дней", "Средняя доля отмен"]
+    st.dataframe(segment_action_map[metric_columns], use_container_width=True)
+    with st.expander("Показать rule-based интерпретации сегментов", expanded=False):
+        st.caption("Интерпретации ниже предназначены для аналитической навигации и требуют отдельной бизнес-валидации.")
+        st.dataframe(segment_action_map[["Риск", "Ценность", "Промо-зависимость", "Rule-based интерпретация"]], use_container_width=True)
 
     st.subheader("Сравнение каналов привлечения")
     info_caption(
@@ -241,7 +233,7 @@ def render(user_mart, trips):
             "Промо-зависимость",
             "Пользователи",
             "Доля пользователей",
-            "Рекомендованное действие",
+            "Rule-based интерпретация",
         ]].head(5)
         st.dataframe(top_segments_preview, use_container_width=True, height=220)
         st.caption("Для полной структуры и сравнения baseline откройте экран Segments.")
