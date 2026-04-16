@@ -1635,8 +1635,180 @@ def build_risk_value_pivot(user_mart: pd.DataFrame, metric: str = "users") -> pd
     return table.pivot_table(index="risk_segment", columns="value_segment", values=value_col, fill_value=0)
 
 
+def _build_user_segment_explainability(user_row: pd.Series) -> dict[str, list[str]]:
+    recency = pd.to_numeric(pd.Series([user_row.get("recency_days")]), errors="coerce").iloc[0]
+    rides_30 = pd.to_numeric(pd.Series([user_row.get("rides_last_30d")]), errors="coerce").fillna(0).iloc[0]
+    rides_90 = pd.to_numeric(pd.Series([user_row.get("rides_last_90d")]), errors="coerce").fillna(0).iloc[0]
+    ltv_180 = pd.to_numeric(pd.Series([user_row.get("ltv_180d")]), errors="coerce").fillna(0).iloc[0]
+    completed_orders = pd.to_numeric(pd.Series([user_row.get("completed_orders_count")]), errors="coerce").fillna(0).iloc[0]
+    promo_share = pd.to_numeric(pd.Series([user_row.get("promo_trip_share")]), errors="coerce").fillna(0).clip(0, 1).iloc[0]
+    response = pd.to_numeric(pd.Series([user_row.get("responded_7d_rate")]), errors="coerce").fillna(0).clip(0, 1).iloc[0]
+    promo_score = 0.7 * promo_share + 0.3 * response
+
+    risk_reasons: list[str] = []
+    if pd.isna(recency):
+        risk_reasons.append("Нет завершённых поездок для расчёта recency.")
+    elif recency <= 14 and rides_30 >= 1:
+        risk_reasons.append(f"Recency {recency:.0f} дн. и активность за 30д ({rides_30:.0f}) указывают на стабильность.")
+    elif recency <= 30 and rides_90 >= 4:
+        risk_reasons.append(f"Recency {recency:.0f} дн. при {rides_90:.0f} поездках за 90д поддерживают низкий риск.")
+    elif recency <= 45:
+        risk_reasons.append(f"Recency {recency:.0f} дн. — сигнал охлаждения без полного ухода.")
+    elif recency <= 90:
+        risk_reasons.append(f"Recency {recency:.0f} дн. попадает в зону повышенного риска.")
+    else:
+        risk_reasons.append(f"Recency {recency:.0f} дн. соответствует спящему поведению.")
+    if rides_90 <= 1 and completed_orders > 0:
+        risk_reasons.append("Мало поездок за 90д усиливает риск ослабления.")
+
+    value_reasons: list[str] = []
+    if completed_orders <= 0:
+        value_reasons.append("Нет завершённых поездок — ценность ограничена.")
+    else:
+        value_reasons.append(f"LTV 180д: {ltv_180:.0f} ₽ при {completed_orders:.0f} завершённых заказах.")
+        if ltv_180 <= 0:
+            value_reasons.append("Маржинальность по горизонту 180д не накоплена.")
+        elif ltv_180 >= 420:
+            value_reasons.append("Высокий исторический вклад в маржу поддерживает high value.")
+        elif ltv_180 < 120:
+            value_reasons.append("Низкая накопленная маржа ограничивает value-сегмент.")
+
+    promo_reasons = [
+        f"Promo trip share: {promo_share:.0%}; response 7d: {response:.0%}.",
+        f"Rule-based score промо-зависимости: {promo_score:.2f}.",
+    ]
+    if promo_score >= 0.55:
+        promo_reasons.append("Высокая зависимость от промо/response-сигналов.")
+    elif promo_score >= 0.25:
+        promo_reasons.append("Умеренная промо-чувствительность.")
+    else:
+        promo_reasons.append("Промо-зависимость низкая.")
+
+    return {
+        "risk_reasons": risk_reasons[:2],
+        "value_reasons": value_reasons[:2],
+        "promo_reasons": promo_reasons[:2],
+    }
+
+
+def _build_user_interpretation(user_row: pd.Series, segment_base: pd.DataFrame) -> list[str]:
+    if segment_base.empty:
+        return ["Недостаточно данных для интерпретации профиля."]
+
+    selected = segment_base.loc[segment_base["user_id"] == user_row["user_id"]]
+    if selected.empty:
+        return ["Профиль пользователя не найден в сегментной витрине."]
+    selected_row = selected.iloc[0]
+
+    same_segment = segment_base.loc[
+        (segment_base["risk_segment"] == selected_row["risk_segment"])
+        & (segment_base["value_segment"] == selected_row["value_segment"])
+    ]
+    med_ltv = same_segment["ltv_180d"].median(skipna=True) if not same_segment.empty else np.nan
+    med_recency = same_segment["recency_days"].median(skipna=True) if not same_segment.empty else np.nan
+
+    notes: list[str] = []
+    user_ltv = float(selected_row.get("ltv_180d", np.nan))
+    user_recency = float(selected_row.get("recency_days", np.nan))
+    user_promo = float(selected_row.get("promo_trip_share", np.nan))
+    rides_30 = float(selected_row.get("rides_last_30d", np.nan))
+    risk = selected_row.get("risk_segment", "Cooling")
+    promo_segment = selected_row.get("promo_dependency_segment", "Low promo dependency")
+
+    if pd.notna(med_ltv) and pd.notna(user_ltv):
+        if user_ltv >= med_ltv * 1.1:
+            notes.append("Пользователь сильнее медианы своего risk×value-сегмента по LTV 180д.")
+        elif user_ltv <= med_ltv * 0.9:
+            notes.append("Пользователь слабее медианы своего risk×value-сегмента по LTV 180д.")
+        else:
+            notes.append("Пользователь близок к медиане своего risk×value-сегмента по LTV 180д.")
+
+    if promo_segment == "High promo dependency":
+        notes.append("Промо-зависимость высокая: рост вероятно поддерживается скидками/response.")
+    elif promo_segment == "Medium promo dependency":
+        notes.append("Промо-зависимость умеренная и требует аккуратной интерпретации экономики.")
+    else:
+        notes.append("Промо-зависимость низкая: поведение меньше опирается на стимулирование.")
+
+    if pd.notna(rides_30) and rides_30 >= 2 and risk in {"Stable / Active", "Cooling"}:
+        notes.append("Текущая активность сохраняется: есть поездки за последние 30 дней.")
+    elif risk in {"At risk", "Dormant"}:
+        notes.append("Текущая активность ослаблена: профиль находится в зоне риска/спящем состоянии.")
+
+    if pd.notna(user_recency) and pd.notna(med_recency):
+        if user_recency > med_recency * 1.2:
+            notes.append("Есть признаки ослабления относительно сегмента: recency хуже сегментной медианы.")
+        else:
+            notes.append("Явных признаков ослабления относительно сегмента не видно.")
+
+    return notes[:4]
+
+
+def _build_user_timeline(trips: pd.DataFrame, touches: pd.DataFrame) -> pd.DataFrame:
+    trip_columns = [
+        "request_ts", "trip_id", "order_status", "tariff", "gmv", "contribution_margin",
+        "promo_discount", "refund_amount",
+    ]
+    touch_columns = [
+        "touch_ts", "touch_id", "touch_channel", "campaign_type", "offer_type",
+        "opened_flag", "clicked_flag", "converted_within_7d_flag", "touch_cost",
+    ]
+
+    trip_view = pd.DataFrame(columns=["event_ts", "event_type", "event_id", "details", "economy"])
+    if not trips.empty:
+        source = trips[[c for c in trip_columns if c in trips.columns]].copy()
+        source["event_ts"] = source["request_ts"]
+        source["event_type"] = "Trip"
+        source["event_id"] = source["trip_id"]
+        source["details"] = (
+            "Статус: " + source["order_status"].astype(str)
+            + "; тариф: " + source.get("tariff", pd.Series("—", index=source.index)).astype(str)
+        )
+        source["economy"] = (
+            "CM " + source.get("contribution_margin", pd.Series(0, index=source.index)).fillna(0).round(1).astype(str)
+            + " ₽; promo " + source.get("promo_discount", pd.Series(0, index=source.index)).fillna(0).round(1).astype(str)
+            + " ₽; refund " + source.get("refund_amount", pd.Series(0, index=source.index)).fillna(0).round(1).astype(str) + " ₽"
+        )
+        trip_view = source[["event_ts", "event_type", "event_id", "details", "economy"]]
+
+    touch_view = pd.DataFrame(columns=["event_ts", "event_type", "event_id", "details", "economy"])
+    if not touches.empty:
+        source = touches[[c for c in touch_columns if c in touches.columns]].copy()
+        source["event_ts"] = source["touch_ts"]
+        source["event_type"] = "Touch"
+        source["event_id"] = source["touch_id"]
+        source["details"] = (
+            source.get("touch_channel", pd.Series("—", index=source.index)).astype(str)
+            + " / " + source.get("campaign_type", pd.Series("—", index=source.index)).astype(str)
+            + " / " + source.get("offer_type", pd.Series("—", index=source.index)).astype(str)
+        )
+        source["economy"] = (
+            "open="
+            + source.get("opened_flag", pd.Series(False, index=source.index)).fillna(False).astype(int).astype(str)
+            + ", click="
+            + source.get("clicked_flag", pd.Series(False, index=source.index)).fillna(False).astype(int).astype(str)
+            + ", conv7d="
+            + source.get("converted_within_7d_flag", pd.Series(False, index=source.index)).fillna(False).astype(int).astype(str)
+            + ", cost=" + source.get("touch_cost", pd.Series(0, index=source.index)).fillna(0).round(1).astype(str)
+        )
+        touch_view = source[["event_ts", "event_type", "event_id", "details", "economy"]]
+
+    timeline = pd.concat([trip_view, touch_view], ignore_index=True)
+    if timeline.empty:
+        return timeline
+    return timeline.sort_values("event_ts", ascending=False).head(30).reset_index(drop=True)
+
+
 def get_user_snapshot(user_id: str, data: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame | pd.Series]:
-    user_row = data["user_mart"].loc[data["user_mart"]["user_id"] == user_id].iloc[0]
+    raw_user_row = data["user_mart"].loc[data["user_mart"]["user_id"] == user_id].iloc[0].copy()
+    segment_base = build_segment_user_base(data["user_mart"], data.get("trips"), data.get("marketing_touches"))
+    user_segment_row = segment_base.loc[segment_base["user_id"] == user_id]
+    if user_segment_row.empty:
+        user_row = raw_user_row
+    else:
+        user_row = raw_user_row.copy()
+        for col, val in user_segment_row.iloc[0].items():
+            user_row[col] = val
     trips = (
         data["trips"]
         .loc[data["trips"]["user_id"] == user_id]
@@ -1649,7 +1821,17 @@ def get_user_snapshot(user_id: str, data: Dict[str, pd.DataFrame]) -> Dict[str, 
         .sort_values("touch_ts", ascending=False)
         .copy()
     )
-    return {"user": user_row, "trips": trips, "touches": touches}
+    explainability = _build_user_segment_explainability(user_row)
+    interpretation = _build_user_interpretation(user_row, segment_base)
+    timeline = _build_user_timeline(trips, touches)
+    return {
+        "user": user_row,
+        "trips": trips,
+        "touches": touches,
+        "timeline": timeline,
+        "explainability": explainability,
+        "interpretation": interpretation,
+    }
 
 
 def build_data_model_summary(data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
