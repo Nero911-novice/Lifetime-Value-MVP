@@ -184,11 +184,11 @@ def render_segment_summary_table(segment_summary: pd.DataFrame) -> str | None:
             "avg_recency_days": "Средний recency",
             "avg_rides_last_90d": "Среднее число поездок за 90 дней",
             "avg_response_rate": "Средний response rate",
-            "recommended_action_ru": "Рекомендованное действие",
+            "recommended_action_ru": "Rule-based интерпретация / возможное действие",
         }
     )
 
-    display = table.drop(columns=["compound_segment"]).copy()
+    display = table.drop(columns=["compound_segment", "Rule-based интерпретация / возможное действие"]).copy()
     for col in ["Доля пользователей", "Доля отмен", "Доля промо-поездок", "Средний response rate"]:
         display[col] = display[col].map(lambda x: format_percent(x, 1) if pd.notna(x) else "не рассчитывается в текущем срезе")
     for col in ["Средний LTV 180 дней", "Суммарный LTV 180 дней", "Средняя маржа завершённой поездки"]:
@@ -197,6 +197,22 @@ def render_segment_summary_table(segment_summary: pd.DataFrame) -> str | None:
     display["Среднее число поездок за 90 дней"] = display["Среднее число поездок за 90 дней"].map(lambda x: format_number(x, 2) if pd.notna(x) else "недостаточно данных")
 
     st.dataframe(display, use_container_width=True)
+    with st.expander("Интерпретация / возможное действие (rule-based)", expanded=False):
+        st.caption("Этот блок — аналитическая эвристика на базе правил сегментации. Это не decision engine и не автоматический оркестратор действий.")
+        actions_view = table[
+            [
+                "Комбинированный сегмент",
+                "Пользователи",
+                "Доля пользователей",
+                "Средний LTV 180 дней",
+                "Доля отмен",
+                "Rule-based интерпретация / возможное действие",
+            ]
+        ].copy()
+        actions_view["Доля пользователей"] = actions_view["Доля пользователей"].map(lambda x: format_percent(x, 1) if pd.notna(x) else "—")
+        actions_view["Средний LTV 180 дней"] = actions_view["Средний LTV 180 дней"].map(lambda x: format_currency(x, 0) if pd.notna(x) else "—")
+        actions_view["Доля отмен"] = actions_view["Доля отмен"].map(lambda x: format_percent(x, 1) if pd.notna(x) else "—")
+        st.dataframe(actions_view, use_container_width=True)
 
     options = table[["compound_segment", "Комбинированный сегмент"]]
     selected_label = st.selectbox("Выберите комбинированный сегмент", options["Комбинированный сегмент"].tolist())
@@ -228,8 +244,63 @@ def render_selected_segment_profile(selected_profile: dict) -> None:
     risk = RISK_LABELS.get(selected_profile.get("risk_segment"), "недостаточно данных")
     value = VALUE_LABELS.get(selected_profile.get("value_segment"), "недостаточно данных")
     promo = PROMO_LABELS.get(selected_profile.get("dominant_promo_segment"), "недостаточно данных")
+    st.caption(f"Риск: {risk} · Ценность: {value} · Доминирующая промо-зависимость: {promo}")
+
+    st.markdown("**Интерпретация / возможное действие (rule-based)**")
     action = ACTION_LABELS.get(selected_profile.get("recommended_action"), "Наблюдать без немедленного действия")
-    st.caption(f"Риск: {risk} · Ценность: {value} · Доминирующая промо-зависимость: {promo} · Рекомендованное действие: {action}")
+    st.info(
+        f"{action}\n\n"
+        "Пояснение: это аналитическая рекомендация по rule-based сегментации, а не decision engine "
+        "и не предиктивная модель для автоматического принятия решений."
+    )
+
+
+def render_distribution_analytics(segment_user_base: pd.DataFrame) -> None:
+    st.subheader("Распределительная аналитика")
+    st.caption("Распределение LTV 180 дней показывает не только среднее, но и неоднородность внутри базы и сегментов.")
+
+    chart_df = segment_user_base[["ltv_180d", "value_segment"]].copy()
+    chart_df["value_segment_ru"] = chart_df["value_segment"].map(VALUE_LABELS).fillna("недостаточно данных")
+    chart_df = chart_df.loc[chart_df["ltv_180d"].notna()]
+
+    if chart_df.empty:
+        st.info("Недостаточно данных для распределительных графиков.")
+        return
+
+    max_ltv = float(chart_df["ltv_180d"].quantile(0.99))
+    clipped_df = chart_df.assign(ltv_180d=chart_df["ltv_180d"].clip(lower=0, upper=max(max_ltv, 1.0)))
+    left, right = st.columns(2)
+    with left:
+        histogram = (
+            alt.Chart(clipped_df)
+            .mark_bar(opacity=0.8)
+            .encode(
+                x=alt.X("ltv_180d:Q", bin=alt.Bin(maxbins=35), title="LTV 180 дней"),
+                y=alt.Y("count():Q", title="Пользователи"),
+                tooltip=[
+                    alt.Tooltip("count():Q", title="Пользователи"),
+                    alt.Tooltip("ltv_180d:Q", bin=True, title="Диапазон LTV"),
+                ],
+            )
+            .properties(height=280, title="Гистограмма LTV 180д (до 99-го перцентиля)")
+        )
+        st.altair_chart(histogram, use_container_width=True)
+    with right:
+        boxplot = (
+            alt.Chart(clipped_df)
+            .mark_boxplot(size=38)
+            .encode(
+                x=alt.X("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
+                y=alt.Y("ltv_180d:Q", title="LTV 180 дней"),
+                color=alt.Color("value_segment_ru:N", title="Сегмент ценности", sort=[VALUE_LABELS[x] for x in VALUE_ORDER]),
+                tooltip=[
+                    alt.Tooltip("value_segment_ru:N", title="Сегмент ценности"),
+                    alt.Tooltip("median(ltv_180d):Q", title="Медиана LTV", format=",.0f"),
+                ],
+            )
+            .properties(height=280, title="Boxplot LTV 180д по сегментам ценности")
+        )
+        st.altair_chart(boxplot, use_container_width=True)
 
 
 def render_selected_segment_compare(segment_summary: pd.DataFrame, selected_segment: str) -> tuple[dict, dict]:
@@ -343,9 +414,11 @@ def render_selected_segment_charts(charts: dict[str, pd.DataFrame]) -> None:
 
 def render_segment_diagnostics(selected_profile: dict, baseline_profile: dict) -> None:
     st.subheader("Диагностический блок")
+    st.caption("Ниже — краткие численно привязанные наблюдения относительно эталона (медианы по сегментам в текущем срезе).")
     notes = generate_segment_diagnostics(selected_profile, baseline_profile)
-    for note in notes:
-        st.markdown(f"- {note}")
+    with st.expander("Показать диагностические наблюдения", expanded=False):
+        for note in notes:
+            st.markdown(f"- {note}")
 
 
 def render_segment_methodology() -> None:
@@ -377,6 +450,7 @@ def render(user_mart: pd.DataFrame, trips: pd.DataFrame | None = None, touches: 
     segment_map_table = get_segment_map_table(filtered)
 
     render_segment_kpis(filtered, segment_summary)
+    render_distribution_analytics(filtered)
     render_segment_heatmap(segment_map_table)
 
     selected_segment = render_segment_summary_table(segment_summary)
