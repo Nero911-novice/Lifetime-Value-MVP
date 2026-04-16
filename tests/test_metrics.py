@@ -19,6 +19,7 @@ from src.metrics import (
     generate_segment_diagnostics,
     get_ltv_concentration_by_value_segment,
     assign_risk_segment,
+    get_user_snapshot,
 )
 from src.data_loader import load_demo_data, build_user_mart
 
@@ -397,3 +398,16 @@ def test_ltv_concentration_by_value_segment_has_consistent_shares():
     assert round(concentration["ltv_share"].sum(), 6) == 1.0
     high_value_ltv_share = concentration.loc[concentration["value_segment"] == "High value", "ltv_share"].iloc[0]
     assert round(high_value_ltv_share, 4) == round(400 / 500, 4)
+
+
+def test_get_user_snapshot_contains_explainability_and_timeline():
+    data = load_demo_data("data")
+    user_mart = build_user_mart(data)
+    data["user_mart"] = user_mart
+    user_id = user_mart["user_id"].iloc[0]
+
+    snapshot = get_user_snapshot(user_id, data)
+
+    assert {"timeline", "explainability", "interpretation"}.issubset(snapshot.keys())
+    assert {"risk_reasons", "value_reasons", "promo_reasons"}.issubset(snapshot["explainability"].keys())
+    assert isinstance(snapshot["interpretation"], list)
