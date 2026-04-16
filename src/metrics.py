@@ -304,51 +304,133 @@ def build_key_changes_table(metrics: dict) -> pd.DataFrame:
     def delta(cur: float, prev: float) -> float:
         return cur - prev
 
+    def rel_delta(cur: float, prev: float) -> float:
+        if prev == 0:
+            return np.nan
+        return (cur - prev) / abs(prev)
+
     rows = [
         {
+            "metric_key": "total_orders",
             "Показатель": "Созданные заказы за 30д",
             "Текущий период": current["total_orders"],
             "Предыдущий период": previous["total_orders"],
             "Изменение": delta(current["total_orders"], previous["total_orders"]),
+            "Изменение %": rel_delta(current["total_orders"], previous["total_orders"]),
+            "unit": "count",
+            "priority": 1,
             "Интерпретация": "Изменение общего объема спроса в рамках выбранного среза.",
         },
         {
+            "metric_key": "completed_orders",
             "Показатель": "Завершенные заказы за 30д",
             "Текущий период": current["completed_orders"],
             "Предыдущий период": previous["completed_orders"],
             "Изменение": delta(current["completed_orders"], previous["completed_orders"]),
+            "Изменение %": rel_delta(current["completed_orders"], previous["completed_orders"]),
+            "unit": "count",
+            "priority": 1,
             "Интерпретация": "Динамика реально состоявшихся поездок, а не только созданного спроса.",
         },
         {
+            "metric_key": "cancel_rate",
             "Показатель": "Доля отмен за 30д",
             "Текущий период": current["cancel_rate"],
             "Предыдущий период": previous["cancel_rate"],
             "Изменение": delta(current["cancel_rate"], previous["cancel_rate"]),
+            "Изменение %": rel_delta(current["cancel_rate"], previous["cancel_rate"]),
+            "unit": "rate",
+            "priority": 0,
             "Интерпретация": "Рост отмен может указывать на проблемы предложения, цены или качества сервиса.",
         },
         {
+            "metric_key": "completed_margin",
             "Показатель": "Маржа завершенных поездок за 30д",
             "Текущий период": current["completed_margin"],
             "Предыдущий период": previous["completed_margin"],
             "Изменение": delta(current["completed_margin"], previous["completed_margin"]),
+            "Изменение %": rel_delta(current["completed_margin"], previous["completed_margin"]),
+            "unit": "currency",
+            "priority": 0,
             "Интерпретация": "Это ближайший к управленческой экономике слой среди оперативных показателей.",
         },
         {
+            "metric_key": "new_activations",
             "Показатель": "Новые активации за 30д",
             "Текущий период": metrics["current_new_activations"],
             "Предыдущий период": metrics["previous_new_activations"],
             "Изменение": delta(metrics["current_new_activations"], metrics["previous_new_activations"]),
+            "Изменение %": rel_delta(metrics["current_new_activations"], metrics["previous_new_activations"]),
+            "unit": "count",
+            "priority": 0,
             "Интерпретация": "Показывает, как меняется скорость перевода регистраций в первую завершенную поездку.",
         },
         {
+            "metric_key": "new_registrations",
             "Показатель": "Новые регистрации за 30д",
             "Текущий период": metrics["current_new_registrations"],
             "Предыдущий период": metrics["previous_new_registrations"],
             "Изменение": delta(metrics["current_new_registrations"], metrics["previous_new_registrations"]),
+            "Изменение %": rel_delta(metrics["current_new_registrations"], metrics["previous_new_registrations"]),
+            "unit": "count",
+            "priority": 1,
             "Интерпретация": "Нужен для чтения верхней воронки, отдельно от активации и удержания.",
         },
     ]
-    return pd.DataFrame(rows)
+    table = pd.DataFrame(rows)
+    table["magnitude_score"] = table["Изменение %"].abs().fillna(0) + table["priority"] * 0.01
+    table = table.sort_values("magnitude_score", ascending=False).reset_index(drop=True)
+    return table
+
+
+def build_overview_next_steps(metrics: dict) -> list[dict[str, str]]:
+    current = metrics["current_period"]
+    previous = metrics["previous_period"]
+
+    steps: list[dict[str, str]] = []
+
+    activations_drop = metrics["current_new_activations"] < metrics["previous_new_activations"]
+    registrations_drop = metrics["current_new_registrations"] < metrics["previous_new_registrations"]
+    if activations_drop or registrations_drop:
+        steps.append(
+            {
+                "screen": "Cohorts",
+                "focus": "Новые активации и свежие месяцы",
+                "why": "Проверьте, как молодые когорты конвертируются в первую поездку и как быстро накапливают ценность.",
+            }
+        )
+
+    cancel_up = current["cancel_rate"] > previous["cancel_rate"]
+    margin_down = current["completed_margin"] < previous["completed_margin"]
+    if cancel_up or margin_down:
+        steps.append(
+            {
+                "screen": "Segments",
+                "focus": "Структура базы по риску и ценности",
+                "why": "Рост отмен или просадка маржи часто концентрируются в конкретных сегментах риска / ценности.",
+            }
+        )
+
+    if (
+        (current["total_orders"] < previous["total_orders"] and current["completed_orders"] >= previous["completed_orders"])
+        or (current["cancel_rate"] > previous["cancel_rate"] and current["total_orders"] >= previous["total_orders"])
+    ):
+        steps.append(
+            {
+                "screen": "User Profile",
+                "focus": "Локальные кейсы и разбор пути пользователя",
+                "why": "Найдите 2–3 типовых профиля, чтобы проверить, где именно возникает трение в пути заказа.",
+            }
+        )
+
+    steps.append(
+        {
+            "screen": "Data Model",
+            "focus": "Поля и источники для проверки гипотез",
+            "why": "Уточните, какие таблицы и поля поддерживают наблюдаемые изменения и где могут быть пробелы данных.",
+        }
+    )
+    return steps[:4]
 
 
 def compute_cohort_matrices(user_mart: pd.DataFrame, trips: pd.DataFrame, max_age_months: int = 12) -> dict:
