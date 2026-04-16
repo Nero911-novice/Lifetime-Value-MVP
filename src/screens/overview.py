@@ -113,7 +113,7 @@ def render(user_mart, trips):
             columns={
                 "risk_segment": "Риск",
                 "value_segment": "Ценность",
-                "promo_band": "Промо-зависимость",
+                "promo_dependency_segment": "Промо-зависимость",
                 "users": "Пользователи",
                 "avg_ltv_180": "Средний LTV 180д",
                 "avg_cancel_rate": "Средняя доля отмен",
