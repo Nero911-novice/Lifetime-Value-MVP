@@ -579,11 +579,7 @@ def build_cohort_user_base(users_df: pd.DataFrame, trips_df: pd.DataFrame, touch
         completed_orders_count=("is_completed", "sum"),
         cancelled_orders_count=("is_cancelled", "sum"),
     )
-    agg_orders["cancellation_rate"] = np.where(
-        agg_orders["created_orders_count"] > 0,
-        agg_orders["cancelled_orders_count"] / agg_orders["created_orders_count"],
-        0.0,
-    )
+    agg_orders["cancellation_rate"] = agg_orders["cancelled_orders_count"] / agg_orders["created_orders_count"].replace({0: np.nan})
 
     completed = user_trips.loc[user_trips["is_completed"]].copy()
     promo_share = completed.groupby("user_id").agg(
@@ -592,6 +588,10 @@ def build_cohort_user_base(users_df: pd.DataFrame, trips_df: pd.DataFrame, touch
     )
     rides_last_30 = completed.loc[completed["order_created_at"] >= observation_date - pd.Timedelta(days=30)].groupby("user_id").size().rename("rides_last_30d")
     rides_last_90 = completed.loc[completed["order_created_at"] >= observation_date - pd.Timedelta(days=90)].groupby("user_id").size().rename("rides_last_90d")
+    created_last_90 = user_trips.loc[user_trips["order_created_at"] >= observation_date - pd.Timedelta(days=90)].groupby("user_id").size().rename("created_orders_90d")
+    cancelled_last_90 = user_trips.loc[
+        (user_trips["order_created_at"] >= observation_date - pd.Timedelta(days=90)) & user_trips["is_cancelled"]
+    ].groupby("user_id").size().rename("cancelled_orders_90d")
 
     ltv_parts = {}
     for horizon in (30, 90, 180, 365):
@@ -628,7 +628,7 @@ def build_cohort_user_base(users_df: pd.DataFrame, trips_df: pd.DataFrame, touch
             "maturity_months",
         ]
     ].copy()
-    for frame in (agg_orders, promo_share, rides_last_30, rides_last_90, ltv_df, flags_df):
+    for frame in (agg_orders, promo_share, rides_last_30, rides_last_90, created_last_90, cancelled_last_90, ltv_df, flags_df):
         result = result.merge(frame, on="user_id", how="left")
 
     fill_zero_columns = [
@@ -640,6 +640,8 @@ def build_cohort_user_base(users_df: pd.DataFrame, trips_df: pd.DataFrame, touch
         "refund_trip_share",
         "rides_last_30d",
         "rides_last_90d",
+        "created_orders_90d",
+        "cancelled_orders_90d",
         "ltv_30d",
         "ltv_90d",
         "ltv_180d",
@@ -663,22 +665,30 @@ def get_cohort_summary(cohort_user_base: pd.DataFrame) -> pd.DataFrame:
             avg_ltv_30d=("ltv_30d", "mean"),
             avg_ltv_90d=("ltv_90d", "mean"),
             avg_ltv_180d=("ltv_180d", "mean"),
-            avg_margin_per_completed_order=("ltv_365d", "sum"),
+            total_ltv_90d=("ltv_90d", "sum"),
             activation_rate=("user_id", "size"),
-            avg_cancellation_rate=("cancellation_rate", "mean"),
+            total_cancelled_orders_90d=("cancelled_orders_90d", "sum"),
             avg_promo_trip_share=("promo_trip_share", "mean"),
             avg_completed_orders_90d=("rides_last_90d", "mean"),
-            avg_created_orders_90d=("created_orders_count", "mean"),
+            total_completed_orders_90d=("rides_last_90d", "sum"),
+            total_created_orders_90d=("created_orders_90d", "sum"),
+            avg_created_orders_90d=("created_orders_90d", "mean"),
             maturity_months=("maturity_months", "max"),
         )
         .sort_values("cohort_month")
     )
     summary["activation_rate"] = 1.0
     summary["avg_margin_per_completed_order"] = np.where(
-        summary["avg_completed_orders_90d"] > 0,
-        summary["avg_ltv_180d"] / summary["avg_completed_orders_90d"].clip(lower=1e-9),
-        0.0,
+        summary["total_completed_orders_90d"] > 0,
+        summary["total_ltv_90d"] / summary["total_completed_orders_90d"],
+        np.nan,
     )
+    summary["avg_cancellation_rate"] = np.where(
+        summary["total_created_orders_90d"] > 0,
+        summary["total_cancelled_orders_90d"] / summary["total_created_orders_90d"],
+        np.nan,
+    )
+    summary = summary.drop(columns=["total_ltv_90d", "total_completed_orders_90d", "total_created_orders_90d", "total_cancelled_orders_90d"])
     for month in (1, 3, 6):
         col = f"is_active_month_{month}"
         summary[f"retention_m{month}"] = (
@@ -1044,18 +1054,18 @@ def assign_risk_segment(df: pd.DataFrame) -> pd.Series:
     rides_90 = pd.to_numeric(df.get("rides_last_90d"), errors="coerce").fillna(0)
     completed_orders = pd.to_numeric(df.get("completed_orders_count"), errors="coerce").fillna(0)
 
-    risk = pd.Series("Cooling", index=df.index, dtype="string")
     stable_mask = ((recency <= 14) & (rides_30 >= 1)) | ((recency <= 30) & (rides_90 >= 4))
     cooling_mask = ((recency > 14) & (recency <= 45)) | ((recency <= 35) & (rides_90.between(1, 3)))
     at_risk_mask = ((recency > 45) & (recency <= 90)) | ((rides_90 <= 1) & (recency > 35))
     dormant_mask = (recency > 90) | ((rides_90 == 0) & (completed_orders > 0))
+    no_completed_mask = completed_orders == 0
 
-    risk = risk.mask(stable_mask, "Stable / Active")
-    risk = risk.mask(cooling_mask, "Cooling")
-    risk = risk.mask(at_risk_mask, "At risk")
-    risk = risk.mask(dormant_mask, "Dormant")
-    risk = risk.mask(completed_orders == 0, "Dormant")
-    return risk.fillna("Cooling")
+    risk = np.select(
+        [no_completed_mask | dormant_mask, stable_mask, at_risk_mask, cooling_mask],
+        ["Dormant", "Stable / Active", "At risk", "Cooling"],
+        default="Cooling",
+    )
+    return pd.Series(risk, index=df.index, dtype="string").fillna("Cooling")
 
 
 def assign_promo_dependency_segment(df: pd.DataFrame) -> pd.Series:

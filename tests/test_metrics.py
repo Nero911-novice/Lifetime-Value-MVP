@@ -17,6 +17,7 @@ from src.metrics import (
     compare_segment_to_baseline,
     get_selected_segment_charts_data,
     generate_segment_diagnostics,
+    assign_risk_segment,
 )
 from src.data_loader import load_demo_data, build_user_mart
 
@@ -141,6 +142,53 @@ def test_build_cohort_user_base_and_summary():
     assert len(cohort_user_base) == 2
     assert set(summary["cohort_month"]) == {"2025-01", "2025-02"}
     assert summary["cohort_size"].sum() == 2
+    assert "avg_margin_per_completed_order" in summary.columns
+    assert "avg_created_orders_90d" in summary.columns
+
+
+def test_cohort_summary_uses_consistent_90d_horizon_for_derived_metrics():
+    cohort_user_base = pd.DataFrame(
+        {
+            "user_id": ["u1", "u2"],
+            "cohort_month": ["2025-01", "2025-01"],
+            "ltv_30d": [10.0, 12.0],
+            "ltv_90d": [90.0, 30.0],
+            "ltv_180d": [180.0, 120.0],
+            "rides_last_90d": [6, 2],
+            "created_orders_90d": [8, 4],
+            "cancelled_orders_90d": [2, 1],
+            "promo_trip_share": [0.2, 0.1],
+            "maturity_months": [3, 3],
+        }
+    )
+
+    summary = get_cohort_summary(cohort_user_base)
+
+    row = summary.iloc[0]
+    assert row["avg_margin_per_completed_order"] == 15.0  # (90 + 30) / (6 + 2)
+    assert row["avg_cancellation_rate"] == 0.25  # (2 + 1) / (8 + 4)
+    assert row["avg_created_orders_90d"] == 6.0
+
+
+def test_cohort_summary_handles_zero_orders_without_division_errors():
+    cohort_user_base = pd.DataFrame(
+        {
+            "user_id": ["u1"],
+            "cohort_month": ["2025-01"],
+            "ltv_30d": [0.0],
+            "ltv_90d": [0.0],
+            "ltv_180d": [0.0],
+            "rides_last_90d": [0],
+            "created_orders_90d": [0],
+            "cancelled_orders_90d": [0],
+            "promo_trip_share": [0.0],
+            "maturity_months": [1],
+        }
+    )
+    summary = get_cohort_summary(cohort_user_base)
+    row = summary.iloc[0]
+    assert pd.isna(row["avg_margin_per_completed_order"])
+    assert pd.isna(row["avg_cancellation_rate"])
 
 
 def test_retention_matrix_and_baseline_compare():
@@ -273,6 +321,19 @@ def test_segment_orders_fallback_uses_total_orders_when_count_fields_are_empty()
     assert base["completed_orders_count"].tolist() == [7, 2]
     assert base["cancelled_orders_count"].tolist() == [3, 1]
     assert set(base["risk_segment"]) == {"Stable / Active", "Cooling"}
+
+
+def test_assign_risk_segment_respects_priority_and_no_overwrite():
+    frame = pd.DataFrame(
+        {
+            "recency_days": [20, 55, 120, 12],
+            "rides_last_30d": [2, 0, 0, 1],
+            "rides_last_90d": [4, 1, 0, 5],
+            "completed_orders_count": [4, 2, 3, 6],
+        }
+    )
+    result = assign_risk_segment(frame)
+    assert result.tolist() == ["Stable / Active", "At risk", "Dormant", "Stable / Active"]
 
 
 def test_demo_segment_distribution_is_not_collapsed():
